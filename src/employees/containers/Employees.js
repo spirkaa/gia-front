@@ -1,64 +1,52 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
 import { loadEmployees } from '../actions'
-import Header from '../components/Header'
-import ErrorMsg from '../components/Alerts'
-import Pagination from '../components/Pagination'
-import Filter from '../components/Filter'
-import EmployeesTable from '../components/EmpTable'
+import { Header } from '../../main/components'
+import { EmpTable } from '../components'
+import FilterContainer from './FilterContainer'
+import PaginationContainer from './PaginationContainer'
 
-export class Employees extends Component {
-
-  handleNextPageClick () {
-    this.props.loadEmployees(this.props.employees.next, true)
-  }
-
-  handlePrevPageClick () {
-    this.props.loadEmployees(this.props.employees.previous, true)
-  }
-
+class Employees extends Component {
   componentDidMount () {
-    this.props.loadEmployees('employee/')
+    this.props.loadEmployees()
   }
 
   render () {
     const header = 'Сотрудники, участвующие в ГИА 2016'
-    const { employees, error, loading } = this.props
-    const prev = employees.previous
-
-    if (error) {
-      return (
-        <ErrorMsg error={error}/>
-      )
-    } else if (employees.count) {
-      return (
-        <Col lg={12}>
-          <Header header={header} subHeader={employees.count}/>
-          <Filter />
-          <EmployeesTable employees={employees.results}/>
-          <Pagination onPrevPageClick={::this.handlePrevPageClick}
-                      onNextPageClick={::this.handleNextPageClick}
-                      prev={prev}
-                      loading={loading}/>
-        </Col>
-      )
-    }
+    const { employees, count } = this.props
     return (
-      <Col lg={12} className='text-center'>
-        Loading...
+      <Col lg={12}>
+        <Header header={header} subHeader={count}/>
+        <FilterContainer />
+        <EmpTable employees={employees}/>
+        <PaginationContainer />
       </Col>
     )
   }
 }
 
+Employees.propTypes = {
+  employees: PropTypes.array.isRequired,
+  count: PropTypes.number,
+  loadEmployees: PropTypes.func.isRequired
+}
+
 const mapStateToProps = (state) => {
-  const { employees, error, loading } = state.data.employeesList
+  const {
+    entities: { employee, page, organisation },
+    activePage
+  } = state
+  const { count } = page[ 1 ] || { count: null }
+  const currentPage = page[ activePage ] || { results: [] }
+  const employeesOnPage = currentPage.results.map(id => employee[ id ])
+  const employeesWithOrg = employeesOnPage.map(emp => ({ ...emp, org: organisation[ emp.org ] }))
   return ({
-    employees,
-    error,
-    loading
+    employees: employeesWithOrg,
+    count
   })
 }
 
-export default connect(mapStateToProps, { loadEmployees })(Employees)
+export default connect(mapStateToProps, {
+  loadEmployees
+})(Employees)

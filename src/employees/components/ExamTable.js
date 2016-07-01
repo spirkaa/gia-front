@@ -1,30 +1,52 @@
-import React, { Component } from 'react'
+import React, { PropTypes } from 'react'
 import { Row } from 'react-bootstrap'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 
-export default class ExamTable extends Component {
-  render () {
-    const { exams } = this.props
-    return (
-      <Row>
-        <BootstrapTable data={exams} hover={true}>
-          <TableHeaderColumn
-            dataField='date'
-            dataSort={true}
-            isKey={true}
-            width='110'>Дата экзамена</TableHeaderColumn>
-          <TableHeaderColumn
-            dataField='position'
-            dataSort={true}
-            width='220'>Должность в ППЭ</TableHeaderColumn>
-          <TableHeaderColumn
-            dataField='place'
-            dataSort={true}>Наименование ППЭ</TableHeaderColumn>
-          <TableHeaderColumn
-            dataField='addr'
-            dataSort={true}>Адрес ППЭ</TableHeaderColumn>
-        </BootstrapTable>
-      </Row>
-    )
-  }
+const dateFormat = (cell, row) => new Date(row.date).toLocaleDateString('ru')
+
+const placeFormat = (cell, row) => (
+  <div><strong>№{cell.code}:</strong> {cell.name}<br />
+    <a href={`https://yandex.ru/maps/?text=${cell.addr}`} target='_blank' title='Открыть карту'>{cell.addr}</a>
+  </div>
+)
+
+export const ExamTable = ({ exams }) => (
+  <Row>
+    <BootstrapTable data={exams} hover={true} condensed={true}>
+      <TableHeaderColumn
+        dataField='id'
+        dataSort={true}
+        isKey={true}
+        hidden={true}
+      >pk</TableHeaderColumn>
+      <TableHeaderColumn
+        dataField='date'
+        dataSort={true}
+        dataFormat={dateFormat}
+        width='100'
+        dataAlign='center'
+      >Дата</TableHeaderColumn>
+      <TableHeaderColumn
+        dataField='level'
+        dataSort={true}
+        width='100'
+        dataAlign='center'
+      >Уровень</TableHeaderColumn>
+      <TableHeaderColumn
+        dataField='position'
+        dataSort={true}
+        width='230'
+      >Должность</TableHeaderColumn>
+      <TableHeaderColumn
+        dataField='place'
+        dataFormat={placeFormat}
+      >ППЭ</TableHeaderColumn>
+    </BootstrapTable>
+  </Row>
+)
+
+ExamTable.propTypes = {
+  exams: PropTypes.array.isRequired
 }
+
+export default ExamTable

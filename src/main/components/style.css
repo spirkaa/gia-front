@@ -1,0 +1,16 @@
+.dpad {
+    margin: 15px;
+}
+
+.bottom-buffer {
+    margin-bottom: 20px;
+}
+
+.page-header {
+    margin: 0 0 26px;
+}
+
+.react-bs-table table tr td, .react-bs-table table tr th {
+    white-space: normal;
+    vertical-align: middle;
+}

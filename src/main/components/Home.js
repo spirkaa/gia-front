@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Jumbotron } from 'react-bootstrap'
 
-const Home = () => (
+export const Home = () => (
   <Jumbotron>
     <h1>Hello, world!</h1>
     <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or

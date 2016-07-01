@@ -3,8 +3,8 @@ import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 
-const Navigation = () => (
-  <Navbar fluid>
+export const Navigation = () => (
+  <Navbar fluid inverse>
     <Navbar.Header>
       <Navbar.Brand>
         <Link to='/'>ГИА 2016 в Москве</Link>
@@ -18,6 +18,9 @@ const Navigation = () => (
         </LinkContainer>
         <LinkContainer to='/employees'>
           <NavItem eventKey={2}>Сотрудники</NavItem>
+        </LinkContainer>
+        <LinkContainer to='/organisations'>
+          <NavItem eventKey={3}>Организации</NavItem>
         </LinkContainer>
         <LinkContainer to='/places'>
           <NavItem eventKey={3}>ППЭ</NavItem>
