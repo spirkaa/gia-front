@@ -15,7 +15,7 @@ class EmployeeDetail extends Component {
   render () {
     const { employee } = this.props
     if (employee.name && employee.exams) {
-      const org = <Link to={`/organisations/${employee.org.id}`}>{employee.org.name}</Link>
+      const org = <Link to={`/organisations/detail/${employee.org.id}`}>{employee.org.name}</Link>
       return (
         <Col lg={12}>
           <Header header={employee.name} subHeader={org}/>

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { loadEmployees, setActivePage } from '../actions'
+import { loadEmployees, empPageSet } from '../actions'
 import { PaginationAdvanced } from '../../main/components'
 
 class PaginationContainer extends Component {
@@ -10,9 +10,9 @@ class PaginationContainer extends Component {
   }
 
   handlePaginationClick (pageNum) {
-    if (pageNum !== this.props.activePage) {
-      const { setActivePage, loadEmployees, nameVal, orgNameVal } = this.props
-      setActivePage(pageNum)
+    if (pageNum !== this.props.empActivePage) {
+      const { empPageSet, loadEmployees, nameVal, orgNameVal } = this.props
+      empPageSet(pageNum)
       if (nameVal !== '' || orgNameVal !== '') {
         loadEmployees(pageNum, nameVal, orgNameVal)
       } else {
@@ -22,11 +22,11 @@ class PaginationContainer extends Component {
   }
 
   render () {
-    const { activePage, count } = this.props
+    const { empActivePage, count } = this.props
     return (count
         ? <PaginationAdvanced
         onPaginationClick={this.handlePaginationClick}
-        activePage={activePage}
+        activePage={empActivePage}
         pageCount={Math.ceil(count / 50)}/>
         : null
     )
@@ -34,23 +34,23 @@ class PaginationContainer extends Component {
 }
 
 PaginationContainer.propTypes = {
-  activePage: PropTypes.number.isRequired,
+  empActivePage: PropTypes.number.isRequired,
   count: PropTypes.number,
   nameVal: PropTypes.string.isRequired,
   orgNameVal: PropTypes.string.isRequired,
   loadEmployees: PropTypes.func.isRequired,
-  setActivePage: PropTypes.func.isRequired
+  empPageSet: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
   const {
-    entities: { page },
-    filter: { nameVal, orgNameVal },
-    activePage
+    entities: { empPage },
+    filters: { empFilter: { nameVal, orgNameVal } },
+    pagination: { empActivePage }
   } = state
-  const { count } = page[ 1 ] || { count: null }
+  const { count } = empPage[ 1 ] || { count: null }
   return ({
-    activePage,
+    empActivePage,
     count,
     nameVal,
     orgNameVal
@@ -59,5 +59,5 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   loadEmployees,
-  setActivePage
+  empPageSet
 })(PaginationContainer)

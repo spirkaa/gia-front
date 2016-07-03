@@ -9,12 +9,12 @@ export const EMPLOYEES_FAILURE = 'EMPLOYEES_FAILURE'
 export function loadEmployees (pageNum = 1, nameVal = '', orgNameVal = '') {
   const types = [ EMPLOYEES_REQUEST, EMPLOYEES_SUCCESS, EMPLOYEES_FAILURE ]
   return (dispatch, getState) => {
-    const page = getState().entities.page[ pageNum ]
+    const page = getState().entities.empPage[ pageNum ]
     if (page) {
       return null
     }
     const url = `employee/?name=${nameVal}&org_name=${orgNameVal}&page=${pageNum}`
-    return dispatch(load(url, types, Schemas.PAGE))
+    return dispatch(load(url, types, Schemas.EMP_PAGE))
   }
 }
 
@@ -30,24 +30,24 @@ export function loadEmployeeDetail (id, requiredFields = []) {
       return null
     }
     const url = `employee/${id}/`
-    return dispatch(load(url, types, Schemas.DETAIL))
+    return dispatch(load(url, types, Schemas.EMP_DETAIL))
   }
 }
 
-export const FILTER_UPDATE_VALUE = 'FILTER_UPDATE_VALUE'
+export const EMPLOYEES_FILTER_SET = 'EMPLOYEES_FILTER_SET'
 
-export function setEmployeesFilter (nameVal, orgNameVal) {
+export function empFilterSet (nameVal, orgNameVal) {
   return dispatch => dispatch({
-    type: FILTER_UPDATE_VALUE,
+    type: EMPLOYEES_FILTER_SET,
     nameVal, orgNameVal
   })
 }
 
-export const ACTIVE_PAGE_SET = 'ACTIVE_PAGE_SET'
+export const EMPLOYEES_PAGE_SET = 'EMPLOYEES_PAGE_SET'
 
-export function setActivePage (activePage) {
+export function empPageSet (empActivePage) {
   return dispatch => dispatch({
-    type: ACTIVE_PAGE_SET,
-    activePage
+    type: EMPLOYEES_PAGE_SET,
+    empActivePage
   })
 }

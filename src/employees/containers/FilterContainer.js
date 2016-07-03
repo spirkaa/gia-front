@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { loadEmployees, setEmployeesFilter, setActivePage } from '../actions'
-import { filterClearPages } from '../../main/actions'
+import { loadEmployees, empFilterSet, empPageSet } from '../actions'
+import { empFilterClearPages } from '../../main/actions'
 import { Filter } from '../components'
 
 class FilterContainer extends Component {
@@ -12,11 +12,11 @@ class FilterContainer extends Component {
 
   handleFilterChange ({ nameVal, orgNameVal }) {
     if (nameVal !== this.props.nameVal || orgNameVal !== this.props.orgNameVal) {
-      const { setEmployeesFilter, loadEmployees, filterClearPages, setActivePage } = this.props
-      setEmployeesFilter(nameVal, orgNameVal)
-      filterClearPages()
+      const { empFilterSet, loadEmployees, empFilterClearPages, empPageSet } = this.props
+      empFilterSet(nameVal, orgNameVal)
+      empFilterClearPages()
       loadEmployees(1, nameVal, orgNameVal)
-      setActivePage(1)
+      empPageSet(1)
     }
   }
 
@@ -36,14 +36,14 @@ FilterContainer.propTypes = {
   nameVal: PropTypes.string.isRequired,
   orgNameVal: PropTypes.string.isRequired,
   loadEmployees: PropTypes.func.isRequired,
-  setEmployeesFilter: PropTypes.func.isRequired,
-  filterClearPages: PropTypes.func.isRequired,
-  setActivePage: PropTypes.func.isRequired
+  empFilterSet: PropTypes.func.isRequired,
+  empFilterClearPages: PropTypes.func.isRequired,
+  empPageSet: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
   const {
-    filter: { nameVal, orgNameVal }
+    filters: { empFilter: { nameVal, orgNameVal } }
   } = state
 
   return ({
@@ -54,7 +54,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   loadEmployees,
-  setEmployeesFilter,
-  filterClearPages,
-  setActivePage
+  empFilterSet,
+  empFilterClearPages,
+  empPageSet
 })(FilterContainer)

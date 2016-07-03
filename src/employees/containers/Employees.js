@@ -34,11 +34,11 @@ Employees.propTypes = {
 
 const mapStateToProps = (state) => {
   const {
-    entities: { employee, page, organisation },
-    activePage
+    entities: { employee, empPage, organisation },
+    pagination: { empActivePage }
   } = state
-  const { count } = page[ 1 ] || { count: null }
-  const currentPage = page[ activePage ] || { results: [] }
+  const { count } = empPage[ 1 ] || { count: null }
+  const currentPage = empPage[ empActivePage ] || { results: [] }
   const employeesOnPage = currentPage.results.map(id => employee[ id ])
   const employeesWithOrg = employeesOnPage.map(emp => ({ ...emp, org: organisation[ emp.org ] }))
   return ({

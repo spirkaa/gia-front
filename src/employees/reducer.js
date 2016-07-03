@@ -1,16 +1,16 @@
 import merge from 'lodash/merge'
-import { FILTER_UPDATE_VALUE, ACTIVE_PAGE_SET } from './actions'
+import { EMPLOYEES_FILTER_SET, EMPLOYEES_PAGE_SET } from './actions'
 
-export function activePage (state = 1, action) {
-  if (action.type === ACTIVE_PAGE_SET) {
-    return action.activePage
+export function empActivePage (state = 1, action) {
+  if (action.type === EMPLOYEES_PAGE_SET) {
+    return action.empActivePage
   }
   return state
 }
 
-export function filter (state = { nameVal: '', orgNameVal: '' }, action) {
+export function empFilter (state = { nameVal: '', orgNameVal: '' }, action) {
   switch (action.type) {
-    case FILTER_UPDATE_VALUE:
+    case EMPLOYEES_FILTER_SET:
       return merge({}, state, { nameVal: action.nameVal, orgNameVal: action.orgNameVal })
     default:
       return state

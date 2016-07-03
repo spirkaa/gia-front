@@ -11,11 +11,19 @@ export default function load (endpoint, types, schema) {
   }
 }
 
-export const FILTER_CLEAR_PAGES = 'FILTER_CLEAR_PAGES'
+export const EMPLOYEES_FILTER_CLEAR_PAGES = 'EMPLOYEES_FILTER_CLEAR_PAGES'
 
-export function filterClearPages () {
+export function empFilterClearPages () {
   return dispatch => dispatch({
-    type: FILTER_CLEAR_PAGES
+    type: EMPLOYEES_FILTER_CLEAR_PAGES
+  })
+}
+
+export const ORGANISATIONS_FILTER_CLEAR_PAGES = 'ORGANISATIONS_FILTER_CLEAR_PAGES'
+
+export function orgFilterClearPages () {
+  return dispatch => dispatch({
+    type: ORGANISATIONS_FILTER_CLEAR_PAGES
   })
 }
 

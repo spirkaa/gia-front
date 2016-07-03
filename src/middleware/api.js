@@ -43,7 +43,8 @@ function generateSlug (entity) {
   return (+pageNum(next) - 1)
 }
 
-const pageSchema = new Schema('page', { idAttribute: generateSlug })
+const empPageSchema = new Schema('empPage', { idAttribute: generateSlug })
+const orgPageSchema = new Schema('orgPage', { idAttribute: generateSlug })
 const employeeSchema = new Schema('employee', { idAttribute: 'id' })
 const examSchema = new Schema('exam', { idAttribute: 'id' })
 const dateSchema = new Schema('date', { idAttribute: 'id' })
@@ -69,13 +70,23 @@ employeeSchema.define({
   exams: arrayOf(examSchema)
 })
 
-pageSchema.define({
+organisationSchema.define({
+  employees: arrayOf(employeeSchema)
+})
+
+empPageSchema.define({
   results: arrayOf(employeeSchema)
 })
 
+orgPageSchema.define({
+  results: arrayOf(organisationSchema)
+})
+
 export const Schemas = {
-  PAGE: pageSchema,
-  DETAIL: employeeSchema
+  EMP_PAGE: empPageSchema,
+  ORG_PAGE: orgPageSchema,
+  EMP_DETAIL: employeeSchema,
+  ORG_DETAIL: organisationSchema
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.
