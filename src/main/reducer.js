@@ -1,12 +1,16 @@
 import merge from 'lodash/merge'
 import {
   EMPLOYEES_FILTER_CLEAR_PAGES,
+  EXAMS_FILTER_CLEAR_PAGES,
   ORGANISATIONS_FILTER_CLEAR_PAGES,
   RESET_ERROR_MESSAGE
 } from './actions'
 
 const INITIAL_STATE = {
+  datePage: {},
+  levelPage: {},
   empPage: {},
+  examPage: {},
   orgPage: {},
   employee: {},
   exam: {},
@@ -24,6 +28,9 @@ export function entities (state = INITIAL_STATE, action) {
   }
   if (action.type === EMPLOYEES_FILTER_CLEAR_PAGES) {
     return { ...state, empPage: {} }
+  }
+  if (action.type === EXAMS_FILTER_CLEAR_PAGES) {
+    return { ...state, examPage: {} }
   }
   if (action.type === ORGANISATIONS_FILTER_CLEAR_PAGES) {
     return { ...state, orgPage: {} }

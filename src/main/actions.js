@@ -27,6 +27,14 @@ export function orgFilterClearPages () {
   })
 }
 
+export const EXAMS_FILTER_CLEAR_PAGES = 'EXAMS_FILTER_CLEAR_PAGES'
+
+export function examFilterClearPages () {
+  return dispatch => dispatch({
+    type: EXAMS_FILTER_CLEAR_PAGES
+  })
+}
+
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
 
 export function resetErrorMessage () {

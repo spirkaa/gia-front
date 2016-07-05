@@ -43,7 +43,10 @@ function generateSlug (entity) {
   return (+pageNum(next) - 1)
 }
 
+const datePageSchema = new Schema('datePage', { idAttribute: generateSlug })
+const levelPageSchema = new Schema('levelPage', { idAttribute: generateSlug })
 const empPageSchema = new Schema('empPage', { idAttribute: generateSlug })
+const examPageSchema = new Schema('examPage', { idAttribute: generateSlug })
 const orgPageSchema = new Schema('orgPage', { idAttribute: generateSlug })
 const employeeSchema = new Schema('employee', { idAttribute: 'id' })
 const examSchema = new Schema('exam', { idAttribute: 'id' })
@@ -60,6 +63,7 @@ placeSchema.define({
 
 examSchema.define({
   date: dateSchema,
+  employee: employeeSchema,
   level: levelSchema,
   position: positionSchema,
   place: placeSchema
@@ -74,8 +78,20 @@ organisationSchema.define({
   employees: arrayOf(employeeSchema)
 })
 
+datePageSchema.define({
+  results: arrayOf(dateSchema)
+})
+
+levelPageSchema.define({
+  results: arrayOf(levelSchema)
+})
+
 empPageSchema.define({
   results: arrayOf(employeeSchema)
+})
+
+examPageSchema.define({
+  results: arrayOf(examSchema)
 })
 
 orgPageSchema.define({
@@ -83,7 +99,10 @@ orgPageSchema.define({
 })
 
 export const Schemas = {
+  DATE_PAGE: datePageSchema,
+  LEVEL_PAGE: levelPageSchema,
   EMP_PAGE: empPageSchema,
+  EXAM_PAGE: examPageSchema,
   ORG_PAGE: orgPageSchema,
   EMP_DETAIL: employeeSchema,
   ORG_DETAIL: organisationSchema
