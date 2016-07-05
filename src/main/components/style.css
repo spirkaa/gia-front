@@ -14,3 +14,11 @@
     white-space: normal;
     vertical-align: middle;
 }
+
+.form-control {
+    margin-top: 3px;
+}
+
+form > .btn {
+    margin-top: 3px;
+}
