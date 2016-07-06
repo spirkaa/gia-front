@@ -1,8 +1,13 @@
+import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
+import { connect } from 'react-redux'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
+import { loadOrganisations, orgFilterSet, orgPageSet } from '../actions'
+import { orgFilterClearPages } from '../../main/actions'
+import FilterContainer from '../../main/containers/FilterContainer'
 
-export class Filter extends Component {
+class Filter extends Component {
   constructor (props) {
     super(props)
     this.handleKeyUp = this.handleKeyUp.bind(this)
@@ -10,8 +15,8 @@ export class Filter extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.orgFilter !== this.props.orgFilter) {
-      findDOMNode(this.refs.name).value = nextProps.orgFilter.name
+    if (!isEqual(nextProps.filterVals, this.props.filterVals)) {
+      findDOMNode(this.refs.name).value = nextProps.filterVals.name
     }
   }
 
@@ -28,7 +33,7 @@ export class Filter extends Component {
   }
 
   render () {
-    const { orgFilter } = this.props
+    const { filterVals } = this.props
     return (
       <Row className='bottom-buffer'>
         <Col lg={12} className='text-center'>
@@ -38,7 +43,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='Название ОО'
                 ref='name'
-                defaultValue={orgFilter.name}
+                defaultValue={filterVals.name}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <Button bsStyle='primary' onClick={this.handleButtonClick}>
@@ -52,8 +57,18 @@ export class Filter extends Component {
 }
 
 Filter.propTypes = {
-  orgFilter: PropTypes.object.isRequired,
+  filterVals: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired
 }
 
-export default Filter
+const mapStateToProps = (state) => ({
+  Filter: Filter,
+  filterVals: state.filters.orgFilter
+})
+
+export default connect(mapStateToProps, {
+  loadFiltered: loadOrganisations,
+  filterSet: orgFilterSet,
+  filterClearPages: orgFilterClearPages,
+  pageSet: orgPageSet
+})(FilterContainer)

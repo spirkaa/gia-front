@@ -4,7 +4,7 @@ import { Col } from 'react-bootstrap'
 import { loadOrganisations } from '../actions'
 import { Header } from '../../main/components'
 import { OrgTable } from '../components'
-import FilterContainer from './FilterContainer'
+import Filter from './Filter'
 import Pagination from './Pagination'
 
 class Organisations extends Component {
@@ -18,7 +18,7 @@ class Organisations extends Component {
     return (
       <Col lg={12}>
         <Header header={header} subHeader={count}/>
-        <FilterContainer />
+        <Filter />
         <OrgTable organisations={organisations}/>
         <Pagination />
       </Col>
