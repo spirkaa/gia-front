@@ -5,7 +5,7 @@ import { loadExams } from '../actions'
 import { Header } from '../../main/components'
 import { ExamsTable } from '../components'
 import FilterContainer from './FilterContainer'
-import PaginationContainer from './PaginationContainer'
+import Pagination from './Pagination'
 
 class Exams extends Component {
   componentDidMount () {
@@ -20,7 +20,7 @@ class Exams extends Component {
         <Header header={header} subHeader={count}/>
         <FilterContainer />
         <ExamsTable exams={exams}/>
-        <PaginationContainer />
+        <Pagination />
       </Col>
     )
   }
