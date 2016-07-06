@@ -1,9 +1,13 @@
 import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
+import { connect } from 'react-redux'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
+import { loadEmployees, empFilterSet, empPageSet } from '../actions'
+import { empFilterClearPages } from '../../main/actions'
+import FilterContainer from '../../main/containers/FilterContainer'
 
-export class Filter extends Component {
+class Filter extends Component {
   constructor (props) {
     super(props)
     this.handleKeyUp = this.handleKeyUp.bind(this)
@@ -11,9 +15,9 @@ export class Filter extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (!isEqual(nextProps.empFilter, this.props.empFilter)) {
-      findDOMNode(this.refs.name).value = nextProps.empFilter.name
-      findDOMNode(this.refs.org).value = nextProps.empFilter.orgName
+    if (!isEqual(nextProps.filterVals, this.props.filterVals)) {
+      findDOMNode(this.refs.name).value = nextProps.filterVals.name
+      findDOMNode(this.refs.org).value = nextProps.filterVals.orgName
     }
   }
 
@@ -31,7 +35,7 @@ export class Filter extends Component {
   }
 
   render () {
-    const { empFilter } = this.props
+    const { filterVals } = this.props
     return (
       <Row className='bottom-buffer'>
         <Col lg={12} className='text-center'>
@@ -41,7 +45,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='ФИО сотрудника'
                 ref='name'
-                defaultValue={empFilter.name}
+                defaultValue={filterVals.name}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineOrg'>
@@ -49,7 +53,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='Место работы'
                 ref='org'
-                defaultValue={empFilter.orgName}
+                defaultValue={filterVals.orgName}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <Button bsStyle='primary' onClick={this.handleButtonClick}>
@@ -63,8 +67,18 @@ export class Filter extends Component {
 }
 
 Filter.propTypes = {
-  empFilter: PropTypes.object.isRequired,
+  filterVals: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired
 }
 
-export default Filter
+const mapStateToProps = (state) => ({
+  Filter: Filter,
+  filterVals: state.filters.empFilter
+})
+
+export default connect(mapStateToProps, {
+  loadFiltered: loadEmployees,
+  filterSet: empFilterSet,
+  filterClearPages: empFilterClearPages,
+  pageSet: empPageSet
+})(FilterContainer)

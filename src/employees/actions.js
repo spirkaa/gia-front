@@ -38,10 +38,10 @@ export function loadEmployeeDetail (id, requiredFields = []) {
 
 export const EMPLOYEES_FILTER_SET = 'EMPLOYEES_FILTER_SET'
 
-export function empFilterSet (nameVal, orgNameVal) {
+export function empFilterSet (empFilter) {
   return dispatch => dispatch({
     type: EMPLOYEES_FILTER_SET,
-    nameVal, orgNameVal
+    empFilter
   })
 }
 

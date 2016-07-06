@@ -4,7 +4,7 @@ import { Col } from 'react-bootstrap'
 import { loadEmployees } from '../actions'
 import { Header } from '../../main/components'
 import { EmpTable } from '../components'
-import FilterContainer from './FilterContainer'
+import Filter from './Filter'
 import Pagination from './Pagination'
 
 class Employees extends Component {
@@ -18,7 +18,7 @@ class Employees extends Component {
     return (
       <Col lg={12}>
         <Header header={header} subHeader={count}/>
-        <FilterContainer />
+        <Filter />
         <EmpTable employees={employees}/>
         <Pagination />
       </Col>
