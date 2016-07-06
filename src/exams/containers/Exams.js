@@ -15,7 +15,6 @@ class Exams extends Component {
   render () {
     const header = 'Распределение сотрудников в ППЭ'
     const { exams, count } = this.props
-    console.log('Exams render')
     return (
       <Col lg={12}>
         <Header header={header} subHeader={count}/>

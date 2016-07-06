@@ -26,6 +26,10 @@ class FilterContainer extends Component {
     this.props.loadLevels()
   }
 
+  shouldComponentUpdate (nextProps, nextState) {
+    return !isEqual(nextProps, this.props)
+  }
+
   render () {
     const { examFilter, dates, levels } = this.props
     const dateList = dates.map(date => date.date) || []

@@ -25,7 +25,6 @@ class PaginationContainer extends Component {
 
   render () {
     const { examActivePage, count } = this.props
-    console.log('PaginationContainer render')
     return (count
         ? <PaginationAdvanced
         onPaginationClick={this.handlePaginationClick}
