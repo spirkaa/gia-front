@@ -1,19 +1,21 @@
 import Schemas from '../middleware/schemas'
 import load from '../main/actions'
+import { EMP_FILTER_INITIAL_STATE } from './reducer'
 
 export const EMPLOYEES_REQUEST = 'EMPLOYEES_REQUEST'
 export const EMPLOYEES_SUCCESS = 'EMPLOYEES_SUCCESS'
 export const EMPLOYEES_FAILURE = 'EMPLOYEES_FAILURE'
 
 // Relies on Redux Thunk middleware.
-export function loadEmployees (pageNum = 1, nameVal = '', orgNameVal = '') {
+export function loadEmployees (pageNum = 1, filter = EMP_FILTER_INITIAL_STATE) {
   const types = [ EMPLOYEES_REQUEST, EMPLOYEES_SUCCESS, EMPLOYEES_FAILURE ]
+  const { name, orgName } = filter
   return (dispatch, getState) => {
     const page = getState().entities.empPage[ pageNum ]
     if (page) {
       return null
     }
-    const url = `employee/?name=${nameVal}&org_name=${orgNameVal}&page=${pageNum}`
+    const url = `employee/?name=${name}&org_name=${orgName}&page=${pageNum}`
     return dispatch(load(url, types, Schemas.EMP_PAGE))
   }
 }

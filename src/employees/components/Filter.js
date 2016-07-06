@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
@@ -10,9 +11,9 @@ export class Filter extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.nameVal !== this.props.nameVal || nextProps.orgNameVal !== this.props.orgNameVal) {
-      findDOMNode(this.refs.name).value = nextProps.nameVal
-      findDOMNode(this.refs.org).value = nextProps.orgNameVal
+    if (!isEqual(nextProps.empFilter, this.props.empFilter)) {
+      findDOMNode(this.refs.name).value = nextProps.empFilter.name
+      findDOMNode(this.refs.org).value = nextProps.empFilter.orgName
     }
   }
 
@@ -24,12 +25,13 @@ export class Filter extends Component {
 
   handleButtonClick () {
     this.props.onChange({
-      nameVal: findDOMNode(this.refs.name).value,
-      orgNameVal: findDOMNode(this.refs.org).value
+      name: findDOMNode(this.refs.name).value,
+      orgName: findDOMNode(this.refs.org).value
     })
   }
 
   render () {
+    const { empFilter } = this.props
     return (
       <Row className='bottom-buffer'>
         <Col lg={12} className='text-center'>
@@ -39,7 +41,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='ФИО сотрудника'
                 ref='name'
-                defaultValue={this.props.nameVal}
+                defaultValue={empFilter.name}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineOrg'>
@@ -47,7 +49,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='Место работы'
                 ref='org'
-                defaultValue={this.props.orgNameVal}
+                defaultValue={empFilter.orgName}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <Button bsStyle='primary' onClick={this.handleButtonClick}>
@@ -61,8 +63,7 @@ export class Filter extends Component {
 }
 
 Filter.propTypes = {
-  nameVal: PropTypes.string.isRequired,
-  orgNameVal: PropTypes.string.isRequired,
+  empFilter: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired
 }
 

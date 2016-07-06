@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { loadEmployees, empFilterSet, empPageSet } from '../actions'
@@ -10,22 +11,21 @@ class FilterContainer extends Component {
     this.handleFilterChange = this.handleFilterChange.bind(this)
   }
 
-  handleFilterChange ({ nameVal, orgNameVal }) {
-    if (nameVal !== this.props.nameVal || orgNameVal !== this.props.orgNameVal) {
+  handleFilterChange (empFilter) {
+    if (!isEqual(empFilter, this.props.empFilter)) {
       const { empFilterSet, loadEmployees, empFilterClearPages, empPageSet } = this.props
-      empFilterSet(nameVal, orgNameVal)
+      empFilterSet(empFilter)
       empFilterClearPages()
-      loadEmployees(1, nameVal, orgNameVal)
+      loadEmployees(1, empFilter)
       empPageSet(1)
     }
   }
 
   render () {
-    const { nameVal, orgNameVal } = this.props
+    const { empFilter } = this.props
     return (
       <Filter
-        nameVal={nameVal}
-        orgNameVal={orgNameVal}
+        empFilter={empFilter}
         onChange={this.handleFilterChange}
       />
     )
@@ -33,24 +33,14 @@ class FilterContainer extends Component {
 }
 
 FilterContainer.propTypes = {
-  nameVal: PropTypes.string.isRequired,
-  orgNameVal: PropTypes.string.isRequired,
+  empFilter: PropTypes.object.isRequired,
   loadEmployees: PropTypes.func.isRequired,
   empFilterSet: PropTypes.func.isRequired,
   empFilterClearPages: PropTypes.func.isRequired,
   empPageSet: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => {
-  const {
-    filters: { empFilter: { nameVal, orgNameVal } }
-  } = state
-
-  return ({
-    nameVal,
-    orgNameVal
-  })
-}
+const mapStateToProps = (state) => ({ empFilter: state.filters.empFilter })
 
 export default connect(mapStateToProps, {
   loadEmployees,

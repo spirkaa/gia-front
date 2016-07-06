@@ -5,7 +5,7 @@ import { loadEmployees } from '../actions'
 import { Header } from '../../main/components'
 import { EmpTable } from '../components'
 import FilterContainer from './FilterContainer'
-import PaginationContainer from './PaginationContainer'
+import Pagination from './Pagination'
 
 class Employees extends Component {
   componentDidMount () {
@@ -20,7 +20,7 @@ class Employees extends Component {
         <Header header={header} subHeader={count}/>
         <FilterContainer />
         <EmpTable employees={employees}/>
-        <PaginationContainer />
+        <Pagination />
       </Col>
     )
   }
