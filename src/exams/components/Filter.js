@@ -1,19 +1,36 @@
+import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
+import { connect } from 'react-redux'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
+import { loadDates, loadLevels } from '../actions'
 
-export class Filter extends Component {
+class Filter extends Component {
   constructor (props) {
     super(props)
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleButtonClick = this.handleButtonClick.bind(this)
   }
 
+  componentDidMount () {
+    this.props.loadDates()
+    this.props.loadLevels()
+  }
+
   componentWillReceiveProps (nextProps) {
-    if (nextProps.examFilter !== this.props.examFilter) {
-      findDOMNode(this.refs.empName).value = nextProps.examFilter.empName
-      findDOMNode(this.refs.empOrgName).value = nextProps.examFilter.empOrgName
+    if (!isEqual(nextProps.filterVals, this.props.filterVals)) {
+      findDOMNode(this.refs.date).value = nextProps.filterVals.date
+      findDOMNode(this.refs.level).value = nextProps.filterVals.level
+      findDOMNode(this.refs.placeCode).value = nextProps.filterVals.placeCode
+      findDOMNode(this.refs.placeName).value = nextProps.filterVals.placeName
+      findDOMNode(this.refs.placeAddr).value = nextProps.filterVals.placeAddr
+      findDOMNode(this.refs.empName).value = nextProps.filterVals.empName
+      findDOMNode(this.refs.empOrgName).value = nextProps.filterVals.empOrgName
     }
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    return !isEqual(nextProps, this.props)
   }
 
   handleKeyUp (e) {
@@ -35,7 +52,7 @@ export class Filter extends Component {
   }
 
   render () {
-    const { examFilter, dateList, levelList } = this.props
+    const { filterVals, dates, levels } = this.props
     return (
       <Row className='bottom-buffer'>
         <Col lg={12} className='text-center'>
@@ -45,10 +62,10 @@ export class Filter extends Component {
                 componentClass='select'
                 placeholder='Дата'
                 ref='date'
-                defaultValue={examFilter.date}
+                defaultValue={filterVals.date}
                 onKeyUp={this.handleKeyUp}>
                 {<option></option>}
-                {dateList.map(date => (<option key={date}>{new Date(date).toLocaleDateString('ru')}</option>))}
+                {dates.map(date => (<option key={date}>{new Date(date).toLocaleDateString('ru')}</option>))}
               </FormControl>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineLevel'>
@@ -56,10 +73,10 @@ export class Filter extends Component {
                 componentClass='select'
                 placeholder='Уровень'
                 ref='level'
-                defaultValue={examFilter.level}
+                defaultValue={filterVals.level}
                 onKeyUp={this.handleKeyUp}>
                 {<option></option>}
-                {levelList.map(level => (<option key={level}>{level}</option>))}
+                {levels.map(level => (<option key={level}>{level}</option>))}
               </FormControl>
             </FormGroup>{' '}
             <FormGroup controlId='formInlinePlaceCode'>
@@ -67,7 +84,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='Код ППЭ'
                 ref='placeCode'
-                defaultValue={examFilter.placeCode}
+                defaultValue={filterVals.placeCode}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlinePlaceName'>
@@ -75,7 +92,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='Наименование ППЭ'
                 ref='placeName'
-                defaultValue={examFilter.placeName}
+                defaultValue={filterVals.placeName}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlinePlaceAddr'>
@@ -83,7 +100,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='Адрес ППЭ'
                 ref='placeAddr'
-                defaultValue={examFilter.placeAddr}
+                defaultValue={filterVals.placeAddr}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineEmpName'>
@@ -91,7 +108,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='ФИО сотрудника'
                 ref='empName'
-                defaultValue={examFilter.empName}
+                defaultValue={filterVals.empName}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineEmpOrgName'>
@@ -99,7 +116,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='Место работы'
                 ref='empOrgName'
-                defaultValue={examFilter.empOrgName}
+                defaultValue={filterVals.empOrgName}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <Button bsStyle='primary' onClick={this.handleButtonClick}>
@@ -113,10 +130,30 @@ export class Filter extends Component {
 }
 
 Filter.propTypes = {
-  examFilter: PropTypes.object.isRequired,
-  dateList: PropTypes.array.isRequired,
-  levelList: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired
+  filterVals: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  dates: PropTypes.array.isRequired,
+  levels: PropTypes.array.isRequired,
+  loadDates: PropTypes.func.isRequired,
+  loadLevels: PropTypes.func.isRequired
 }
 
-export default Filter
+const mapStateToProps = (state) => {
+  const {
+    entities: { datePage, levelPage, date, level }
+  } = state
+  const currentDatePage = datePage[ 1 ] || { results: [] }
+  const dates = currentDatePage.results.map(id => date[ id ].date) || []
+  const currentLevelPage = levelPage[ 1 ] || { results: [] }
+  const levels = currentLevelPage.results.map(id => level[ id ].level) || []
+
+  return ({
+    dates,
+    levels
+  })
+}
+
+export default connect(mapStateToProps, {
+  loadDates,
+  loadLevels
+})(Filter)
