@@ -1,18 +1,19 @@
 import Schemas from '../middleware/schemas'
 import load from '../main/actions'
+import { ORG_FILTER_INITIAL_STATE } from './reducer'
 
 export const ORGANISATIONS_REQUEST = 'ORGANISATIONS_REQUEST'
 export const ORGANISATIONS_SUCCESS = 'ORGANISATIONS_SUCCESS'
 export const ORGANISATIONS_FAILURE = 'ORGANISATIONS_FAILURE'
 
-export function loadOrganisations (pageNum = 1, nameVal = '') {
+export function loadOrganisations (pageNum = 1, filter = ORG_FILTER_INITIAL_STATE) {
   const types = [ ORGANISATIONS_REQUEST, ORGANISATIONS_SUCCESS, ORGANISATIONS_FAILURE ]
   return (dispatch, getState) => {
     const page = getState().entities.orgPage[ pageNum ]
     if (page) {
       return null
     }
-    const url = `organisation/?name=${nameVal}&page=${pageNum}`
+    const url = `organisation/?name=${filter.name}&page=${pageNum}`
     return dispatch(load(url, types, Schemas.ORG_PAGE))
   }
 }
@@ -35,10 +36,10 @@ export function loadOrgDetail (id, requiredFields = []) {
 
 export const ORGANISATIONS_FILTER_SET = 'ORGANISATIONS_FILTER_SET'
 
-export function orgFilterSet (nameVal) {
+export function orgFilterSet (orgFilter) {
   return dispatch => dispatch({
     type: ORGANISATIONS_FILTER_SET,
-    nameVal
+    orgFilter
   })
 }
 

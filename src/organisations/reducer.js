@@ -8,10 +8,14 @@ export function orgActivePage (state = 1, action) {
   return state
 }
 
-export function orgFilter (state = { nameVal: '' }, action) {
+export const ORG_FILTER_INITIAL_STATE = {
+  name: ''
+}
+
+export function orgFilter (state = ORG_FILTER_INITIAL_STATE, action) {
   switch (action.type) {
     case ORGANISATIONS_FILTER_SET:
-      return merge({}, state, { nameVal: action.nameVal })
+      return merge({}, state, { ...action.orgFilter })
     default:
       return state
   }

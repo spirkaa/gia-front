@@ -5,7 +5,7 @@ import { loadOrganisations } from '../actions'
 import { Header } from '../../main/components'
 import { OrgTable } from '../components'
 import FilterContainer from './FilterContainer'
-import PaginationContainer from './PaginationContainer'
+import Pagination from './Pagination'
 
 class Organisations extends Component {
   componentDidMount () {
@@ -20,7 +20,7 @@ class Organisations extends Component {
         <Header header={header} subHeader={count}/>
         <FilterContainer />
         <OrgTable organisations={organisations}/>
-        <PaginationContainer />
+        <Pagination />
       </Col>
     )
   }

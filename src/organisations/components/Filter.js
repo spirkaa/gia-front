@@ -10,8 +10,8 @@ export class Filter extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.nameVal !== this.props.nameVal) {
-      findDOMNode(this.refs.name).value = nextProps.nameVal
+    if (nextProps.orgFilter !== this.props.orgFilter) {
+      findDOMNode(this.refs.name).value = nextProps.orgFilter.name
     }
   }
 
@@ -23,11 +23,12 @@ export class Filter extends Component {
 
   handleButtonClick () {
     this.props.onChange({
-      nameVal: findDOMNode(this.refs.name).value
+      name: findDOMNode(this.refs.name).value
     })
   }
 
   render () {
+    const { orgFilter } = this.props
     return (
       <Row className='bottom-buffer'>
         <Col lg={12} className='text-center'>
@@ -37,7 +38,7 @@ export class Filter extends Component {
                 type='text'
                 placeholder='Название ОО'
                 ref='name'
-                defaultValue={this.props.nameVal}
+                defaultValue={orgFilter.name}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <Button bsStyle='primary' onClick={this.handleButtonClick}>
@@ -51,7 +52,7 @@ export class Filter extends Component {
 }
 
 Filter.propTypes = {
-  nameVal: PropTypes.string.isRequired,
+  orgFilter: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired
 }
 

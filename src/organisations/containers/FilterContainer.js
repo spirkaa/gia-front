@@ -1,3 +1,4 @@
+import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { loadOrganisations, orgFilterSet, orgPageSet } from '../actions'
@@ -10,21 +11,21 @@ class FilterContainer extends Component {
     this.handleFilterChange = this.handleFilterChange.bind(this)
   }
 
-  handleFilterChange ({ nameVal }) {
-    if (nameVal !== this.props.nameVal) {
+  handleFilterChange (orgFilter) {
+    if (!isEqual(orgFilter, this.props.orgFilter)) {
       const { orgFilterSet, loadOrganisations, orgFilterClearPages, orgPageSet } = this.props
-      orgFilterSet(nameVal)
+      orgFilterSet(orgFilter)
       orgFilterClearPages()
-      loadOrganisations(1, nameVal)
+      loadOrganisations(1, orgFilter)
       orgPageSet(1)
     }
   }
 
   render () {
-    const { nameVal } = this.props
+    const { orgFilter } = this.props
     return (
       <Filter
-        nameVal={nameVal}
+        orgFilter={orgFilter}
         onChange={this.handleFilterChange}
       />
     )
@@ -32,21 +33,14 @@ class FilterContainer extends Component {
 }
 
 FilterContainer.propTypes = {
-  nameVal: PropTypes.string.isRequired,
+  orgFilter: PropTypes.object.isRequired,
   loadOrganisations: PropTypes.func.isRequired,
   orgFilterSet: PropTypes.func.isRequired,
   orgFilterClearPages: PropTypes.func.isRequired,
   orgPageSet: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => {
-  const {
-    filters: { orgFilter: { nameVal } }
-  } = state
-  return ({
-    nameVal
-  })
-}
+const mapStateToProps = (state) => ({ orgFilter: state.filters.orgFilter })
 
 export default connect(mapStateToProps, {
   loadOrganisations,

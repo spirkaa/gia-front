@@ -1,3 +1,3 @@
-export EmpTable from './EmpTable'
-export OrgTable from './OrgTable'
-export Filter from './Filter'
+export { EmpTable } from './EmpTable'
+export { OrgTable } from './OrgTable'
+export { Filter } from './Filter'
