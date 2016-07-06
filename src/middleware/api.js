@@ -1,111 +1,29 @@
-import { Schema, arrayOf, normalize } from 'normalizr'
+import { normalize } from 'normalizr'
 import 'isomorphic-fetch'
 
-// const API_ROOT = location.href.indexOf('localhost') > 0 ? 'http://localhost:8000/api/v1/' : '/api/v1/'
 const API_ROOT = 'http://localhost:8000/api/v1/'
+
+function logger (json, norm) {
+  console.groupCollapsed('callApi')
+  console.log('%cresponse', 'color:#9E9E9E;', json)
+  console.log('%cnormalize', 'color:#4CAF50;', norm)
+  console.groupEnd()
+}
 
 function callApi (endpoint, schema) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
   return fetch(fullUrl)
-    .then(response =>
-      response.json().then(json => ({ json, response }))
-    ).then(({ json, response }) => {
+    .then(response => response.json()
+      .then(json => ({ json, response })))
+    .then(({ json, response }) => {
       if (!response.ok) {
         return Promise.reject(json)
       }
-      console.log('-------')
-      console.log('response:', json)
-      console.log('normalizr:', normalize(json, schema))
-      console.log('-------')
-      return Object.assign({}, normalize(json, schema))
+      const norm = normalize(json, schema)
+      logger(json, norm)
+      return Object.assign({}, norm)
     })
-}
-
-function getParameterByName (name, url) {
-  if (!url) url = window.location.href
-  name = name.replace(/[\[\]]/g, '\\$&')
-  const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
-  const results = regex.exec(url)
-  if (!results) return null
-  if (!results[ 2 ]) return ''
-  return decodeURIComponent(results[ 2 ].replace(/\+/g, ' '))
-}
-
-function generateSlug (entity) {
-  const { next, previous } = entity
-  const pageNum = direction => getParameterByName('page', direction)
-  if (!next && !previous) return 1
-  if (!next && previous) {
-    if (!pageNum(previous)) return 2
-    return (+pageNum(previous) + 1)
-  }
-  return (+pageNum(next) - 1)
-}
-
-const datePageSchema = new Schema('datePage', { idAttribute: generateSlug })
-const levelPageSchema = new Schema('levelPage', { idAttribute: generateSlug })
-const empPageSchema = new Schema('empPage', { idAttribute: generateSlug })
-const examPageSchema = new Schema('examPage', { idAttribute: generateSlug })
-const orgPageSchema = new Schema('orgPage', { idAttribute: generateSlug })
-const employeeSchema = new Schema('employee', { idAttribute: 'id' })
-const examSchema = new Schema('exam', { idAttribute: 'id' })
-const dateSchema = new Schema('date', { idAttribute: 'id' })
-const levelSchema = new Schema('level', { idAttribute: 'id' })
-const positionSchema = new Schema('position', { idAttribute: 'id' })
-const organisationSchema = new Schema('organisation', { idAttribute: 'id' })
-const placeSchema = new Schema('place', { idAttribute: 'id' })
-const territorySchema = new Schema('territory', { idAttribute: 'id' })
-
-placeSchema.define({
-  ate: territorySchema
-})
-
-examSchema.define({
-  date: dateSchema,
-  employee: employeeSchema,
-  level: levelSchema,
-  position: positionSchema,
-  place: placeSchema
-})
-
-employeeSchema.define({
-  org: organisationSchema,
-  exams: arrayOf(examSchema)
-})
-
-organisationSchema.define({
-  employees: arrayOf(employeeSchema)
-})
-
-datePageSchema.define({
-  results: arrayOf(dateSchema)
-})
-
-levelPageSchema.define({
-  results: arrayOf(levelSchema)
-})
-
-empPageSchema.define({
-  results: arrayOf(employeeSchema)
-})
-
-examPageSchema.define({
-  results: arrayOf(examSchema)
-})
-
-orgPageSchema.define({
-  results: arrayOf(organisationSchema)
-})
-
-export const Schemas = {
-  DATE_PAGE: datePageSchema,
-  LEVEL_PAGE: levelPageSchema,
-  EMP_PAGE: empPageSchema,
-  EXAM_PAGE: examPageSchema,
-  ORG_PAGE: orgPageSchema,
-  EMP_DETAIL: employeeSchema,
-  ORG_DETAIL: organisationSchema
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.

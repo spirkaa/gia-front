@@ -1,4 +1,4 @@
-import { Schemas } from '../middleware/api'
+import Schemas from '../middleware/schemas'
 import load from '../main/actions'
 
 export const EMPLOYEES_REQUEST = 'EMPLOYEES_REQUEST'

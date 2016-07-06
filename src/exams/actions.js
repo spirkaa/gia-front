@@ -1,4 +1,4 @@
-import { Schemas } from '../middleware/api'
+import Schemas from '../middleware/schemas'
 import load from '../main/actions'
 import { EXAM_FILTER_INITIAL_STATE } from './reducer'
 
