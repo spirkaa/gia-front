@@ -14,33 +14,33 @@ export default function load (endpoint, types, schema) {
 export const EMPLOYEES_FILTER_CLEAR_PAGES = 'EMPLOYEES_FILTER_CLEAR_PAGES'
 
 export function empFilterClearPages () {
-  return dispatch => dispatch({
+  return {
     type: EMPLOYEES_FILTER_CLEAR_PAGES
-  })
+  }
 }
 
 export const ORGANISATIONS_FILTER_CLEAR_PAGES = 'ORGANISATIONS_FILTER_CLEAR_PAGES'
 
 export function orgFilterClearPages () {
-  return dispatch => dispatch({
+  return {
     type: ORGANISATIONS_FILTER_CLEAR_PAGES
-  })
+  }
 }
 
 export const EXAMS_FILTER_CLEAR_PAGES = 'EXAMS_FILTER_CLEAR_PAGES'
 
 export function examFilterClearPages () {
-  return dispatch => dispatch({
+  return {
     type: EXAMS_FILTER_CLEAR_PAGES
-  })
+  }
 }
 
 export const PLACES_FILTER_CLEAR_PAGES = 'PLACES_FILTER_CLEAR_PAGES'
 
 export function placesFilterClearPages () {
-  return dispatch => dispatch({
+  return {
     type: PLACES_FILTER_CLEAR_PAGES
-  })
+  }
 }
 
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
