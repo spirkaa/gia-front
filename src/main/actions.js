@@ -35,6 +35,14 @@ export function examFilterClearPages () {
   })
 }
 
+export const PLACES_FILTER_CLEAR_PAGES = 'PLACES_FILTER_CLEAR_PAGES'
+
+export function placesFilterClearPages () {
+  return dispatch => dispatch({
+    type: PLACES_FILTER_CLEAR_PAGES
+  })
+}
+
 export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
 
 export function resetErrorMessage () {

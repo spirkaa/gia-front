@@ -4,17 +4,20 @@ import { entities, errorMessage } from './main/reducer'
 import { empActivePage, empFilter } from './employees/reducer'
 import { examActivePage, examFilter } from './exams/reducer'
 import { orgActivePage, orgFilter } from './organisations/reducer'
+import { placesActivePage, placesFilter } from './places/reducer'
 
 const filters = combineReducers({
   empFilter,
   examFilter,
-  orgFilter
+  orgFilter,
+  placesFilter
 })
 
 const pagination = combineReducers({
   empActivePage,
   examActivePage,
-  orgActivePage
+  orgActivePage,
+  placesActivePage
 })
 
 export default combineReducers({

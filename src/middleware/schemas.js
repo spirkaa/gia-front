@@ -26,6 +26,7 @@ const levelPageSchema = new Schema('levelPage', { idAttribute: generateSlug })
 const empPageSchema = new Schema('empPage', { idAttribute: generateSlug })
 const examPageSchema = new Schema('examPage', { idAttribute: generateSlug })
 const orgPageSchema = new Schema('orgPage', { idAttribute: generateSlug })
+const placesPageSchema = new Schema('placesPage', { idAttribute: generateSlug })
 const employeeSchema = new Schema('employee', { idAttribute: 'id' })
 const examSchema = new Schema('exam', { idAttribute: 'id' })
 const dateSchema = new Schema('date', { idAttribute: 'id' })
@@ -76,12 +77,17 @@ orgPageSchema.define({
   results: arrayOf(organisationSchema)
 })
 
+placesPageSchema.define({
+  results: arrayOf(placeSchema)
+})
+
 export const Schemas = {
   DATE_PAGE: datePageSchema,
   LEVEL_PAGE: levelPageSchema,
   EMP_PAGE: empPageSchema,
   EXAM_PAGE: examPageSchema,
   ORG_PAGE: orgPageSchema,
+  PLACES_PAGE: placesPageSchema,
   EMP_DETAIL: employeeSchema,
   ORG_DETAIL: organisationSchema
 }

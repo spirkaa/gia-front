@@ -3,6 +3,7 @@ import {
   EMPLOYEES_FILTER_CLEAR_PAGES,
   EXAMS_FILTER_CLEAR_PAGES,
   ORGANISATIONS_FILTER_CLEAR_PAGES,
+  PLACES_FILTER_CLEAR_PAGES,
   RESET_ERROR_MESSAGE
 } from './actions'
 
@@ -12,6 +13,7 @@ const INITIAL_STATE = {
   empPage: {},
   examPage: {},
   orgPage: {},
+  placesPage: {},
   employee: {},
   exam: {},
   date: {},
@@ -34,6 +36,9 @@ export function entities (state = INITIAL_STATE, action) {
   }
   if (action.type === ORGANISATIONS_FILTER_CLEAR_PAGES) {
     return { ...state, orgPage: {} }
+  }
+  if (action.type === PLACES_FILTER_CLEAR_PAGES) {
+    return { ...state, placesPage: {} }
   }
   return state
 }

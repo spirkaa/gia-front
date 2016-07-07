@@ -1,0 +1,1 @@
+export { PlacesTable } from './PlacesTable'
