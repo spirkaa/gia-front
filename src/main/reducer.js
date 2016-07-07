@@ -28,17 +28,15 @@ export function entities (state = INITIAL_STATE, action) {
   if (action.response && action.response.entities) {
     return merge({}, state, action.response.entities)
   }
-  if (action.type === EMPLOYEES_FILTER_CLEAR_PAGES) {
-    return { ...state, empPage: {} }
-  }
-  if (action.type === EXAMS_FILTER_CLEAR_PAGES) {
-    return { ...state, examPage: {} }
-  }
-  if (action.type === ORGANISATIONS_FILTER_CLEAR_PAGES) {
-    return { ...state, orgPage: {} }
-  }
-  if (action.type === PLACES_FILTER_CLEAR_PAGES) {
-    return { ...state, placesPage: {} }
+  switch (action.type) {
+    case EMPLOYEES_FILTER_CLEAR_PAGES:
+      return { ...state, empPage: {} }
+    case EXAMS_FILTER_CLEAR_PAGES:
+      return { ...state, examPage: {} }
+    case ORGANISATIONS_FILTER_CLEAR_PAGES:
+      return { ...state, orgPage: {} }
+    case PLACES_FILTER_CLEAR_PAGES:
+      return { ...state, placesPage: {} }
   }
   return state
 }
