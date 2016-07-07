@@ -9,7 +9,7 @@ import { ExamTable } from '../components'
 class EmployeeDetail extends Component {
   componentDidMount () {
     const { employeeId } = this.props.params
-    this.props.loadEmployeeDetail(employeeId, [ 'exams' ])
+    this.props.loadEmployeeDetail(employeeId)
   }
 
   render () {

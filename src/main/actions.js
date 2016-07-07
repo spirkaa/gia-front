@@ -11,6 +11,19 @@ export default function load (endpoint, types, schema) {
   }
 }
 
+// Relies on Redux Thunk middleware.
+export function loadThis (params) {
+  const { source, id, requiredFields = [], types, endpoint, schema } = params
+  return (dispatch, getState) => {
+    const requestedObject = getState().entities[ source ][ id ]
+    if (requestedObject && requiredFields.every(
+        key => requestedObject.hasOwnProperty(key))) {
+      return null
+    }
+    return dispatch(load(endpoint, types, schema))
+  }
+}
+
 export const EMPLOYEES_FILTER_CLEAR_PAGES = 'EMPLOYEES_FILTER_CLEAR_PAGES'
 
 export function empFilterClearPages () {
