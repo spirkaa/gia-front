@@ -1,5 +1,5 @@
 import Schemas from '../middleware/schemas'
-import { loadThis } from '../main/actions'
+import { loadThis, actionTrigger, actionWithPayload } from '../main/actions'
 import { EXAM_FILTER_INITIAL_STATE } from './reducer'
 
 const EXAM_ENDPOINT = 'exam'
@@ -9,6 +9,18 @@ const LEVEL_ENDPOINT = 'level'
 export const EXAMS_REQUEST = 'EXAMS_REQUEST'
 export const EXAMS_SUCCESS = 'EXAMS_SUCCESS'
 export const EXAMS_FAILURE = 'EXAMS_FAILURE'
+
+export const DATES_REQUEST = 'DATES_REQUEST'
+export const DATES_SUCCESS = 'DATES_SUCCESS'
+export const DATES_FAILURE = 'DATES_FAILURE'
+
+export const LEVELS_REQUEST = 'LEVELS_REQUEST'
+export const LEVELS_SUCCESS = 'LEVELS_SUCCESS'
+export const LEVELS_FAILURE = 'LEVELS_FAILURE'
+
+export const EXAMS_FILTER_SET = 'EXAMS_FILTER_SET'
+export const EXAMS_FILTER_CLEAR_PAGES = 'EXAMS_FILTER_CLEAR_PAGES'
+export const EXAMS_PAGE_SET = 'EXAMS_PAGE_SET'
 
 export function loadExams (id = 1, filter = EXAM_FILTER_INITIAL_STATE) {
   const {
@@ -27,10 +39,6 @@ export function loadExams (id = 1, filter = EXAM_FILTER_INITIAL_STATE) {
   })
 }
 
-export const DATES_REQUEST = 'DATES_REQUEST'
-export const DATES_SUCCESS = 'DATES_SUCCESS'
-export const DATES_FAILURE = 'DATES_FAILURE'
-
 export function loadDates (id = 1) {
   return loadThis({
     id: id,
@@ -40,10 +48,6 @@ export function loadDates (id = 1) {
     endpoint: `${DATE_ENDPOINT}/`
   })
 }
-
-export const LEVELS_REQUEST = 'LEVELS_REQUEST'
-export const LEVELS_SUCCESS = 'LEVELS_SUCCESS'
-export const LEVELS_FAILURE = 'LEVELS_FAILURE'
 
 export function loadLevels (id = 1) {
   return loadThis({
@@ -55,20 +59,11 @@ export function loadLevels (id = 1) {
   })
 }
 
-export const EXAMS_FILTER_SET = 'EXAMS_FILTER_SET'
+export const examFilterSet = (filter) =>
+  actionWithPayload(EXAMS_FILTER_SET, filter)
 
-export function examFilterSet (examFilter) {
-  return {
-    type: EXAMS_FILTER_SET,
-    payload: examFilter
-  }
-}
+export const examFilterClearPages = () =>
+  actionTrigger(EXAMS_FILTER_CLEAR_PAGES)
 
-export const EXAMS_PAGE_SET = 'EXAMS_PAGE_SET'
-
-export function examPageSet (examActivePage) {
-  return {
-    type: EXAMS_PAGE_SET,
-    payload: examActivePage
-  }
-}
+export const examPageSet = (page) =>
+  actionWithPayload(EXAMS_PAGE_SET, page)

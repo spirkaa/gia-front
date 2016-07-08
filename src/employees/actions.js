@@ -1,5 +1,5 @@
 import Schemas from '../middleware/schemas'
-import { loadThis } from '../main/actions'
+import { loadThis, actionTrigger, actionWithPayload } from '../main/actions'
 import { EMP_FILTER_INITIAL_STATE } from './reducer'
 
 const EMPLOYEE_ENDPOINT = 'employee'
@@ -7,6 +7,14 @@ const EMPLOYEE_ENDPOINT = 'employee'
 export const EMPLOYEES_REQUEST = 'EMPLOYEES_REQUEST'
 export const EMPLOYEES_SUCCESS = 'EMPLOYEES_SUCCESS'
 export const EMPLOYEES_FAILURE = 'EMPLOYEES_FAILURE'
+
+export const EMPLOYEE_REQUEST = 'EMPLOYEE_REQUEST'
+export const EMPLOYEE_SUCCESS = 'EMPLOYEE_SUCCESS'
+export const EMPLOYEE_FAILURE = 'EMPLOYEE_FAILURE'
+
+export const EMPLOYEES_FILTER_SET = 'EMPLOYEES_FILTER_SET'
+export const EMPLOYEES_FILTER_CLEAR_PAGES = 'EMPLOYEES_FILTER_CLEAR_PAGES'
+export const EMPLOYEES_PAGE_SET = 'EMPLOYEES_PAGE_SET'
 
 export function loadEmployees (id = 1, filter = EMP_FILTER_INITIAL_STATE) {
   const { name, orgName } = filter
@@ -19,10 +27,6 @@ export function loadEmployees (id = 1, filter = EMP_FILTER_INITIAL_STATE) {
   })
 }
 
-export const EMPLOYEE_REQUEST = 'EMPLOYEE_REQUEST'
-export const EMPLOYEE_SUCCESS = 'EMPLOYEE_SUCCESS'
-export const EMPLOYEE_FAILURE = 'EMPLOYEE_FAILURE'
-
 export function loadEmployeeDetail (id) {
   return loadThis({
     id: id,
@@ -34,20 +38,11 @@ export function loadEmployeeDetail (id) {
   })
 }
 
-export const EMPLOYEES_FILTER_SET = 'EMPLOYEES_FILTER_SET'
+export const empFilterSet = (filter) =>
+  actionWithPayload(EMPLOYEES_FILTER_SET, filter)
 
-export function empFilterSet (empFilter) {
-  return {
-    type: EMPLOYEES_FILTER_SET,
-    payload: empFilter
-  }
-}
+export const empFilterClearPages = () =>
+  actionTrigger(EMPLOYEES_FILTER_CLEAR_PAGES)
 
-export const EMPLOYEES_PAGE_SET = 'EMPLOYEES_PAGE_SET'
-
-export function empPageSet (empActivePage) {
-  return {
-    type: EMPLOYEES_PAGE_SET,
-    payload: empActivePage
-  }
-}
+export const empPageSet = (page) =>
+  actionWithPayload(EMPLOYEES_PAGE_SET, page)

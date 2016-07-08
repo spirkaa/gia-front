@@ -3,8 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
-import { loadEmployees, empFilterSet, empPageSet } from '../actions'
-import { empFilterClearPages } from '../../main/actions'
+import { loadEmployees, empFilterSet, empFilterClearPages, empPageSet } from '../actions'
 import FilterContainer from '../../main/containers/FilterContainer'
 
 class Filter extends Component {

@@ -3,8 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
-import { loadPlaces, placesFilterSet, placesPageSet } from '../actions'
-import { placesFilterClearPages } from '../../main/actions'
+import { loadPlaces, placesFilterSet, placesFilterClearPages, placesPageSet } from '../actions'
 import FilterContainer from '../../main/containers/FilterContainer'
 
 class Filter extends Component {

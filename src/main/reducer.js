@@ -1,11 +1,9 @@
 import merge from 'lodash/merge'
-import {
-  EMPLOYEES_FILTER_CLEAR_PAGES,
-  EXAMS_FILTER_CLEAR_PAGES,
-  ORGANISATIONS_FILTER_CLEAR_PAGES,
-  PLACES_FILTER_CLEAR_PAGES,
-  RESET_ERROR_MESSAGE
-} from './actions'
+import { RESET_ERROR_MESSAGE } from './actions'
+import { EMPLOYEES_FILTER_CLEAR_PAGES } from '../employees/actions'
+import { EXAMS_FILTER_CLEAR_PAGES } from '../exams/actions'
+import { ORGANISATIONS_FILTER_CLEAR_PAGES } from '../organisations/actions'
+import { PLACES_FILTER_CLEAR_PAGES } from '../places/actions'
 
 const INITIAL_STATE = {
   datePage: {},
