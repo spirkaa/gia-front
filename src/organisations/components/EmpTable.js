@@ -15,6 +15,7 @@ export const EmpTable = ({ employees }) => (
       <TableHeaderColumn
         dataField='name'
         dataSort={true}
+        filter={ {type: 'TextFilter', placeholder: 'Фильтр...'} }
         dataFormat={ (cell, row) =>
           (<Link to={`/employees/detail/${row.id}`}>{row.name}</Link>) }
       >ФИО</TableHeaderColumn>
