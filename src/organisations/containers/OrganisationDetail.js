@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import { Col } from 'react-bootstrap'
-import { loadOrgDetail } from '../actions'
 import { Header } from '../../main/components'
+import { loadOrgDetail } from '../actions'
+import { organisationDetailSelector } from '../selectors'
 import { EmpTable } from '../components'
 
 class OrganisationDetail extends Component {
@@ -36,27 +36,8 @@ OrganisationDetail.propTypes = {
   loadOrgDetail: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const { orgId } = ownProps.params
-  const {
-    entities: {
-      employee, organisation
-    }
-  } = state
-  const organisationNorm = organisation[ orgId ] || { employees: [] }
-  if (organisationNorm.employees) {
-    const employeeMap = organisationNorm.employees.map(id => employee[ id ])
-    const organisationDetailed = {
-      ...organisationNorm,
-      employees: employeeMap
-    }
-    return ({
-      organisation: organisationDetailed
-    })
-  }
-  return ({
-    organisation: organisationNorm
-  })
-}
+const mapStateToProps = (state, ownProps) => ({
+  organisation: organisationDetailSelector(state, ownProps)
+})
 
 export default connect(mapStateToProps, { loadOrgDetail })(OrganisationDetail)

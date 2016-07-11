@@ -4,6 +4,7 @@ import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
 import { loadEmployees, empFilterSet, empFilterClearPages, empPageSet } from '../actions'
+import { empFilterSelector } from '../selectors'
 import FilterContainer from '../../main/containers/FilterContainer'
 
 class Filter extends Component {
@@ -72,7 +73,7 @@ Filter.propTypes = {
 
 const mapStateToProps = (state) => ({
   Filter: Filter,
-  filterVals: state.filters.empFilter
+  filterVals: empFilterSelector(state)
 })
 
 export default connect(mapStateToProps, {

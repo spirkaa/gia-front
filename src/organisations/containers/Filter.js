@@ -4,6 +4,7 @@ import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
 import { loadOrganisations, orgFilterSet, orgFilterClearPages, orgPageSet } from '../actions'
+import { orgFilterSelector } from '../selectors'
 import FilterContainer from '../../main/containers/FilterContainer'
 
 class Filter extends Component {
@@ -62,7 +63,7 @@ Filter.propTypes = {
 
 const mapStateToProps = (state) => ({
   Filter: Filter,
-  filterVals: state.filters.orgFilter
+  filterVals: orgFilterSelector(state)
 })
 
 export default connect(mapStateToProps, {

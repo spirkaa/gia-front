@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
-import { loadPlaces } from '../actions'
 import { Header } from '../../main/components'
+import { loadPlaces } from '../actions'
+import { placesOnPageSelector, countSelector } from '../selectors'
 import { PlacesTable } from '../components'
 import Filter from './Filter'
 import Pagination from './Pagination'
@@ -32,20 +33,10 @@ Places.propTypes = {
   loadPlaces: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => {
-  const {
-    entities: { placesPage, place, territory },
-    pagination: { placesActivePage }
-  } = state
-  const { count } = placesPage[ 1 ] || { count: null }
-  const currentPage = placesPage[ placesActivePage ] || { results: [] }
-  const placesOnPage = currentPage.results.map(id => place[ id ])
-  const placesWithAte = placesOnPage.map(place => ({ ...place, ate: territory[ place.ate ] }))
-  return ({
-    places: placesWithAte,
-    count
-  })
-}
+const mapStateToProps = (state) => ({
+  places: placesOnPageSelector(state),
+  count: countSelector(state)
+})
 
 export default connect(mapStateToProps, {
   loadPlaces

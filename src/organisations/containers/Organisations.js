@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
 import { loadOrganisations } from '../actions'
+import { organisationsOnPageSelector, countSelector } from '../selectors'
 import { Header } from '../../main/components'
 import { OrgTable } from '../components'
 import Filter from './Filter'
@@ -32,19 +33,10 @@ Organisations.propTypes = {
   loadOrganisations: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => {
-  const {
-    entities: { orgPage, organisation },
-    pagination: { orgActivePage }
-  } = state
-  const { count } = orgPage[ 1 ] || { count: null }
-  const currentPage = orgPage[ orgActivePage ] || { results: [] }
-  const organisationsOnPage = currentPage.results.map(id => organisation[ id ])
-  return ({
-    organisations: organisationsOnPage,
-    count
-  })
-}
+const mapStateToProps = (state) => ({
+  organisations: organisationsOnPageSelector(state),
+  count: countSelector(state)
+})
 
 export default connect(mapStateToProps, {
   loadOrganisations

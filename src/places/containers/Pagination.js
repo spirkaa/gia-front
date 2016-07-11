@@ -1,23 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { loadPlaces, placesPageSet } from '../actions'
 import PaginationContainer from '../../main/containers/PaginationContainer'
+import { loadPlaces, placesPageSet } from '../actions'
+import { placesFilterSelector, placesActivePageSelector, countSelector } from '../selectors'
 import { PLACES_FILTER_INITIAL_STATE } from '../reducer'
 
-const mapStateToProps = (state) => {
-  const {
-    entities: { placesPage },
-    filters: { placesFilter },
-    pagination: { placesActivePage }
-  } = state
-  const { count } = placesPage[ 1 ] || { count: null }
-  return ({
-    activePage: placesActivePage,
-    count,
-    filterVals: placesFilter,
-    filterDefaultVals: PLACES_FILTER_INITIAL_STATE
-  })
-}
+const mapStateToProps = (state) => ({
+  activePage: placesActivePageSelector(state),
+  count: countSelector(state),
+  filterVals: placesFilterSelector(state),
+  filterDefaultVals: PLACES_FILTER_INITIAL_STATE
+})
 
 export default connect(mapStateToProps, {
   loadNext: loadPlaces,

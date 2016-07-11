@@ -3,8 +3,9 @@ import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
-import { loadPlaces, placesFilterSet, placesFilterClearPages, placesPageSet } from '../actions'
 import FilterContainer from '../../main/containers/FilterContainer'
+import { loadPlaces, placesFilterSet, placesFilterClearPages, placesPageSet } from '../actions'
+import { placesFilterSelector } from '../selectors'
 
 class Filter extends Component {
   constructor (props) {
@@ -41,7 +42,6 @@ class Filter extends Component {
 
   render () {
     const { filterVals } = this.props
-    console.log('Filter render')
     return (
       <Row className='bottom-buffer'>
         <Col lg={12} className='text-center'>
@@ -103,7 +103,7 @@ Filter.propTypes = {
 
 const mapStateToProps = (state) => ({
   Filter: Filter,
-  filterVals: state.filters.placesFilter
+  filterVals: placesFilterSelector(state)
 })
 
 export default connect(mapStateToProps, {

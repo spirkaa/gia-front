@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
-import { loadEmployees } from '../actions'
 import { Header } from '../../main/components'
+import { loadEmployees } from '../actions'
+import { employeesOnPageSelector, countSelector } from '../selectors'
 import { EmpTable } from '../components'
 import Filter from './Filter'
 import Pagination from './Pagination'
@@ -32,20 +33,10 @@ Employees.propTypes = {
   loadEmployees: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => {
-  const {
-    entities: { employee, empPage, organisation },
-    pagination: { empActivePage }
-  } = state
-  const { count } = empPage[ 1 ] || { count: null }
-  const currentPage = empPage[ empActivePage ] || { results: [] }
-  const employeesOnPage = currentPage.results.map(id => employee[ id ])
-  const employeesWithOrg = employeesOnPage.map(emp => ({ ...emp, org: organisation[ emp.org ] }))
-  return ({
-    employees: employeesWithOrg,
-    count
-  })
-}
+const mapStateToProps = (state) => ({
+  employees: employeesOnPageSelector(state),
+  count: countSelector(state)
+})
 
 export default connect(mapStateToProps, {
   loadEmployees

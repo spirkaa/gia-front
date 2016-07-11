@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
-import { loadExams } from '../actions'
 import { Header } from '../../main/components'
+import { loadExams } from '../actions'
+import { examsWithDetailsSelector, countSelector } from '../selectors'
 import { ExamsTable } from '../components'
 import FilterContainer from './FilterContainer'
 import Pagination from './Pagination'
@@ -32,31 +33,10 @@ Exams.propTypes = {
   loadExams: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => {
-  const {
-    entities: { examPage, employee, exam,
-      date, level, position, organisation, place },
-    pagination: { examActivePage }
-  } = state
-  const { count } = examPage[ 1 ] || { count: null }
-  const currentPage = examPage[ examActivePage ] || { results: [] }
-  const examsOnPage = currentPage.results.map(id => exam[ id ])
-  const examsDetailed = examsOnPage.map(ex => ({
-    ...ex,
-    date: date[ ex.date ].date,
-    level: level[ ex.level ].level,
-    position: position[ ex.position ].name,
-    place: place[ ex.place ],
-    employee: {
-      ...employee[ ex.employee ],
-      org: organisation[employee[ ex.employee ].org]
-    }
-  }))
-  return ({
-    exams: examsDetailed,
-    count
-  })
-}
+const mapStateToProps = (state) => ({
+  exams: examsWithDetailsSelector(state),
+  count: countSelector(state)
+})
 
 export default connect(mapStateToProps, {
   loadExams

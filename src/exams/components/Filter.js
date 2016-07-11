@@ -4,6 +4,7 @@ import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
 import { loadDates, loadLevels } from '../actions'
+import { datesSelector, levelsSelector } from '../selectors'
 
 class Filter extends Component {
   constructor (props) {
@@ -138,20 +139,10 @@ Filter.propTypes = {
   loadLevels: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state) => {
-  const {
-    entities: { datePage, levelPage, date, level }
-  } = state
-  const currentDatePage = datePage[ 1 ] || { results: [] }
-  const dates = currentDatePage.results.map(id => date[ id ].date) || []
-  const currentLevelPage = levelPage[ 1 ] || { results: [] }
-  const levels = currentLevelPage.results.map(id => level[ id ].level) || []
-
-  return ({
-    dates,
-    levels
-  })
-}
+const mapStateToProps = (state) => ({
+  dates: datesSelector(state),
+  levels: levelsSelector(state)
+})
 
 export default connect(mapStateToProps, {
   loadDates,

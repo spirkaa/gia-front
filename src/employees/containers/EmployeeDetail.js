@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Col } from 'react-bootstrap'
-import { loadEmployeeDetail } from '../actions'
 import { Header } from '../../main/components'
+import { loadEmployeeDetail } from '../actions'
+import { employeeDetailSelector } from '../selectors'
 import { ExamTable } from '../components'
 
 class EmployeeDetail extends Component {
@@ -36,35 +37,8 @@ EmployeeDetail.propTypes = {
   loadEmployeeDetail: PropTypes.func.isRequired
 }
 
-const mapStateToProps = (state, ownProps) => {
-  const { employeeId } = ownProps.params
-  const {
-    entities: {
-      employee, exam, date, level,
-      position, organisation, place
-    }
-  } = state
-  const employeeNorm = employee[ employeeId ] || { exams: [], org: null }
-  if (employeeNorm.exams) {
-    const examMap = employeeNorm.exams.map(id => exam[ id ])
-    const examDetailed = examMap.map(ex => ({
-      ...ex,
-      date: date[ ex.date ].date,
-      level: level[ ex.level ].level,
-      position: position[ ex.position ].name,
-      place: place[ ex.place ]
-    }))
-    const employeeDetailed = {
-      ...employeeNorm,
-      exams: examDetailed, org: organisation[ employeeNorm.org ]
-    }
-    return ({
-      employee: employeeDetailed
-    })
-  }
-  return ({
-    employee: employeeNorm
-  })
-}
+const mapStateToProps = (state, ownProps) => ({
+  employee: employeeDetailSelector(state, ownProps)
+})
 
 export default connect(mapStateToProps, { loadEmployeeDetail })(EmployeeDetail)
