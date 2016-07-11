@@ -25,6 +25,9 @@ export const Navigation = () => (
         <LinkContainer to='/places'>
           <NavItem eventKey={3}>ППЭ</NavItem>
         </LinkContainer>
+        <LinkContainer to='/about'>
+          <NavItem eventKey={4}>О сайте</NavItem>
+        </LinkContainer>
       </Nav>
       <Nav pullRight>
         <NavDropdown eventKey={4} title='Источники' id='basic-nav-dropdown'>

@@ -4,7 +4,7 @@ import { Employees, EmployeeDetail } from './employees/containers'
 import { Organisations, OrganisationDetail } from './organisations/containers'
 import { Exams } from './exams/containers'
 import { Places } from './places/containers'
-import { Home, NotFound } from './main/components'
+import { About, Home, NotFound } from './main/components'
 import App from './main/containers/App'
 
 export default (
@@ -16,6 +16,7 @@ export default (
     <Route path='organisations' component={Organisations}/>
     <Route path='organisations/detail/:orgId' component={OrganisationDetail}/>
     <Route path='places' component={Places}/>
+    <Route path='about' component={About}/>
     <Route path='*' component={NotFound}/>
   </Route>
 )
