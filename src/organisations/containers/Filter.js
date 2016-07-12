@@ -2,7 +2,7 @@ import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
+import { Row, Col, Form, FormGroup, FormControl, ControlLabel, Button, Glyphicon } from 'react-bootstrap'
 import { loadOrganisations, orgFilterSet, orgFilterClearPages, orgPageSet } from '../actions'
 import { orgFilterSelector } from '../selectors'
 import FilterContainer from '../../main/containers/FilterContainer'
@@ -39,9 +39,10 @@ class Filter extends Component {
         <Col lg={12} className='text-center'>
           <Form inline onSubmit={ (e) => e.preventDefault() }>
             <FormGroup controlId='formInlineName'>
+              <ControlLabel srOnly>Наименование ОО</ControlLabel>
               <FormControl
                 type='text'
-                placeholder='Название ОО'
+                placeholder='Наименование ОО'
                 ref='name'
                 defaultValue={filterVals.name}
                 onKeyUp={this.handleKeyUp}/>

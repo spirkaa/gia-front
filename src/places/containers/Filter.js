@@ -2,7 +2,7 @@ import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
+import { Row, Col, Form, FormGroup, FormControl, ControlLabel, Button, Glyphicon } from 'react-bootstrap'
 import FilterContainer from '../../main/containers/FilterContainer'
 import { loadPlaces, placesFilterSet, placesFilterClearPages, placesPageSet } from '../actions'
 import { placesFilterSelector } from '../selectors'
@@ -47,6 +47,7 @@ class Filter extends Component {
         <Col lg={12} className='text-center'>
           <Form inline onSubmit={ (e) => e.preventDefault() }>
             <FormGroup controlId='formInlineCode'>
+              <ControlLabel srOnly>Название ОО</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Код ППЭ'
@@ -55,6 +56,7 @@ class Filter extends Component {
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineName'>
+              <ControlLabel srOnly>Наименование ППЭ</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Наименование ППЭ'
@@ -63,6 +65,7 @@ class Filter extends Component {
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineAddr'>
+              <ControlLabel srOnly>Адрес ППЭ</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Адрес ППЭ'
@@ -71,6 +74,7 @@ class Filter extends Component {
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineAteCode'>
+              <ControlLabel srOnly>Код АТЕ</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Код АТЕ'
@@ -79,6 +83,7 @@ class Filter extends Component {
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
              <FormGroup controlId='formInlineAteName'>
+               <ControlLabel srOnly>Наименование АТЕ</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Наименование АТЕ'

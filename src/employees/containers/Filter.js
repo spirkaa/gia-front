@@ -2,7 +2,7 @@ import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
+import { Row, Col, Form, FormGroup, FormControl, ControlLabel, Button, Glyphicon } from 'react-bootstrap'
 import { loadEmployees, empFilterSet, empFilterClearPages, empPageSet } from '../actions'
 import { empFilterSelector } from '../selectors'
 import FilterContainer from '../../main/containers/FilterContainer'
@@ -41,6 +41,7 @@ class Filter extends Component {
         <Col lg={12} className='text-center'>
           <Form inline>
             <FormGroup controlId='formInlineName'>
+              <ControlLabel srOnly>ФИО сотрудника</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='ФИО сотрудника'
@@ -49,6 +50,7 @@ class Filter extends Component {
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineOrg'>
+              <ControlLabel srOnly>Место работы</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Место работы'

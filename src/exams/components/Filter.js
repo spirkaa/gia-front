@@ -2,7 +2,7 @@ import isEqual from 'lodash/isEqual'
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
-import { Row, Col, Form, FormGroup, FormControl, Button, Glyphicon } from 'react-bootstrap'
+import { Row, Col, Form, FormGroup, FormControl, ControlLabel, Button, Glyphicon } from 'react-bootstrap'
 import { loadDates, loadLevels } from '../actions'
 import { datesSelector, levelsSelector } from '../selectors'
 
@@ -59,6 +59,7 @@ class Filter extends Component {
         <Col lg={12} className='text-center'>
           <Form inline>
             <FormGroup controlId='formInlineDate'>
+              <ControlLabel srOnly>Дата</ControlLabel>
               <FormControl
                 componentClass='select'
                 placeholder='Дата'
@@ -70,6 +71,7 @@ class Filter extends Component {
               </FormControl>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineLevel'>
+              <ControlLabel srOnly>Уровень</ControlLabel>
               <FormControl
                 componentClass='select'
                 placeholder='Уровень'
@@ -81,6 +83,7 @@ class Filter extends Component {
               </FormControl>
             </FormGroup>{' '}
             <FormGroup controlId='formInlinePlaceCode'>
+              <ControlLabel srOnly>Код ППЭ</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Код ППЭ'
@@ -89,6 +92,7 @@ class Filter extends Component {
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlinePlaceName'>
+              <ControlLabel srOnly>Наименование ППЭ</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Наименование ППЭ'
@@ -97,6 +101,7 @@ class Filter extends Component {
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlinePlaceAddr'>
+              <ControlLabel srOnly>Адрес ППЭ</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Адрес ППЭ'
@@ -105,6 +110,7 @@ class Filter extends Component {
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineEmpName'>
+              <ControlLabel srOnly>ФИО сотрудника</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='ФИО сотрудника'
@@ -113,6 +119,7 @@ class Filter extends Component {
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <FormGroup controlId='formInlineEmpOrgName'>
+              <ControlLabel srOnly>Место работы</ControlLabel>
               <FormControl
                 type='text'
                 placeholder='Место работы'
