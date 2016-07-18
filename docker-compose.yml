@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./compose/nginx/Dockerfile
+    environment:
+      - VIRTUAL_HOST=gia.svadj.ru
+      - VIRTUAL_NETWORK=nginx-proxy
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=gia.svadj.ru,gia-api.svadj.ru
+      - LETSENCRYPT_EMAIL=spirkaa@gmail.com
+    networks:
+      - proxy-tier
+    restart: always
+
+networks:
+  proxy-tier:
+    external:
+      name: nginx-proxy
