@@ -1,13 +1,16 @@
 import { normalize } from 'normalizr'
 import 'isomorphic-fetch'
 
-const API_ROOT = 'http://localhost:8000/api/v1/'
+const API_ROOT = 'https://gia-api.svadj.ru/api/v1/'
 
-function logger (json, norm) {
-  console.groupCollapsed('callApi')
-  console.log('%cresponse', 'color:#9E9E9E;', json)
-  console.log('%cnormalize', 'color:#4CAF50;', norm)
-  console.groupEnd()
+let logger = () => null
+if (process.env.NODE_ENV !== 'production') {
+  logger = (json, norm) => {
+    console.groupCollapsed('callApi')
+    console.log('%cresponse', 'color:#9E9E9E;', json)
+    console.log('%cnormalize', 'color:#4CAF50;', norm)
+    console.groupEnd()
+  }
 }
 
 function callApi (endpoint, schema) {
