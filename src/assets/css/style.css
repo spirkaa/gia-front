@@ -22,3 +22,9 @@
 form > .btn {
     margin-top: 3px;
 }
+.double-bounce {
+    display: inline-block !important;
+}
+.double-bounce1, .double-bounce2 {
+    background-color: #008cba !important;
+}
