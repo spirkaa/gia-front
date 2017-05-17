@@ -53,7 +53,7 @@ module.exports = (env = {}) => {
           loader: 'babel',
           include: [ SOURCE ],
           query: {
-            'presets': [ 'es2015-webpack', 'react', 'stage-0' ],
+            'presets': [ ['es2015', { 'modules': false }], 'react', 'stage-0' ],
             'plugins': removeEmpty([
               ifDev('react-hot-loader/babel'),
               'transform-runtime' ])
