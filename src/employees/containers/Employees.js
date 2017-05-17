@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
 import { Header } from '../../main/components'
@@ -14,7 +15,7 @@ class Employees extends Component {
   }
 
   render () {
-    const header = 'Сотрудники, участвующие в ГИА 2016'
+    const header = 'Сотрудники, участвующие в ГИА 2017'
     const { employees, count } = this.props
     return (
       <Col lg={12}>

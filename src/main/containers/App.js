@@ -1,9 +1,11 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { Grid } from 'react-bootstrap'
 import { resetErrorMessage } from '../actions'
 import { ErrorMsg, Navigation, Footer } from '../components'
+import Routes from '../../routes'
 
 class App extends Component {
   renderErrorMessage () {
@@ -18,13 +20,13 @@ class App extends Component {
     return (
       <div>
         <Helmet
-          titleTemplate='%s | ГИА 2016 в Москве'
-          defaultTitle='ГИА 2016 в Москве'
-          meta={[{'name': 'description', 'content': 'ГИА 2016 в Москве'}]}/>
+          titleTemplate='%s | ГИА 2017 в Москве'
+          defaultTitle='ГИА 2017 в Москве'
+          meta={[{'name': 'description', 'content': 'ГИА 2017 в Москве'}]}/>
         <Navigation/>
         <Grid fluid={true}>
           {this.renderErrorMessage()}
-          {this.props.children}
+          <Routes/>
         </Grid>
         <Footer/>
       </div>

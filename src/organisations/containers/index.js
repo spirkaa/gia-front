@@ -1,2 +1,2 @@
-export Organisations from './Organisations'
-export OrganisationDetail from './OrganisationDetail'
+export { default as Organisations } from './Organisations'
+export { default as OrganisationDetail } from './OrganisationDetail'

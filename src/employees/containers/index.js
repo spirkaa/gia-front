@@ -1,2 +1,2 @@
-export Employees from './Employees'
-export EmployeeDetail from './EmployeeDetail'
+export { default as Employees } from './Employees'
+export { default as EmployeeDetail } from './EmployeeDetail'

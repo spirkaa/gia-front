@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
 import { loadOrganisations } from '../actions'
@@ -14,7 +15,7 @@ class Organisations extends Component {
   }
 
   render () {
-    const header = 'Организации сотрудников, участвующих в ГИА 2016'
+    const header = 'Организации сотрудников, участвующих в ГИА 2017'
     const { organisations, count } = this.props
     return (
       <Col lg={12}>

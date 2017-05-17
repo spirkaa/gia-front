@@ -1,8 +1,8 @@
-import { Schema, arrayOf } from 'normalizr'
+import { schema } from 'normalizr'
 
 function getParameterByName (name, url) {
   if (!url) url = window.location.href
-  name = name.replace(/[\[\]]/g, '\\$&')
+  name = name.replace(/[[]]/g, '\\$&')
   const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)')
   const results = regex.exec(url)
   if (!results) return null
@@ -21,20 +21,22 @@ function generateSlug (entity) {
   return (+pageNum(next) - 1)
 }
 
-const datePageSchema = new Schema('datePage', { idAttribute: generateSlug })
-const levelPageSchema = new Schema('levelPage', { idAttribute: generateSlug })
-const empPageSchema = new Schema('empPage', { idAttribute: generateSlug })
-const examPageSchema = new Schema('examPage', { idAttribute: generateSlug })
-const orgPageSchema = new Schema('orgPage', { idAttribute: generateSlug })
-const placesPageSchema = new Schema('placesPage', { idAttribute: generateSlug })
-const employeeSchema = new Schema('employee', { idAttribute: 'id' })
-const examSchema = new Schema('exam', { idAttribute: 'id' })
-const dateSchema = new Schema('date', { idAttribute: 'id' })
-const levelSchema = new Schema('level', { idAttribute: 'id' })
-const positionSchema = new Schema('position', { idAttribute: 'id' })
-const organisationSchema = new Schema('organisation', { idAttribute: 'id' })
-const placeSchema = new Schema('place', { idAttribute: 'id' })
-const territorySchema = new Schema('territory', { idAttribute: 'id' })
+const employeeSchema = new schema.Entity('employee', { idAttribute: 'id' })
+const examSchema = new schema.Entity('exam', { idAttribute: 'id' })
+const dateSchema = new schema.Entity('date', { idAttribute: 'id' })
+const levelSchema = new schema.Entity('level', { idAttribute: 'id' })
+const positionSchema = new schema.Entity('position', { idAttribute: 'id' })
+const organisationSchema = new schema.Entity('organisation', { idAttribute: 'id' })
+const placeSchema = new schema.Entity('place', { idAttribute: 'id' })
+const territorySchema = new schema.Entity('territory', { idAttribute: 'id' })
+
+const datePageSchema = new schema.Entity('datePage', { results: new schema.Array(dateSchema) }, { idAttribute: generateSlug })
+const levelPageSchema = new schema.Entity('levelPage', { results: new schema.Array(levelSchema) }, { idAttribute: generateSlug })
+const empPageSchema = new schema.Entity('empPage', { results: new schema.Array(employeeSchema) }, { idAttribute: generateSlug })
+const examPageSchema = new schema.Entity('examPage', { results: new schema.Array(examSchema) }, { idAttribute: generateSlug })
+const orgPageSchema = new schema.Entity('orgPage', { results: new schema.Array(organisationSchema) }, { idAttribute: generateSlug })
+const placesPageSchema = new schema.Entity('placesPage', { results: new schema.Array(placeSchema) }, { idAttribute: generateSlug })
+
 
 placeSchema.define({
   ate: territorySchema
@@ -50,35 +52,11 @@ examSchema.define({
 
 employeeSchema.define({
   org: organisationSchema,
-  exams: arrayOf(examSchema)
+  exams: new schema.Array(examSchema)
 })
 
 organisationSchema.define({
-  employees: arrayOf(employeeSchema)
-})
-
-datePageSchema.define({
-  results: arrayOf(dateSchema)
-})
-
-levelPageSchema.define({
-  results: arrayOf(levelSchema)
-})
-
-empPageSchema.define({
-  results: arrayOf(employeeSchema)
-})
-
-examPageSchema.define({
-  results: arrayOf(examSchema)
-})
-
-orgPageSchema.define({
-  results: arrayOf(organisationSchema)
-})
-
-placesPageSchema.define({
-  results: arrayOf(placeSchema)
+  employees: new schema.Array(employeeSchema)
 })
 
 export const Schemas = {

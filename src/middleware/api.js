@@ -1,7 +1,6 @@
 import { normalize } from 'normalizr'
-import 'isomorphic-fetch'
 
-const API_ROOT = 'https://gia-api.svadj.ru/api/v1/'
+const API_ROOT = 'https://gia-api.devmem.ru/api/v1/'
 
 let logger = () => null
 if (process.env.NODE_ENV !== 'production') {

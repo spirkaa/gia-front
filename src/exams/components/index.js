@@ -1,2 +1,2 @@
 export { ExamsTable } from './ExamsTable'
-export Filter from './Filter'
+export { default as  Filter } from './Filter'

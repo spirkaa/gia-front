@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
 
@@ -7,7 +7,7 @@ export const Navigation = () => (
   <Navbar fluid inverse>
     <Navbar.Header>
       <Navbar.Brand>
-        <Link to='/'>ГИА 2016 в Москве</Link>
+        <Link to='/'>ГИА 2017 в Москве</Link>
       </Navbar.Brand>
       <Navbar.Toggle />
     </Navbar.Header>

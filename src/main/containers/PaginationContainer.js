@@ -1,5 +1,6 @@
 import isEqual from 'lodash/isEqual'
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { PaginationAdvanced } from '../../main/components'
 
 export default class PaginationContainer extends Component {

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import FilterContainer from '../../main/containers/FilterContainer'
 import { loadExams, examFilterSet, examFilterClearPages, examPageSet } from '../actions'

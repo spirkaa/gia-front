@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Col } from 'react-bootstrap'
 import { Header } from '../../main/components'
@@ -8,7 +9,7 @@ import { EmpTable } from '../components'
 
 class OrganisationDetail extends Component {
   componentDidMount () {
-    const { orgId } = this.props.params
+    const { orgId } = this.props.match.params
     this.props.loadOrgDetail(orgId)
   }
 

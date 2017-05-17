@@ -63,8 +63,9 @@ export const About = () => (
       </p>
       <p>
         [v0.2] Выбрал связку Django и PostgreSQL,
-        так как раньше уже использовал её
-        для <a href='http://battery.svadj.ru'>похожей задачи</a>.
+        так как раньше уже использовал её для похожей задачи,
+        когда выбирал Li-Po батарейки для квадрокоптера
+        на российском складе магазина HobbyKing.
         Хранить данные я решил в нормальной форме,
         для этого разделил их на отдельные таблицы:
         Date, Level, Position, Organisation, Territory, Place, Employee
@@ -75,7 +76,7 @@ export const About = () => (
         Решение для пакетной загрузки в пустую
         БД: <a href='http://initd.org/psycopg/docs/cursor.html#cursor.copy_from'>cursor.copy_from</a>.
         Для добавления новых записей без сравнения с существующими
-        применил команду INSERT ... ON CONFLICT ... DO UPDATE,
+        применил команду <code>INSERT ... ON CONFLICT ... DO UPDATE</code>,
         доступную в PostreSQL 9.5.
         Запускается через <a href='http://initd.org/psycopg/docs/cursor.html#cursor.execute'>cursor.execute</a>.
       </p>
@@ -86,7 +87,19 @@ export const About = () => (
         прочитал 100500 инструкций по реакту и в итоге...
         получился этот сайт.
       </p>
-
+      <p>[v2] Обновление перед началом основного периода 2016/2017:
+        <ul>
+          <li>На сервере актуальные версии PostgreSQL, Python, django и других пакетов</li>
+          <ul>
+            <li>Обновлен парсер excel-файлов</li>
+            <li>Обновлена функция загрузки данных в БД</li>
+          </ul>
+          <li>На клиенте актуальные версии React, redux, react-router и других пакетов</li>
+          <ul>
+            <li>Изменений фунционала пока нет</li>
+          </ul>
+        </ul>
+      </p>
     </Col>
   </div>
 )

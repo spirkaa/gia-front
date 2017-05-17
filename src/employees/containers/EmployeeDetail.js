@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Col } from 'react-bootstrap'
 import { Header } from '../../main/components'
 import { loadEmployeeDetail } from '../actions'
@@ -9,7 +10,7 @@ import { ExamTable } from '../components'
 
 class EmployeeDetail extends Component {
   componentDidMount () {
-    const { employeeId } = this.props.params
+    const { employeeId } = this.props.match.params
     this.props.loadEmployeeDetail(employeeId)
   }
 

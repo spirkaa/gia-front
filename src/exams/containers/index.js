@@ -1,1 +1,1 @@
-export Exams from './Exams'
+export { default as Exams } from './Exams'
