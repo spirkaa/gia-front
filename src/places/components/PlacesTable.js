@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Row } from 'react-bootstrap'
+import { Row, Glyphicon } from 'react-bootstrap'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 
 const placeFormat = (cell, row) => (
   <div>
     №{row.code}: {row.name}<br />
-    <a href={`https://yandex.ru/maps/?text=${row.addr}`} target='_blank' title='Открыть карту'><small>{row.addr}</small></a>
+    <a href={`https://yandex.ru/maps/?text=${row.addr}`} target='_blank' title='Открыть карту'><small><Glyphicon glyph='map-marker' /> {row.addr}</small></a>
   </div>
 )
 

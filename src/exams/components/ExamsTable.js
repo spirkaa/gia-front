@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import { Row } from 'react-bootstrap'
+import { Row, Glyphicon } from 'react-bootstrap'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 
 const dateFormat = (cell, row) => new Date(row.date).toLocaleDateString('ru')
@@ -9,7 +9,7 @@ const dateFormat = (cell, row) => new Date(row.date).toLocaleDateString('ru')
 const placeFormat = (cell, row) => (
   <div>
     №{cell.code}: {cell.name}<br />
-    <a href={`https://yandex.ru/maps/?text=${cell.addr}`} target='_blank' title='Открыть карту'><small>{cell.addr}</small></a>
+    <a href={`https://yandex.ru/maps/?text=${cell.addr}`} target='_blank' title='Открыть карту'><small><Glyphicon glyph='map-marker' /> {cell.addr}</small></a>
   </div>
 )
 

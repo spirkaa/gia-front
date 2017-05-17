@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Row } from 'react-bootstrap'
+import { Row, Glyphicon } from 'react-bootstrap'
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 
 const dateFormat = (cell, row) => new Date(row.date).toLocaleDateString('ru')
 
 const placeFormat = (cell, row) => (
   <div><strong>№{cell.code}:</strong> {cell.name}<br />
-    <a href={`https://yandex.ru/maps/?text=${cell.addr}`} target='_blank' title='Открыть карту'>{cell.addr}</a>
+    <a href={`https://yandex.ru/maps/?text=${cell.addr}`} target='_blank' title='Открыть карту'><Glyphicon glyph='map-marker' /> {cell.addr}</a>
   </div>
 )
 
