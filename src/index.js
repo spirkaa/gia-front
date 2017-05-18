@@ -21,7 +21,7 @@ ReactDOM.render(
 
 if (module.hot) {
   module.hot.accept('./main/containers/Root', () => {
-    const NextApp = require('./main/containers/Root').default
+    const NextApp = require('./main/containers/Root').default // eslint-disable-line
     ReactDOM.render(
       <Root store={store} history={history}/>,
       container

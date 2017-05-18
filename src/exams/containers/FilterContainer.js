@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react' // eslint-disable-line
 import { connect } from 'react-redux'
 import FilterContainer from '../../main/containers/FilterContainer'
 import { loadExams, examFilterSet, examFilterClearPages, examPageSet } from '../actions'

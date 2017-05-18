@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Row, Panel } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import { Header } from './Header'
 
 export const About = () => (

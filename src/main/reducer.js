@@ -35,8 +35,9 @@ export function entities (state = INITIAL_STATE, action) {
       return { ...state, orgPage: {} }
     case PLACES_FILTER_CLEAR_PAGES:
       return { ...state, placesPage: {} }
+    default:
+      return state
   }
-  return state
 }
 
 export function errorMessage (state = null, action) {

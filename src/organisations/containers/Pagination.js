@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react' // eslint-disable-line
 import { connect } from 'react-redux'
 import PaginationContainer from '../../main/containers/PaginationContainer'
 import { loadOrganisations, orgPageSet } from '../actions'
