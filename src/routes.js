@@ -14,10 +14,11 @@ export const Routes = () => (
     <Route exact path='/employees/detail/:employeeId' component={EmployeeDetail}/>
     <Route exact path='/organisations' component={Organisations}/>
     <Route exact path='/organisations/detail/:orgId' component={OrganisationDetail}/>
+    <Route exact path='/places/:placesPageNum' component={Places}/>
     <Route exact path='/places' component={Places}/>
     <Route exact path='/about' component={About}/>
     <Route exact path='/' component={Home}/>
-    <Route path='*' component={NotFound}/>
+    <Route component={NotFound}/>
   </Switch>
 )
 

@@ -8,6 +8,9 @@ export default class PaginationContainer extends Component {
     super(props)
     this.handlePaginationClick = this.handlePaginationClick.bind(this)
   }
+  componentDidMount () {
+    this.props.setPage(this.props.navPageNum)
+  }
 
   handlePaginationClick (pageNum) {
     if (pageNum !== this.props.activePage) {

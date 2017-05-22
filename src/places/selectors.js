@@ -6,7 +6,7 @@ import createDeepEqualSelector, {
   getPlacesFilter
 } from '../main/selectors'
 
-const getCount = state => state.entities.placesPage[ 1 ] || { count: null }
+const getCount = state => state.entities.placesPage[ Object.keys(state.entities.placesPage)[0] ] || { count: null }
 
 export const placesActivePageSelector = createDeepEqualSelector(
   getPlacesActivePage,

@@ -5,11 +5,12 @@ import { loadPlaces, placesPageSet } from '../actions'
 import { placesFilterSelector, placesActivePageSelector, countSelector } from '../selectors'
 import { PLACES_FILTER_INITIAL_STATE } from '../reducer'
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   activePage: placesActivePageSelector(state),
   count: countSelector(state),
   filterVals: placesFilterSelector(state),
-  filterDefaultVals: PLACES_FILTER_INITIAL_STATE
+  filterDefaultVals: PLACES_FILTER_INITIAL_STATE,
+  navPageNum: ownProps.navPageNum
 })
 
 export default connect(mapStateToProps, {
