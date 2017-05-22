@@ -22,7 +22,7 @@ const employeeFormat = (cell, row) => (
 
 export const ExamsTable = ({ exams }) => (
   <Row>
-    <BootstrapTable data={exams} hover={true} condensed={true}>
+    <BootstrapTable data={exams} hover={true} condensed={true} tableContainerClass='no-more-tables'>
       <TableHeaderColumn
         dataField='id'
         isKey={true}
@@ -31,23 +31,30 @@ export const ExamsTable = ({ exams }) => (
       <TableHeaderColumn
         dataField='date'
         dataFormat={dateFormat}
-        width='80'
+        width='7%'
+        tdAttr={{'data-title': 'Дата'}}
       >Дата</TableHeaderColumn>
       <TableHeaderColumn
         dataField='level'
-        width='80'
+        width='5%'
+        tdAttr={{'data-title': 'Уровень'}}
       >Уровень</TableHeaderColumn>
       <TableHeaderColumn
         dataField='employee'
         dataFormat={employeeFormat}
+        width='33%'
+        tdAttr={{'data-title': 'Сотрудник'}}
       >Сотрудник</TableHeaderColumn>
       <TableHeaderColumn
         dataField='position'
-        width='230'
+        width='16%'
+        tdAttr={{'data-title': 'Должность'}}
       >Должность</TableHeaderColumn>
        <TableHeaderColumn
         dataField='place'
         dataFormat={placeFormat}
+        width='39%'
+        tdAttr={{'data-title': 'ППЭ'}}
       >ППЭ</TableHeaderColumn>
     </BootstrapTable>
   </Row>
