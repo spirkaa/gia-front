@@ -29,7 +29,6 @@ export const PlacesTable = ({ places }) => (
       >Код, наименование, адрес ППЭ</TableHeaderColumn>
       <TableHeaderColumn
         dataField='ate'
-        width='400'
         dataFormat={ateFormat}
       >Код, наименование АТЕ</TableHeaderColumn>
     </BootstrapTable>

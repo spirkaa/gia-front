@@ -18,7 +18,6 @@ export const EmpTable = ({ employees }) => (
         dataSort={true}
         dataFormat={ (cell, row) =>
           (<Link to={`/employees/detail/${row.id}`}>{row.name}</Link>) }
-        width='320'
       >ФИО</TableHeaderColumn>
       <TableHeaderColumn
         dataField='org'
