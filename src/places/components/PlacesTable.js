@@ -6,7 +6,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
 const placeFormat = (cell, row) => (
   <div>
     №{row.code}: {row.name}<br />
-    <a href={`https://yandex.ru/maps/?text=${row.addr}`} target='_blank' title='Открыть карту'><small><Glyphicon glyph='map-marker' /> {row.addr}</small></a>
+    <a href={`https://yandex.ru/maps/?text=${row.addr}`} target='_blank' rel='noopener noreferrer' title='Открыть карту'><small><Glyphicon glyph='map-marker' /> {row.addr}</small></a>
   </div>
 )
 

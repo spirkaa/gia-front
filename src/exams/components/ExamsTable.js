@@ -9,7 +9,7 @@ const dateFormat = (cell, row) => new Date(row.date).toLocaleDateString('ru')
 const placeFormat = (cell, row) => (
   <div>
     №{cell.code}: {cell.name}<br />
-    <a href={`https://yandex.ru/maps/?text=${cell.addr}`} target='_blank' title='Открыть карту'><small><Glyphicon glyph='map-marker' /> {cell.addr}</small></a>
+    <a href={`https://yandex.ru/maps/?text=${cell.addr}`} target='_blank' rel='noopener noreferrer' title='Открыть карту'><small><Glyphicon glyph='map-marker' /> {cell.addr}</small></a>
   </div>
 )
 
