@@ -12,6 +12,7 @@ export const getEmpPage = state => state.entities.empPage
 export const getExamPage = state => state.entities.examPage
 export const getOrgPage = state => state.entities.orgPage
 export const getPlacesPage = state => state.entities.placesPage
+export const getDataSourcePage = state => state.entities.dataSourcePage
 
 export const getEmployee = state => state.entities.employee
 export const getExam = state => state.entities.exam
@@ -21,6 +22,7 @@ export const getPosition = state => state.entities.position
 export const getOrganisation = state => state.entities.organisation
 export const getPlace = state => state.entities.place
 export const getTerritory = state => state.entities.territory
+export const getDataSource = state => state.entities.datasource
 
 export const getEmpFilter = state => state.filters.empFilter
 export const getExamFilter = state => state.filters.examFilter
@@ -31,5 +33,16 @@ export const getEmpActivePage = state => state.pagination.empActivePage
 export const getExamActivePage = state => state.pagination.examActivePage
 export const getOrgActivePage = state => state.pagination.orgActivePage
 export const getPlacesActivePage = state => state.pagination.placesActivePage
+
+export const currentDataSourcePageSelector = createDeepEqualSelector(
+  getDataSourcePage,
+  page => page[ 1 ] || { results: [] }
+)
+
+export const dataSourcesSelector = createDeepEqualSelector(
+  currentDataSourcePageSelector,
+  getDataSource,
+  (page, datasource) => page.results.map(id => datasource[ id ]) || []
+)
 
 export default createDeepEqualSelector

@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 import { Grid } from 'react-bootstrap'
 import { resetErrorMessage } from '../actions'
-import { ErrorMsg, Navigation, Footer } from '../components'
+import { ErrorMsg, Footer } from '../components'
+import NavContainer from './NavContainer'
+import ScrollToTop from './ScrollToTop'
 import Routes from '../../routes'
 
 class App extends Component {
@@ -23,11 +25,13 @@ class App extends Component {
           titleTemplate='%s | ГИА 2017 в Москве'
           defaultTitle='ГИА 2017 в Москве'
           meta={[{'name': 'description', 'content': 'ГИА 2017 в Москве'}]}/>
-        <Navigation/>
+        <NavContainer/>
+        <ScrollToTop>
         <Grid fluid={true}>
           {this.renderErrorMessage()}
           <Routes/>
         </Grid>
+        </ScrollToTop>
         <Footer/>
       </div>
     )
@@ -36,8 +40,7 @@ class App extends Component {
 
 App.propTypes = {
   errorMessage: PropTypes.string,
-  resetErrorMessage: PropTypes.func.isRequired,
-  children: PropTypes.node
+  resetErrorMessage: PropTypes.func.isRequired
 }
 
 const mapStateToProps = ({ errorMessage }) => ({ errorMessage })

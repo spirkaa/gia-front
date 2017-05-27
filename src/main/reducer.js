@@ -6,20 +6,22 @@ import { ORGANISATIONS_FILTER_CLEAR_PAGES } from '../organisations/actions'
 import { PLACES_FILTER_CLEAR_PAGES } from '../places/actions'
 
 const INITIAL_STATE = {
+  dataSourcePage: {},
   datePage: {},
   levelPage: {},
   empPage: {},
-  examPage: {},
   orgPage: {},
   placesPage: {},
-  employee: {},
-  exam: {},
+  examPage: {},
+  datasource: {},
   date: {},
   level: {},
-  position: {},
+  employee: {},
   organisation: {},
+  position: {},
+  territory: {},
   place: {},
-  territory: {}
+  exam: {}
 }
 
 export function entities (state = INITIAL_STATE, action) {

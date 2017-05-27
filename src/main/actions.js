@@ -1,4 +1,5 @@
 import { CALL_API } from '../middleware/api'
+import Schemas from '../middleware/schemas'
 
 // Relies on the custom API middleware defined in ../middleware/api.js.
 export default function load (endpoint, types, schema) {
@@ -41,3 +42,19 @@ export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
 
 export const resetErrorMessage = () =>
   actionTrigger(RESET_ERROR_MESSAGE)
+
+const DATASOURCE_ENDPOINT = 'datasource'
+
+export const DATASOURCES_REQUEST = 'DATASOURCES_REQUEST'
+export const DATASOURCES_SUCCESS = 'DATASOURCES_SUCCESS'
+export const DATASOURCES_FAILURE = 'DATASOURCES_FAILURE'
+
+export function loadDataSources (id = 1) {
+  return loadThis({
+    id: id,
+    source: 'dataSourcePage',
+    types: [ DATASOURCES_REQUEST, DATASOURCES_SUCCESS, DATASOURCES_FAILURE ],
+    schema: Schemas.DATASOURCE_PAGE,
+    endpoint: `${DATASOURCE_ENDPOINT}/`
+  })
+}

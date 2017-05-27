@@ -29,6 +29,7 @@ const positionSchema = new schema.Entity('position', { idAttribute: 'id' })
 const organisationSchema = new schema.Entity('organisation', { idAttribute: 'id' })
 const placeSchema = new schema.Entity('place', { idAttribute: 'id' })
 const territorySchema = new schema.Entity('territory', { idAttribute: 'id' })
+const dataSourceSchema = new schema.Entity('datasource', { idAttribute: 'id' })
 
 const datePageSchema = new schema.Entity('datePage', { results: new schema.Array(dateSchema) }, { idAttribute: generateSlug })
 const levelPageSchema = new schema.Entity('levelPage', { results: new schema.Array(levelSchema) }, { idAttribute: generateSlug })
@@ -36,7 +37,7 @@ const empPageSchema = new schema.Entity('empPage', { results: new schema.Array(e
 const examPageSchema = new schema.Entity('examPage', { results: new schema.Array(examSchema) }, { idAttribute: generateSlug })
 const orgPageSchema = new schema.Entity('orgPage', { results: new schema.Array(organisationSchema) }, { idAttribute: generateSlug })
 const placesPageSchema = new schema.Entity('placesPage', { results: new schema.Array(placeSchema) }, { idAttribute: generateSlug })
-
+const dataSourcePageSchema = new schema.Entity('dataSourcePage', { results: new schema.Array(dataSourceSchema) }, { idAttribute: generateSlug })
 
 placeSchema.define({
   ate: territorySchema
@@ -67,7 +68,8 @@ export const Schemas = {
   ORG_PAGE: orgPageSchema,
   PLACES_PAGE: placesPageSchema,
   EMP_DETAIL: employeeSchema,
-  ORG_DETAIL: organisationSchema
+  ORG_DETAIL: organisationSchema,
+  DATASOURCE_PAGE: dataSourcePageSchema
 }
 
 export default Schemas
