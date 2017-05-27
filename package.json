@@ -32,7 +32,7 @@
     "reselect": "^3.0.1"
   },
   "devDependencies": {
-    "react-scripts": "0.9.5",
+    "react-scripts": "1.0.6",
     "redux-logger": "^3.0.1"
   }
 }
