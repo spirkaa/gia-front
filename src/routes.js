@@ -1,11 +1,22 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { Employees, EmployeeDetail } from './employees/containers'
-import { Organisations, OrganisationDetail } from './organisations/containers'
+
+import { EmployeeDetail, Employees } from './employees/containers'
+import { OrganisationDetail, Organisations } from './organisations/containers'
 import { Exams } from './exams/containers'
 import { Places } from './places/containers'
+import {
+  Login,
+  Logout,
+  PasswordEmailSent,
+  PasswordReset,
+  PasswordResetConfirm,
+  Registration,
+  RegistrationEmailConfirm,
+  Settings,
+} from './auth/containers'
 import { About, Home, NotFound } from './main/components'
-
+import { Authenticated, NotAuthenticated } from './auth'
 
 export const Routes = () => (
   <Switch>
@@ -16,8 +27,18 @@ export const Routes = () => (
     <Route exact path='/organisations/detail/:orgId' component={OrganisationDetail}/>
     <Route exact path='/places' component={Places}/>
     <Route exact path='/about' component={About}/>
+
+    <Route exact path='/password-reset' component={NotAuthenticated(PasswordReset)}/>
+    <Route exact path='/password-reset/email-sent' component={NotAuthenticated(PasswordEmailSent)}/>
+    <Route exact path='/password-reset/confirm/:uid/:token' component={NotAuthenticated(PasswordResetConfirm)}/>
+    <Route exact path='/registration' component={NotAuthenticated(Registration)}/>
+    <Route exact path='/registration/confirm-email/:key' component={RegistrationEmailConfirm}/>
+    <Route exact path='/settings' component={Authenticated(Settings)}/>
+    <Route exact path='/logout' component={Logout}/>
+    <Route exact path='/login' component={NotAuthenticated(Login)}/>
+
     <Route exact path='/' component={Home}/>
-    <Route path='*' component={NotFound}/>
+    <Route component={NotFound}/>
   </Switch>
 )
 

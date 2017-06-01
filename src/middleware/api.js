@@ -1,6 +1,10 @@
 import { normalize } from 'normalizr'
 
-const API_ROOT = 'https://gia-api.devmem.ru/api/v1/'
+const API_ROOT = (
+  process.env.NODE_ENV !== 'production'
+    ? 'http://localhost:8000/api/v1/'
+    : 'https://gia-api.devmem.ru/api/v1/'
+)
 
 let logger = () => null
 if (process.env.NODE_ENV !== 'production') {
@@ -12,20 +16,38 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-function callApi (endpoint, schema) {
+function callApi (endpoint, schema, method, data) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
-  return fetch(fullUrl)
-    .then(response => response.json()
-      .then(json => ({ json, response })))
-    .then(({ json, response }) => {
-      if (!response.ok) {
-        return Promise.reject(json)
-      }
-      const norm = normalize(json, schema)
-      logger(json, norm)
-      return Object.assign({}, norm)
-    })
+  const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  }
+  const request = { method, headers }
+
+  if (data.jwt) {
+    headers.Authorization = `JWT ${data.jwt}`
+  }
+
+  if (method !== 'GET') {
+    request.body = JSON.stringify(data)
+  }
+
+  const normalizeResp = (json) => {
+    if (schema) {
+      const normalized = normalize(json, schema)
+      logger(json, normalized)
+      return { ...normalized }
+    }
+    return json
+  }
+
+  return fetch(fullUrl, request)
+    .then(response =>
+      response.ok
+        ? response.json()
+        : response.json().then(err => Promise.reject(err)))
+    .then(normalizeResp)
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.
@@ -39,15 +61,8 @@ export default store => next => action => {
     return next(action)
   }
 
-  let { endpoint } = callAPI
-  const { schema, types } = callAPI
+  const { endpoint, schema, types, method, data } = callAPI
 
-  if (typeof endpoint === 'function') {
-    endpoint = endpoint(store.getState())
-  }
-  if (!schema) {
-    throw new Error('Specify one of the exported Schemas.')
-  }
   if (typeof endpoint !== 'string') {
     throw new Error('Specify a string endpoint URL.')
   }
@@ -59,7 +74,7 @@ export default store => next => action => {
   }
 
   function actionWith (data) {
-    const finalAction = Object.assign({}, action, data)
+    const finalAction = { ...action, ...data }
     delete finalAction[ CALL_API ]
     return finalAction
   }
@@ -67,14 +82,15 @@ export default store => next => action => {
   const [ requestType, successType, failureType ] = types
   next(actionWith({ type: requestType }))
 
-  return callApi(endpoint, schema).then(
+  return callApi(endpoint, schema, method, data).then(
     response => next(actionWith({
+      type: successType,
       response,
-      type: successType
     })),
     error => next(actionWith({
       type: failureType,
-      error: error.message || 'Something bad happened'
-    }))
+      response: error,
+      error: true,
+    })),
   )
 }

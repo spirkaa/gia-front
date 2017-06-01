@@ -1,5 +1,4 @@
 import merge from 'lodash/merge'
-import { RESET_ERROR_MESSAGE } from './actions'
 import { EMPLOYEES_FILTER_CLEAR_PAGES } from '../employees/actions'
 import { EXAMS_FILTER_CLEAR_PAGES } from '../exams/actions'
 import { ORGANISATIONS_FILTER_CLEAR_PAGES } from '../organisations/actions'
@@ -40,13 +39,4 @@ export function entities (state = INITIAL_STATE, action) {
     default:
       return state
   }
-}
-
-export function errorMessage (state = null, action) {
-  if (action.type === RESET_ERROR_MESSAGE) {
-    return null
-  } else if (action.error) {
-    return action.error
-  }
-  return state
 }

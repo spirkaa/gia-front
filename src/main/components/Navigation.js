@@ -1,9 +1,28 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap'
+import { MenuItem, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap'
 
-export const Navigation = ({ datasources }) => (
+const AuthMenu = ({ isAuthenticated, email }) => (
+  <Nav pullRight>
+    {
+      isAuthenticated
+        ? <NavDropdown eventKey='7' title={email} id='basic-nav-dropdown'>
+            <LinkContainer to='/settings'>
+              <MenuItem eventKey='7.1'>Настройки</MenuItem>
+            </LinkContainer>
+            <LinkContainer to='/logout'>
+              <MenuItem eventKey='7.2'>Выход</MenuItem>
+            </LinkContainer>
+          </NavDropdown>
+        : <LinkContainer to='/login'>
+            <NavItem eventKey='7'>Вход</NavItem>
+          </LinkContainer>
+    }
+  </Nav>
+)
+
+export const Navigation = ({ datasources, isAuthenticated, email }) => (
   <Navbar fluid inverse collapseOnSelect>
     <Navbar.Header>
       <Navbar.Brand>
@@ -28,13 +47,12 @@ export const Navigation = ({ datasources }) => (
         <LinkContainer to='/about'>
           <NavItem eventKey='5'>О сайте</NavItem>
         </LinkContainer>
-      </Nav>
-      <Nav pullRight>
         <NavDropdown eventKey='6' title='Источники' id='basic-nav-dropdown'>
           {datasources.map(
             ds => <MenuItem key={ds.id} eventKey={`6.${ds.id}`} href={ds.url} target='_blank'>{ds.name}</MenuItem>)}
         </NavDropdown>
       </Nav>
+      <AuthMenu isAuthenticated={isAuthenticated} email={email}/>
     </Navbar.Collapse>
   </Navbar>
 )

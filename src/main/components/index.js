@@ -1,5 +1,4 @@
 export { About } from './About'
-export { ErrorMsg } from './Alerts'
 export { Footer } from './Footer'
 export { Header } from './Header'
 export { Home } from './Home'

@@ -2,12 +2,14 @@ import { CALL_API } from '../middleware/api'
 import Schemas from '../middleware/schemas'
 
 // Relies on the custom API middleware defined in ../middleware/api.js.
-export default function load (endpoint, types, schema) {
+export default function load (endpoint, types, schema = null, data = {}, method = 'GET') {
   return {
     [CALL_API]: {
       types: types,
       endpoint: endpoint,
-      schema: schema
+      schema: schema,
+      data: data,
+      method: method
     }
   }
 }
@@ -37,11 +39,6 @@ export function actionWithPayload (type, payload) {
     payload: payload
   }
 }
-
-export const RESET_ERROR_MESSAGE = 'RESET_ERROR_MESSAGE'
-
-export const resetErrorMessage = () =>
-  actionTrigger(RESET_ERROR_MESSAGE)
 
 const DATASOURCE_ENDPOINT = 'datasource'
 
