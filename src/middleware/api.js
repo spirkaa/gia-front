@@ -1,3 +1,4 @@
+import Symbol from 'es6-symbol'
 import { normalize } from 'normalizr'
 import { toastr } from 'react-redux-toastr'
 
