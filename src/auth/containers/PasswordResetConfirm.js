@@ -40,7 +40,7 @@ class PasswordResetConfirm extends Component {
     if (!isEqual(nextProps.userPasswordResetConfirmErrors, this.props.userPasswordResetConfirmErrors)) {
       const message = nextProps.userPasswordResetConfirmErrors
       if (message.non_field_errors) {
-        toastr.error('Ошибка', message.non_field_errors[ 0 ])
+        message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
       if (message.new_password1) {
         this.setState({ newPassword1Valid: 'error' })
@@ -126,7 +126,7 @@ class PasswordResetConfirm extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('new_password1')}/>
               {newPassword1Valid
-                ? <HelpBlock>{new_password1[ 0 ]}</HelpBlock>
+                ? new_password1.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
             </FormGroup>
             <FormGroup controlId='formNewPassword2'
@@ -141,7 +141,7 @@ class PasswordResetConfirm extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('new_password2')}/>
               {newPassword2Valid
-                ? <HelpBlock>{new_password2[ 0 ]}</HelpBlock>
+                ? new_password2.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
             </FormGroup>
             <Button

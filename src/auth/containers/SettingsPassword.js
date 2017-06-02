@@ -44,7 +44,7 @@ class SettingsPassword extends Component {
     if (!isEqual(nextProps.userPasswordChangeErrors, this.props.userPasswordChangeErrors)) {
       const message = nextProps.userPasswordChangeErrors
       if (message.non_field_errors) {
-        toastr.error('Ошибка', message.non_field_errors[ 0 ])
+        message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
       if (message.old_password) {
         this.setState({ oldPasswordValid: 'error' })
@@ -119,7 +119,7 @@ class SettingsPassword extends Component {
     }
 
     return (
-      <Modal bsSize='small' show={showModal} onHide={modalHide}>
+      <Modal show={showModal} onHide={modalHide}>
         <Modal.Header closeButton>
           <Modal.Title>Изменить пароль</Modal.Title>
         </Modal.Header>
@@ -137,7 +137,7 @@ class SettingsPassword extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('oldPassword')}/>
               {oldPasswordValid
-                ? <HelpBlock>{old_password[ 0 ]}</HelpBlock>
+                ? old_password.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
             </FormGroup>
             <FormGroup controlId='formNewPassword1'
@@ -152,7 +152,7 @@ class SettingsPassword extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('newPassword1')}/>
               {newPassword1Valid
-                ? <HelpBlock>{new_password1[ 0 ]}</HelpBlock>
+                ? new_password1.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
             </FormGroup>
             <FormGroup controlId='formNewPassword2'
@@ -167,7 +167,7 @@ class SettingsPassword extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('newPassword2')}/>
               {newPassword2Valid
-                ? <HelpBlock>{new_password2[ 0 ]}</HelpBlock>
+                ? new_password2.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
             </FormGroup>
             <Button

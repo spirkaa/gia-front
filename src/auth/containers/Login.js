@@ -43,7 +43,7 @@ class Login extends Component {
     if (!isEqual(nextProps.userLoginErrors, this.props.userLoginErrors)) {
       const message = nextProps.userLoginErrors
       if (message.non_field_errors) {
-        toastr.error('Ошибка', message.non_field_errors[ 0 ])
+        message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
       if (message.email) {
         this.setState({ emailValid: 'error' })
@@ -124,7 +124,7 @@ class Login extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('email')}/>
               {emailValid
-                ? <HelpBlock>{email[ 0 ]}</HelpBlock>
+                ? email.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
               {shouldMarkError('email')
                 ? <HelpBlock>Введите корректный адрес электронной почты.</HelpBlock>
@@ -142,7 +142,7 @@ class Login extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('password')}/>
               {passwordValid
-                ? <HelpBlock>{password[ 0 ]}</HelpBlock>
+                ? password.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
               {shouldMarkError('password')
                 ? <HelpBlock>Пароль не может быть пустым.</HelpBlock>

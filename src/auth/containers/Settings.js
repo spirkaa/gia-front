@@ -34,7 +34,7 @@ class Settings extends Component {
     if (!isEqual(nextProps.userInfoUpdateErrors, this.props.userInfoUpdateErrors)) {
       const message = nextProps.userInfoUpdateErrors
       if (message.non_field_errors) {
-        toastr.error('Ошибка', message.non_field_errors[ 0 ])
+        message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
       if (message.detail) {
         if (message.detail === 'Signature has expired.') {

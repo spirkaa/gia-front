@@ -15,7 +15,7 @@ class RegistrationEmailConfirm extends Component {
     if (!isEqual(nextProps.userRegVerifyMailErrors, this.props.userRegVerifyMailErrors)) {
       const message = nextProps.userRegVerifyMailErrors
       if (message.non_field_errors) {
-        toastr.error('Ошибка', message.non_field_errors[ 0 ])
+        message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
       if (message.key) {
         toastr.error('Ошибка', message.key[ 0 ])

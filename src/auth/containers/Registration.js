@@ -46,7 +46,7 @@ class Registration extends Component {
     if (!isEqual(nextProps.userRegErrors, this.props.userRegErrors)) {
       const message = nextProps.userRegErrors
       if (message.non_field_errors) {
-        toastr.error('Ошибка', message.non_field_errors[ 0 ])
+        message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
       if (message.email) {
         this.setState({ emailValid: 'error' })
@@ -130,7 +130,7 @@ class Registration extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('email')}/>
               {emailValid
-                ? <HelpBlock>{email[ 0 ]}</HelpBlock>
+                ? email.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
               {shouldMarkError('email')
                 ? <HelpBlock>Введите корректный адрес электронной почты.</HelpBlock>
@@ -148,7 +148,7 @@ class Registration extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('password1')}/>
               {password1Valid
-                ? <HelpBlock>{password1[ 0 ]}</HelpBlock>
+                ? password1.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
             </FormGroup>
             <FormGroup controlId='formPassword2'
@@ -163,7 +163,7 @@ class Registration extends Component {
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur('password2')}/>
               {password2Valid
-                ? <HelpBlock>{password2[ 0 ]}</HelpBlock>
+                ? password2.map(msg => <HelpBlock>{msg}</HelpBlock>)
                 : null }
             </FormGroup>
             <Button
