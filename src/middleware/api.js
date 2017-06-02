@@ -1,4 +1,5 @@
 import { normalize } from 'normalizr'
+import { toastr } from 'react-redux-toastr'
 
 const API_ROOT = (
   process.env.NODE_ENV !== 'production'
@@ -87,10 +88,11 @@ export default store => next => action => {
       type: successType,
       response,
     })),
-    error => next(actionWith({
+    error => {next(actionWith({
       type: failureType,
-      response: error,
+      response: error.message || error,
       error: true,
-    })),
+    }))
+      if (error.message) { toastr.error('API Error', error.message) }},
   )
 }
