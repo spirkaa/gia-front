@@ -1,5 +1,6 @@
+import isEqual from 'lodash/isEqual'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Row } from 'react-bootstrap'
@@ -12,30 +13,37 @@ class Settings extends Component {
 
   constructor (props) {
     super(props)
-    this.handleKeyUp = this.handleKeyUp.bind(this)
-    this.handleButtonClick = this.handleButtonClick.bind(this)
-    this.handleChange = this.handleChange.bind(this)
+    this.state = {
+      email: props.user.email,
+      first_name: props.user.first_name,
+      last_name: props.user.last_name,
+    }
   }
 
-  componentWillMount () {
+  componentDidMount () {
     this.props.userInfo(this.props.token)
   }
 
   componentWillReceiveProps (nextProps) {
-    findDOMNode(this.refs.firstName).value = nextProps.user.first_name
-    findDOMNode(this.refs.lastName).value = nextProps.user.last_name
-
-    const message = nextProps.userInfoUpdateErrors
-    if (message.non_field_errors) {
-      toastr.error('Ошибка', message.non_field_errors[ 0 ])
+    if (!isEqual(nextProps.user, this.props.user)) {
+      this.setState({
+        first_name: nextProps.user.first_name,
+        last_name: nextProps.user.last_name,
+      })
     }
-    if (message.detail) {
-      if (message.detail === 'Signature has expired.') {
-        toastr.error('Сессия истекла', 'Требуется повторный вход')
-        this.props.userLogout()
+    if (!isEqual(nextProps.userInfoUpdateErrors, this.props.userInfoUpdateErrors)) {
+      const message = nextProps.userInfoUpdateErrors
+      if (message.non_field_errors) {
+        toastr.error('Ошибка', message.non_field_errors[ 0 ])
       }
-      else {
-        toastr.success('', message.detail)
+      if (message.detail) {
+        if (message.detail === 'Signature has expired.') {
+          toastr.error('Сессия истекла', 'Требуется повторный вход')
+          this.props.userLogout()
+        }
+        else {
+          toastr.success('', message.detail)
+        }
       }
     }
   }
@@ -44,60 +52,56 @@ class Settings extends Component {
     this.props.userInfoUpdateErrorsRemove()
   }
 
-  handleChange(e) {
-    this.setState({value: e.target.value})
+  handleInputChange = (evt) => {
+    const target = evt.target
+    const value = target.value
+    const name = target.name
+    this.setState({ [name]: value })
   }
 
-  handleKeyUp (e) {
-    if (e.keyCode === 13) {
-      this.handleButtonClick()
-    }
-  }
-
-  handleButtonClick () {
+  handleSubmit = (evt) => {
+    evt.preventDefault()
     this.props.userInfoUpdate(
       this.props.token,
       this.props.user.username,
-      findDOMNode(this.refs.firstName).value,
-      findDOMNode(this.refs.lastName).value
+      this.state.first_name,
+      this.state.last_name,
     )
   }
 
   render () {
-    const { user, modalShow } = this.props
+    const { isInfoUpdateRequesting, modalShow } = this.props
     const header = 'Настройки'
-    const subheader = ' '
+    const subheader = 'Личная информация'
     return (
       <Row className='bottom-buffer'>
         <Header header={header} subHeader={subheader}/>
         <Col sm={4}>{''}</Col>
         <Col sm={4}>
-          <Form>
+          <Form onSubmit={this.handleSubmit}>
             <FormGroup>
               <ControlLabel>Электронная почта</ControlLabel>
               <FormControl.Static>
-                {user.email}
+                {this.state.email}
               </FormControl.Static>
             </FormGroup>
             <FormGroup controlId='formFirstName'>
               <ControlLabel>Имя</ControlLabel>
               <FormControl
                 type='text'
-                ref='firstName'
-                name='firstName'
+                name='first_name'
                 placeholder='Укажите имя'
-                defaultValue={user.first_name}
-                onKeyUp={this.handleKeyUp}/>
+                value={this.state.first_name}
+                onChange={this.handleInputChange}/>
             </FormGroup>
             <FormGroup controlId='formLastName'>
               <ControlLabel>Фамилия</ControlLabel>
               <FormControl
                 type='text'
-                ref='lastName'
-                name='lastName'
+                name='last_name'
                 placeholder='Укажите фамилию'
-                defaultValue={user.last_name}
-                onKeyUp={this.handleKeyUp}/>
+                value={this.state.last_name}
+                onChange={this.handleInputChange}/>
             </FormGroup>
             <p>
               <Button
@@ -107,10 +111,10 @@ class Settings extends Component {
               </Button>
             </p>
             <Button
+              type='submit'
               block
               bsStyle='primary'
-              onClick={this.handleButtonClick}
-              disabled={this.props.isInfoUpdateRequesting}>
+              disabled={isInfoUpdateRequesting}>
               Сохранить
             </Button>
           </Form>
@@ -122,11 +126,18 @@ class Settings extends Component {
   }
 }
 
+Settings.propTypes = {
+  token: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
+  isInfoUpdateRequesting: PropTypes.bool.isRequired,
+  userInfoUpdateErrors: PropTypes.object.isRequired,
+}
+
 const mapStateToProps = (state) => ({
   token: state.auth.token,
   user: state.auth.user,
   isInfoUpdateRequesting: state.auth.isInfoUpdateRequesting,
-  userInfoUpdateErrors: state.auth.userInfoUpdateErrors
+  userInfoUpdateErrors: state.auth.userInfoUpdateErrors,
 })
 
 export default connect(mapStateToProps, {
@@ -134,5 +145,5 @@ export default connect(mapStateToProps, {
   userLogout,
   userInfo,
   userInfoUpdate,
-  userInfoUpdateErrorsRemove
+  userInfoUpdateErrorsRemove,
 })(Settings)

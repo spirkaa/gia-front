@@ -1,5 +1,6 @@
+import isEqual from 'lodash/isEqual'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Row } from 'react-bootstrap'
@@ -7,37 +8,50 @@ import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Row
 import { Header } from '../../main/components'
 import { userPasswordResetConfirm, userPasswordResetConfirmErrorsRemove } from '../actions'
 
+function validate (new_password1, new_password2) {
+  return {
+    new_password1: new_password1.length === 0,
+    new_password2: new_password2.length === 0,
+  }
+}
+
 class PasswordResetConfirm extends Component {
 
   constructor (props) {
     super(props)
-    this.handleKeyUp = this.handleKeyUp.bind(this)
-    this.handleButtonClick = this.handleButtonClick.bind(this)
     this.state = {
       newPassword1Valid: null,
-      newPassword2Valid: null
+      newPassword2Valid: null,
+      new_password1: '',
+      new_password2: '',
+      touched: {
+        new_password1: false,
+        new_password2: false,
+      },
     }
   }
 
   componentWillReceiveProps (nextProps) {
     this.setState({
       newPassword1Valid: null,
-      newPassword2Valid: null
+      newPassword2Valid: null,
     })
 
-    const message = nextProps.userPasswordResetConfirmErrors
-    if (message.non_field_errors) {
-      toastr.error('Ошибка', message.non_field_errors[ 0 ])
-    }
-    if (message.new_password1) {
-      this.setState({ newPassword1Valid: 'error' })
-    }
-    if (message.new_password2) {
-      this.setState({ newPassword2Valid: 'error' })
-    }
-    if (message.detail) {
-      toastr.success('', message.detail)
-      this.props.history.push('/login')
+    if (!isEqual(nextProps.userPasswordResetConfirmErrors, this.props.userPasswordResetConfirmErrors)) {
+      const message = nextProps.userPasswordResetConfirmErrors
+      if (message.non_field_errors) {
+        toastr.error('Ошибка', message.non_field_errors[ 0 ])
+      }
+      if (message.new_password1) {
+        this.setState({ newPassword1Valid: 'error' })
+      }
+      if (message.new_password2) {
+        this.setState({ newPassword2Valid: 'error' })
+      }
+      if (message.detail) {
+        toastr.success('', message.detail)
+        this.props.history.push('/login')
+      }
     }
   }
 
@@ -45,58 +59,96 @@ class PasswordResetConfirm extends Component {
     this.props.userPasswordResetConfirmErrorsRemove()
   }
 
-  handleKeyUp (e) {
-    if (e.keyCode === 13) {
-      this.handleButtonClick()
-    }
+  canBeSubmitted () {
+    const errors = validate(this.state.new_password1, this.state.new_password2)
+    const isDisabled = Object.keys(errors).some(x => errors[ x ])
+    return !isDisabled
   }
 
-  handleButtonClick () {
+  handleBlur = (field) => (evt) => {
+    this.setState({
+      touched: { ...this.state.touched, [field]: true },
+    })
+  }
+
+  handleInputChange = (evt) => {
+    const target = evt.target
+    const value = target.value
+    const name = target.name
+    this.setState({ [name]: value })
+  }
+
+  handleSubmit = (evt) => {
+    evt.preventDefault()
+    if (!this.canBeSubmitted()) {
+      return
+    }
     const { uid, token } = this.props.match.params
     this.props.userPasswordResetConfirm(
       uid,
       token,
-      findDOMNode(this.refs.newPassword1).value,
-      findDOMNode(this.refs.newPassword2).value
+      this.state.new_password1,
+      this.state.new_password2,
     )
   }
 
   render () {
     const header = 'Восстановление пароля'
     const subheader = 'Укажите новый пароль'
+
     const { new_password1, new_password2 } = this.props.userPasswordResetConfirmErrors
     const { newPassword1Valid, newPassword2Valid } = this.state
+
+    const errors = validate(this.state.new_password1, this.state.new_password2)
+    const isDisabled = Object.keys(errors).some(x => errors[ x ])
+
+    const shouldMarkError = (field) => {
+      const hasError = errors[ field ]
+      const shouldShow = this.state.touched[ field ]
+      return hasError ? shouldShow : false
+    }
+
     return (
       <Row className='bottom-buffer'>
         <Header header={header} subHeader={subheader}/>
         <Col sm={4}>{''}</Col>
         <Col sm={4}>
-          <Form>
-            <FormGroup controlId='formNewPassword1' validationState={newPassword1Valid}>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup controlId='formNewPassword1'
+                       validationState={shouldMarkError('new_password1') || newPassword1Valid
+                         ? 'error'
+                         : null}>
               <ControlLabel>Новый пароль</ControlLabel>
               <FormControl
                 type='password'
-                ref='newPassword1'
-                onKeyUp={this.handleKeyUp}/>
+                name='new_password1'
+                value={this.state.new_password1}
+                onChange={this.handleInputChange}
+                onBlur={this.handleBlur('new_password1')}/>
               {newPassword1Valid
                 ? <HelpBlock>{new_password1[ 0 ]}</HelpBlock>
                 : null }
             </FormGroup>
-            <FormGroup controlId='formNewPassword2' validationState={newPassword2Valid}>
+            <FormGroup controlId='formNewPassword2'
+                       validationState={shouldMarkError('new_password2') || newPassword2Valid
+                         ? 'error'
+                         : null}>
               <ControlLabel>Повторите пароль</ControlLabel>
               <FormControl
                 type='password'
-                ref='newPassword2'
-                onKeyUp={this.handleKeyUp}/>
+                name='new_password2'
+                value={this.state.new_password2}
+                onChange={this.handleInputChange}
+                onBlur={this.handleBlur('new_password2')}/>
               {newPassword2Valid
                 ? <HelpBlock>{new_password2[ 0 ]}</HelpBlock>
                 : null }
             </FormGroup>
             <Button
+              type='submit'
               block
               bsStyle='primary'
-              onClick={this.handleButtonClick}
-              disabled={this.props.isPasswordResetConfirming}>
+              disabled={this.props.isPasswordResetConfirming || isDisabled}>
               Отправить
             </Button>
           </Form>
@@ -107,12 +159,17 @@ class PasswordResetConfirm extends Component {
   }
 }
 
+PasswordResetConfirm.propTypes = {
+  isPasswordResetConfirming: PropTypes.bool.isRequired,
+  userPasswordResetConfirmErrors: PropTypes.object.isRequired,
+}
+
 const mapStateToProps = (state) => ({
   isPasswordResetConfirming: state.auth.isPasswordResetConfirming,
-  userPasswordResetConfirmErrors: state.auth.userPasswordResetConfirmErrors
+  userPasswordResetConfirmErrors: state.auth.userPasswordResetConfirmErrors,
 })
 
 export default connect(mapStateToProps, {
   userPasswordResetConfirm,
-  userPasswordResetConfirmErrorsRemove
+  userPasswordResetConfirmErrorsRemove,
 })(PasswordResetConfirm)

@@ -1,5 +1,6 @@
+import isEqual from 'lodash/isEqual'
 import React, { Component } from 'react'
-import { findDOMNode } from 'react-dom'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
@@ -7,34 +8,49 @@ import { Button, Checkbox, Col, ControlLabel, Form, FormControl, FormGroup, Help
 
 import { Header } from '../../main/components'
 import { userLogin, userLoginErrorsRemove, userRememberMe } from '../actions'
+import { EMAIL_REGEX } from '../constants'
+
+function validate (email, password) {
+  return {
+    email: !EMAIL_REGEX.test(email),
+    password: password.length === 0,
+  }
+}
 
 class Login extends Component {
 
   constructor (props) {
     super(props)
-    this.handleKeyUp = this.handleKeyUp.bind(this)
-    this.handleButtonClick = this.handleButtonClick.bind(this)
     this.state = {
       emailValid: null,
-      passwordValid: null
+      passwordValid: null,
+      email: '',
+      password: '',
+      rememberMe: false,
+      touched: {
+        email: false,
+        password: false,
+      },
     }
   }
 
   componentWillReceiveProps (nextProps) {
     this.setState({
       emailValid: null,
-      passwordValid: null
+      passwordValid: null,
     })
 
-    const message = nextProps.userLoginErrors
-    if (message.non_field_errors) {
-      toastr.error('Ошибка', message.non_field_errors[ 0 ])
-    }
-    if (message.email) {
-      this.setState({ emailValid: 'error' })
-    }
-    if (message.password) {
-      this.setState({ passwordValid: 'error' })
+    if (!isEqual(nextProps.userLoginErrors, this.props.userLoginErrors)) {
+      const message = nextProps.userLoginErrors
+      if (message.non_field_errors) {
+        toastr.error('Ошибка', message.non_field_errors[ 0 ])
+      }
+      if (message.email) {
+        this.setState({ emailValid: 'error' })
+      }
+      if (message.password) {
+        this.setState({ passwordValid: 'error' })
+      }
     }
   }
 
@@ -42,71 +58,116 @@ class Login extends Component {
     this.props.userLoginErrorsRemove()
   }
 
-  handleKeyUp (e) {
-    if (e.keyCode === 13) {
-      this.handleButtonClick()
-    }
+  canBeSubmitted () {
+    const errors = validate(this.state.email, this.state.password)
+    const isDisabled = Object.keys(errors).some(x => errors[ x ])
+    return !isDisabled
   }
 
-  handleButtonClick () {
+  handleBlur = (field) => (evt) => {
+    this.setState({
+      touched: { ...this.state.touched, [field]: true },
+    })
+  }
+
+  handleInputChange = (evt) => {
+    const target = evt.target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    const name = target.name
+    this.setState({ [name]: value })
+  }
+
+  handleSubmit = (evt) => {
+    evt.preventDefault()
+    if (!this.canBeSubmitted()) {
+      return
+    }
+    const { email, password, rememberMe } = this.state
     this.props.userLogin(
-      findDOMNode(this.refs.email).value,
-      findDOMNode(this.refs.password).value
+      email,
+      password,
     )
-    const rememberCheckbox = findDOMNode(this.input).checked
-    this.props.userRememberMe(rememberCheckbox)
+    this.props.userRememberMe(rememberMe)
   }
 
   render () {
     const header = 'Вход'
-    const subheader = ' '
+    const subheader = 'Введите данные учетной записи'
 
     const { email, password } = this.props.userLoginErrors
     const { emailValid, passwordValid } = this.state
+
+    const errors = validate(this.state.email, this.state.password)
+    const isDisabled = Object.keys(errors).some(x => errors[ x ])
+
+    const shouldMarkError = (field) => {
+      const hasError = errors[ field ]
+      const shouldShow = this.state.touched[ field ]
+      return hasError ? shouldShow : false
+    }
 
     return (
       <Row className='bottom-buffer'>
         <Header header={header} subHeader={subheader}/>
         <Col sm={4}>{''}</Col>
         <Col sm={4}>
-          <Form>
-            <FormGroup controlId='formEmail' validationState={emailValid}>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup controlId='formEmail'
+                       validationState={shouldMarkError('email') || emailValid
+                         ? 'error'
+                         : null}>
               <ControlLabel>Электронная почта</ControlLabel>
               <FormControl
                 type='email'
-                ref='email'
-                onKeyUp={this.handleKeyUp}/>
+                name='email'
+                value={this.state.email}
+                onChange={this.handleInputChange}
+                onBlur={this.handleBlur('email')}/>
               {emailValid
                 ? <HelpBlock>{email[ 0 ]}</HelpBlock>
                 : null }
+              {shouldMarkError('email')
+                ? <HelpBlock>Введите корректный адрес электронной почты.</HelpBlock>
+                : null}
             </FormGroup>
-            <FormGroup controlId='formPassword' validationState={passwordValid}>
+            <FormGroup controlId='formPassword'
+                       validationState={shouldMarkError('password') || passwordValid
+                         ? 'error'
+                         : null}>
               <ControlLabel>Пароль</ControlLabel>
               <FormControl
                 type='password'
-                ref='password'
-                onKeyUp={this.handleKeyUp}/>
+                name='password'
+                value={this.state.password}
+                onChange={this.handleInputChange}
+                onBlur={this.handleBlur('password')}/>
               {passwordValid
                 ? <HelpBlock>{password[ 0 ]}</HelpBlock>
                 : null }
+              {shouldMarkError('password')
+                ? <HelpBlock>Пароль не может быть пустым.</HelpBlock>
+                : null}
             </FormGroup>
-            <Checkbox inputRef={ref => { this.input = ref }}>
+            <Checkbox
+              name='rememberMe'
+              checked={this.state.rememberMe}
+              onChange={this.handleInputChange}>
               Запомнить
             </Checkbox>
             <Button
+              type='submit'
               block
               bsStyle='primary'
-              onClick={this.handleButtonClick}
-              disabled={this.props.isAuthenticating}>
+              disabled={this.props.isAuthenticating || isDisabled}>
               Войти
             </Button>
           </Form>
           <hr/>
           <p>
-            <Link to='/password-reset' onClick={this.close}>Забыли пароль?</Link>
+            <Link to='/password-reset'>Забыли пароль?</Link>
           </p>
           <p>
-            <Link to='/registration' onClick={this.close}>Регистрация</Link>
+            <Link to='/registration'>Регистрация</Link>
           </p>
         </Col>
         <Col sm={4}>{''}</Col>
@@ -115,13 +176,18 @@ class Login extends Component {
   }
 }
 
+Login.propTypes = {
+  isAuthenticating: PropTypes.bool.isRequired,
+  userLoginErrors: PropTypes.object.isRequired,
+}
+
 const mapStateToProps = (state) => ({
   isAuthenticating: state.auth.isAuthenticating,
-  userLoginErrors: state.auth.userLoginErrors
+  userLoginErrors: state.auth.userLoginErrors,
 })
 
 export default connect(mapStateToProps, {
   userLogin,
   userLoginErrorsRemove,
-  userRememberMe
+  userRememberMe,
 })(Login)

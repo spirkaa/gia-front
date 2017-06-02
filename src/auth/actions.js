@@ -121,6 +121,7 @@ export function userLogout () {
 export function tokenSave (token) {
   return {
     type: TOKEN_SAVE,
+    response: { token }
   }
 }
 

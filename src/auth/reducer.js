@@ -299,14 +299,14 @@ export function auth (state = AUTH_INITIAL_STATE, action) {
     case USER_INFO_UPDATE_REQUEST:
       return {
         ...state,
-        isInfoUpdateRequesting: false,
+        isInfoUpdateRequesting: true,
         userInfoUpdateErrors: {},
       }
     case USER_INFO_UPDATE_SUCCESS:
       return {
         ...state,
         isInfoUpdateRequesting: false,
-        isInfoUpdateRequested: false,
+        isInfoUpdateRequested: true,
         user: action.response,
         userInfoUpdateErrors: { detail: 'Настройки успешно обновлены' },
       }

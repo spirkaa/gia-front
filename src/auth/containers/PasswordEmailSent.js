@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Col, Row } from 'react-bootstrap'
 
 import { Header } from '../../main/components'
@@ -15,6 +16,7 @@ export const PasswordEmailSent = () => {
           Письмо для восстановления пароля отправлено на указанный адрес.
           Перейдите по ссылке из письма и введите новый пароль.
         </p>
+        <p><Link to='/'>Вернуться на главную страницу</Link></p>
       </Col>
       <Col sm={4}>{''}</Col>
     </Row>
