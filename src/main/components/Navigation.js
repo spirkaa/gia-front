@@ -8,11 +8,14 @@ const AuthMenu = ({ isAuthenticated, email }) => (
     {
       isAuthenticated
         ? <NavDropdown eventKey='7' title={email} id='basic-nav-dropdown'>
+            <LinkContainer to='/subscriptions'>
+              <MenuItem eventKey='7.1'>Подписки</MenuItem>
+            </LinkContainer>
             <LinkContainer to='/settings'>
-              <MenuItem eventKey='7.1'>Настройки</MenuItem>
+              <MenuItem eventKey='7.2'>Настройки</MenuItem>
             </LinkContainer>
             <LinkContainer to='/logout'>
-              <MenuItem eventKey='7.2'>Выход</MenuItem>
+              <MenuItem eventKey='7.3'>Выход</MenuItem>
             </LinkContainer>
           </NavDropdown>
         : <LinkContainer to='/login'>

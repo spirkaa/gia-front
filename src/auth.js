@@ -21,9 +21,8 @@ export const NotAuthenticated = UserAuthWrapper({
       if (ownProps.location.query && ownProps.location.query.redirect) {
         return ownProps.location.query.redirect
       }
-      return '/'
+      return '/subscriptions'
     },
-    // redirectAction: routerActions.replace,
     wrapperDisplayName: 'NotAuthenticated',
     redirectAction: (newLoc) => (dispatch) => {
         dispatch(routerActions.replace(newLoc))

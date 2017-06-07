@@ -15,6 +15,7 @@ import {
   RegistrationEmailConfirm,
   Settings,
 } from './auth/containers'
+import { Subscriptions } from './subscriptions/containers'
 import { About, Home, NotFound } from './main/components'
 import { Authenticated, NotAuthenticated } from './auth'
 
@@ -36,6 +37,8 @@ export const Routes = () => (
     <Route exact path='/settings' component={Authenticated(Settings)}/>
     <Route exact path='/logout' component={Logout}/>
     <Route exact path='/login' component={NotAuthenticated(Login)}/>
+
+    <Route exact path='/subscriptions' component={Authenticated(Subscriptions)}/>
 
     <Route exact path='/' component={Home}/>
     <Route component={NotFound}/>

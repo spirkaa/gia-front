@@ -4,6 +4,8 @@ import { reducer as toastr } from 'react-redux-toastr'
 
 import { auth } from './auth/reducer'
 import { entities } from './main/reducer'
+import { subs } from './subscriptions/reducer'
+import { subsActivePage } from './subscriptions/reducer'
 import { empActivePage, empFilter } from './employees/reducer'
 import { examActivePage, examFilter } from './exams/reducer'
 import { orgActivePage, orgFilter } from './organisations/reducer'
@@ -21,13 +23,15 @@ const pagination = combineReducers({
   examActivePage,
   orgActivePage,
   placesActivePage,
+  subsActivePage
 })
 
 export default combineReducers({
+  auth,
   entities,
   filters,
   pagination,
   routing,
-  auth,
+  subs,
   toastr,
 })
