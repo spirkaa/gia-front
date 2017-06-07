@@ -6,7 +6,7 @@ import { toastr } from 'react-redux-toastr'
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Row } from 'react-bootstrap'
 
 import { Header } from '../../main/components'
-import { modalShow, userInfo, userInfoUpdate, userInfoUpdateErrorsRemove, userLogout } from '../actions'
+import { modalShow, authInfo, authInfoUpdate, authInfoUpdateMsgRemove, authLogout } from '../actions'
 import SettingsPassword from './SettingsPassword'
 
 class Settings extends Component {
@@ -21,7 +21,7 @@ class Settings extends Component {
   }
 
   componentDidMount () {
-    this.props.userInfo(this.props.token)
+    this.props.authInfo(this.props.token)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -31,15 +31,15 @@ class Settings extends Component {
         last_name: nextProps.user.last_name,
       })
     }
-    if (!isEqual(nextProps.userInfoUpdateErrors, this.props.userInfoUpdateErrors)) {
-      const message = nextProps.userInfoUpdateErrors
+    if (!isEqual(nextProps.authInfoUpdateMsg, this.props.authInfoUpdateMsg)) {
+      const message = nextProps.authInfoUpdateMsg
       if (message.non_field_errors) {
         message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
       if (message.detail) {
         if (message.detail === 'Signature has expired.') {
           toastr.error('Сессия истекла', 'Требуется повторный вход')
-          this.props.userLogout()
+          this.props.authLogout()
         }
         else {
           toastr.success('', message.detail)
@@ -49,7 +49,7 @@ class Settings extends Component {
   }
 
   componentWillUnmount () {
-    this.props.userInfoUpdateErrorsRemove()
+    this.props.authInfoUpdateMsgRemove()
   }
 
   handleInputChange = (evt) => {
@@ -61,7 +61,7 @@ class Settings extends Component {
 
   handleSubmit = (evt) => {
     evt.preventDefault()
-    this.props.userInfoUpdate(
+    this.props.authInfoUpdate(
       this.props.token,
       this.props.user.username,
       this.state.first_name,
@@ -130,20 +130,20 @@ Settings.propTypes = {
   token: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
   isInfoUpdateRequesting: PropTypes.bool.isRequired,
-  userInfoUpdateErrors: PropTypes.object.isRequired,
+  authInfoUpdateMsg: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   token: state.auth.token,
   user: state.auth.user,
   isInfoUpdateRequesting: state.auth.isInfoUpdateRequesting,
-  userInfoUpdateErrors: state.auth.userInfoUpdateErrors,
+  authInfoUpdateMsg: state.auth.authInfoUpdateMsg,
 })
 
 export default connect(mapStateToProps, {
   modalShow,
-  userLogout,
-  userInfo,
-  userInfoUpdate,
-  userInfoUpdateErrorsRemove,
+  authLogout,
+  authInfo,
+  authInfoUpdate,
+  authInfoUpdateMsgRemove,
 })(Settings)

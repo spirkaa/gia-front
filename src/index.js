@@ -18,7 +18,6 @@ const store = configureStore(middleware)
 const container = document.getElementById('root')
 
 const token = sessionStorage.token || localStorage.token
-console.log(token)
 if (token && token !== null && token !== 'null') {
   store.dispatch(tokenCheck(token))
 }

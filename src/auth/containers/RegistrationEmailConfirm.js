@@ -6,14 +6,14 @@ import { toastr } from 'react-redux-toastr'
 import { Button, Col, Form, Row } from 'react-bootstrap'
 
 import { Header } from '../../main/components'
-import { userRegMailVerifyErrorsRemove, userRegVerifyMail } from '../actions'
+import { authRegMailVerifyMsgRemove, authRegVerifyMail } from '../actions'
 
 class RegistrationEmailConfirm extends Component {
 
   componentWillReceiveProps (nextProps) {
 
-    if (!isEqual(nextProps.userRegVerifyMailErrors, this.props.userRegVerifyMailErrors)) {
-      const message = nextProps.userRegVerifyMailErrors
+    if (!isEqual(nextProps.authRegVerifyMailMsg, this.props.authRegVerifyMailMsg)) {
+      const message = nextProps.authRegVerifyMailMsg
       if (message.non_field_errors) {
         message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
@@ -28,12 +28,12 @@ class RegistrationEmailConfirm extends Component {
   }
 
   componentWillUnmount () {
-    this.props.userRegMailVerifyErrorsRemove()
+    this.props.authRegMailVerifyMsgRemove()
   }
 
   handleSubmit = (evt) => {
     evt.preventDefault()
-    this.props.userRegVerifyMail(
+    this.props.authRegVerifyMail(
       this.props.match.params.key,
     )
   }
@@ -64,15 +64,15 @@ class RegistrationEmailConfirm extends Component {
 
 RegistrationEmailConfirm.propTypes = {
   isMailVerifying: PropTypes.bool.isRequired,
-  userRegVerifyMailErrors: PropTypes.object.isRequired,
+  authRegVerifyMailMsg: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   isMailVerifying: state.auth.isMailVerifying,
-  userRegVerifyMailErrors: state.auth.userRegVerifyMailErrors,
+  authRegVerifyMailMsg: state.auth.authRegVerifyMailMsg,
 })
 
 export default connect(mapStateToProps, {
-  userRegVerifyMail,
-  userRegMailVerifyErrorsRemove,
+  authRegVerifyMail,
+  authRegMailVerifyMsgRemove,
 })(RegistrationEmailConfirm)

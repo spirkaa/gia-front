@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 import { Button, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Modal } from 'react-bootstrap'
 
-import { modalHide, userLogout, userPasswordChange, userPasswordChangeErrorsRemove } from '../actions'
+import { modalHide, authLogout, authPasswordChange, authPasswordChangeMsgRemove } from '../actions'
 
 function validate (oldPassword, newPassword1, newPassword2) {
   return {
@@ -41,8 +41,8 @@ class SettingsPassword extends Component {
       newPassword2Valid: null,
     })
 
-    if (!isEqual(nextProps.userPasswordChangeErrors, this.props.userPasswordChangeErrors)) {
-      const message = nextProps.userPasswordChangeErrors
+    if (!isEqual(nextProps.authPasswordChangeMsg, this.props.authPasswordChangeMsg)) {
+      const message = nextProps.authPasswordChangeMsg
       if (message.non_field_errors) {
         message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
@@ -58,7 +58,7 @@ class SettingsPassword extends Component {
       if (message.detail) {
         if (message.detail === 'Signature has expired.') {
           toastr.error('Сессия истекла', 'Требуется вход')
-          this.props.userLogout()
+          this.props.authLogout()
         }
         else {
           toastr.success('', message.detail)
@@ -68,7 +68,7 @@ class SettingsPassword extends Component {
   }
 
   componentWillUnmount () {
-    this.props.userPasswordChangeErrorsRemove()
+    this.props.authPasswordChangeMsgRemove()
   }
 
   canBeSubmitted () {
@@ -96,7 +96,7 @@ class SettingsPassword extends Component {
       return
     }
     const { oldPassword, newPassword1, newPassword2 } = this.state
-    this.props.userPasswordChange(
+    this.props.authPasswordChange(
       this.props.token,
       oldPassword,
       newPassword1,
@@ -106,7 +106,7 @@ class SettingsPassword extends Component {
 
   render () {
     const { showModal, modalHide, isPasswordChangeRequesting } = this.props
-    const { old_password, new_password1, new_password2 } = this.props.userPasswordChangeErrors
+    const { old_password, new_password1, new_password2 } = this.props.authPasswordChangeMsg
     const { oldPassword, newPassword1, newPassword2, oldPasswordValid, newPassword1Valid, newPassword2Valid } = this.state
 
     const errors = validate(this.state.oldPassword, this.state.newPassword1, this.state.newPassword2)
@@ -119,7 +119,7 @@ class SettingsPassword extends Component {
     }
 
     return (
-      <Modal show={showModal} onHide={modalHide}>
+      <Modal bsSize='small' show={showModal} onHide={modalHide}>
         <Modal.Header closeButton>
           <Modal.Title>Изменить пароль</Modal.Title>
         </Modal.Header>
@@ -188,19 +188,19 @@ SettingsPassword.propTypes = {
   token: PropTypes.string.isRequired,
   showModal: PropTypes.bool.isRequired,
   isPasswordChangeRequesting: PropTypes.bool.isRequired,
-  userPasswordChangeErrors: PropTypes.object.isRequired,
+  authPasswordChangeMsg: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   token: state.auth.token,
   showModal: state.auth.showModal,
   isPasswordChangeRequesting: state.auth.isPasswordChangeRequesting,
-  userPasswordChangeErrors: state.auth.userPasswordChangeErrors,
+  authPasswordChangeMsg: state.auth.authPasswordChangeMsg,
 })
 
 export default connect(mapStateToProps, {
   modalHide,
-  userLogout,
-  userPasswordChange,
-  userPasswordChangeErrorsRemove,
+  authLogout,
+  authPasswordChange,
+  authPasswordChangeMsgRemove,
 })(SettingsPassword)

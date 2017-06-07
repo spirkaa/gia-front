@@ -7,8 +7,8 @@ import { toastr } from 'react-redux-toastr'
 import { Button, Checkbox, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Row } from 'react-bootstrap'
 
 import { Header } from '../../main/components'
-import { userLogin, userLoginErrorsRemove, userRememberMe } from '../actions'
-import { EMAIL_REGEX } from '../constants'
+import { authLogin, authLoginMsgRemove, authRememberMe } from '../actions'
+import { EMAIL_REGEX } from '../utils'
 
 function validate (email, password) {
   return {
@@ -26,7 +26,7 @@ class Login extends Component {
       passwordValid: null,
       email: '',
       password: '',
-      rememberMe: false,
+      rememberMe: true,
       touched: {
         email: false,
         password: false,
@@ -40,8 +40,8 @@ class Login extends Component {
       passwordValid: null,
     })
 
-    if (!isEqual(nextProps.userLoginErrors, this.props.userLoginErrors)) {
-      const message = nextProps.userLoginErrors
+    if (!isEqual(nextProps.authLoginMsg, this.props.authLoginMsg)) {
+      const message = nextProps.authLoginMsg
       if (message.non_field_errors) {
         message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
@@ -55,7 +55,7 @@ class Login extends Component {
   }
 
   componentWillUnmount () {
-    this.props.userLoginErrorsRemove()
+    this.props.authLoginMsgRemove()
   }
 
   canBeSubmitted () {
@@ -83,18 +83,18 @@ class Login extends Component {
       return
     }
     const { email, password, rememberMe } = this.state
-    this.props.userLogin(
+    this.props.authLogin(
       email,
       password,
     )
-    this.props.userRememberMe(rememberMe)
+    this.props.authRememberMe(rememberMe)
   }
 
   render () {
     const header = 'Вход'
     const subheader = 'Введите данные учетной записи'
 
-    const { email, password } = this.props.userLoginErrors
+    const { email, password } = this.props.authLoginMsg
     const { emailValid, passwordValid } = this.state
 
     const errors = validate(this.state.email, this.state.password)
@@ -178,16 +178,16 @@ class Login extends Component {
 
 Login.propTypes = {
   isAuthenticating: PropTypes.bool.isRequired,
-  userLoginErrors: PropTypes.object.isRequired,
+  authLoginMsg: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   isAuthenticating: state.auth.isAuthenticating,
-  userLoginErrors: state.auth.userLoginErrors,
+  authLoginMsg: state.auth.authLoginMsg,
 })
 
 export default connect(mapStateToProps, {
-  userLogin,
-  userLoginErrorsRemove,
-  userRememberMe,
+  authLogin,
+  authLoginMsgRemove,
+  authRememberMe,
 })(Login)

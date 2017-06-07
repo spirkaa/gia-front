@@ -87,11 +87,11 @@ export default store => next => action => {
   return callApi(endpoint, schema, method, data).then(
     response => next(actionWith({
       type: successType,
-      response,
+      payload: response,
     })),
     error => {next(actionWith({
       type: failureType,
-      response: error.message || error,
+      payload: error.message || error,
       error: true,
     }))
       if (error.message) { toastr.error('API Error', error.message) }},

@@ -6,8 +6,8 @@ import { toastr } from 'react-redux-toastr'
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Row } from 'react-bootstrap'
 
 import { Header } from '../../main/components'
-import { userPasswordReset, userPasswordResetErrorsRemove } from '../actions'
-import { EMAIL_REGEX } from '../constants'
+import { authPasswordReset, authPasswordResetMsgRemove } from '../actions'
+import { EMAIL_REGEX } from '../utils'
 
 function validate (email) {
   return !EMAIL_REGEX.test(email)
@@ -28,9 +28,8 @@ class PasswordReset extends Component {
     this.setState({
       emailValid: null,
     })
-
-    if (!isEqual(nextProps.userPasswordResetErrors, this.props.userPasswordResetErrors)) {
-      const message = nextProps.userPasswordResetErrors
+    if (!isEqual(nextProps.authPasswordResetMsg, this.props.authPasswordResetMsg)) {
+      const message = nextProps.authPasswordResetMsg
       if (message.non_field_errors) {
         message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
@@ -45,7 +44,7 @@ class PasswordReset extends Component {
   }
 
   componentWillUnmount () {
-    this.props.userPasswordResetErrorsRemove()
+    this.props.authPasswordResetMsgRemove()
   }
 
   canBeSubmitted () {
@@ -70,7 +69,7 @@ class PasswordReset extends Component {
     if (this.canBeSubmitted()) {
       return
     }
-    this.props.userPasswordReset(
+    this.props.authPasswordReset(
       this.state.email,
     )
   }
@@ -79,7 +78,7 @@ class PasswordReset extends Component {
     const header = 'Восстановление пароля'
     const subheader = 'Введите email, указанный при регистрации'
 
-    const { email } = this.props.userPasswordResetErrors
+    const { email } = this.props.authPasswordResetMsg
     const { emailValid } = this.state
 
     const errors = validate(this.state.email)
@@ -114,7 +113,9 @@ class PasswordReset extends Component {
               block
               bsStyle='primary'
               disabled={this.props.isPasswordMailSending || errors}>
-              Восстановить пароль
+              { this.props.isPasswordMailSending
+                ? 'Пожалуйста, подождите...'
+                : 'Восстановить пароль'}
             </Button>
           </Form>
         </Col>
@@ -126,15 +127,15 @@ class PasswordReset extends Component {
 
 PasswordReset.propTypes = {
   isPasswordMailSending: PropTypes.bool.isRequired,
-  userPasswordResetErrors: PropTypes.object.isRequired,
+  authPasswordResetMsg: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   isPasswordMailSending: state.auth.isPasswordMailSending,
-  userPasswordResetErrors: state.auth.userPasswordResetErrors,
+  authPasswordResetMsg: state.auth.authPasswordResetMsg,
 })
 
 export default connect(mapStateToProps, {
-  userPasswordReset,
-  userPasswordResetErrorsRemove,
+  authPasswordReset,
+  authPasswordResetMsgRemove,
 })(PasswordReset)

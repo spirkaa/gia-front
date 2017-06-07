@@ -1,145 +1,59 @@
 import jwtDecode from 'jwt-decode'
 
-import load from '../main/actions'
+import { actionTrigger, actionWithPayload, authApi } from '../main/actions'
+import * as c from './constants'
 
-import {
-  MODAL_HIDE,
-  MODAL_SHOW,
-  TOKEN_CHECK_FAILURE,
-  TOKEN_CHECK_SUCCESS,
-  TOKEN_SAVE,
-  USER_INFO_FAILURE,
-  USER_INFO_REQUEST,
-  USER_INFO_SUCCESS,
-  USER_INFO_UPDATE_ERRORS_REMOVE,
-  USER_INFO_UPDATE_FAILURE,
-  USER_INFO_UPDATE_REQUEST,
-  USER_INFO_UPDATE_SUCCESS,
-  USER_LOGIN_CHECKBOX,
-  USER_LOGIN_ERRORS_REMOVE,
-  USER_LOGIN_FAILURE,
-  USER_LOGIN_REQUEST,
-  USER_LOGIN_SUCCESS,
-  USER_LOGOUT,
-  USER_PASSWORD_CHANGE_ERRORS_REMOVE,
-  USER_PASSWORD_CHANGE_FAILURE,
-  USER_PASSWORD_CHANGE_REQUEST,
-  USER_PASSWORD_CHANGE_SUCCESS,
-  USER_PASSWORD_RESET_CONFIRM_ERRORS_REMOVE,
-  USER_PASSWORD_RESET_CONFIRM_FAILURE,
-  USER_PASSWORD_RESET_CONFIRM_REQUEST,
-  USER_PASSWORD_RESET_CONFIRM_SUCCESS,
-  USER_PASSWORD_RESET_ERRORS_REMOVE,
-  USER_PASSWORD_RESET_FAILURE,
-  USER_PASSWORD_RESET_REQUEST,
-  USER_PASSWORD_RESET_SUCCESS,
-  USER_REG_ERRORS_REMOVE,
-  USER_REG_FAILURE,
-  USER_REG_REQUEST,
-  USER_REG_SUCCESS,
-  USER_REG_VERIFY_MAIL_ERRORS_REMOVE,
-  USER_REG_VERIFY_MAIL_FAILURE,
-  USER_REG_VERIFY_MAIL_REQUEST,
-  USER_REG_VERIFY_MAIL_SUCCESS,
-} from './constants'
+export const modalShow = () =>
+  actionTrigger(c.AUTH_MODAL_SHOW)
 
-export function authApi (params) {
-  const { endpoint, types, data, method } = params
-  const schema = null
-  return dispatch => {
-    dispatch(load(endpoint, types, schema, data, method))
-  }
-}
+export const modalHide = () =>
+  actionTrigger(c.AUTH_MODAL_HIDE)
 
-export function modalShow () {
-  return {
-    type: MODAL_SHOW,
-  }
-}
+export const authLoginMsgRemove = () =>
+  actionTrigger(c.AUTH_LOGIN_MSG_CLEAR)
 
-export function modalHide () {
-  return {
-    type: MODAL_HIDE,
-  }
-}
+export const authPasswordResetMsgRemove = () =>
+  actionTrigger(c.AUTH_PASSWORD_RESET_MSG_CLEAR)
 
-export function userLoginErrorsRemove () {
-  return {
-    type: USER_LOGIN_ERRORS_REMOVE,
-  }
-}
+export const authPasswordResetConfirmMsgRemove = () =>
+  actionTrigger(c.AUTH_PASSWORD_RESET_CONFIRM_MSG_CLEAR)
 
-export function userPasswordResetErrorsRemove () {
-  return {
-    type: USER_PASSWORD_RESET_ERRORS_REMOVE,
-  }
-}
+export const authRegistrationMsgRemove = () =>
+  actionTrigger(c.AUTH_REG_MSG_CLEAR)
 
-export function userPasswordResetConfirmErrorsRemove () {
-  return {
-    type: USER_PASSWORD_RESET_CONFIRM_ERRORS_REMOVE,
-  }
-}
+export const authInfoUpdateMsgRemove = () =>
+  actionTrigger(c.AUTH_INFO_UPDATE_MSG_CLEAR)
 
-export function userRegistrationErrorsRemove () {
-  return {
-    type: USER_REG_ERRORS_REMOVE,
-  }
-}
+export const authPasswordChangeMsgRemove = () =>
+  actionTrigger(c.AUTH_PASSWORD_CHANGE_MSG_CLEAR)
 
-export function userInfoUpdateErrorsRemove () {
-  return {
-    type: USER_INFO_UPDATE_ERRORS_REMOVE,
-  }
-}
+export const authRegMailVerifyMsgRemove = () =>
+  actionTrigger(c.AUTH_REG_VERIFY_MAIL_MSG_CLEAR)
 
-export function userPasswordChangeErrorsRemove () {
-  return {
-    type: USER_PASSWORD_CHANGE_ERRORS_REMOVE,
-  }
-}
+export const authLogout = () =>
+  actionTrigger(c.AUTH_LOGOUT)
 
-export function userRegMailVerifyErrorsRemove () {
-  return {
-    type: USER_REG_VERIFY_MAIL_ERRORS_REMOVE,
-  }
-}
+export const authRememberMe = (checked) =>
+  actionWithPayload(c.AUTH_REMEMBER, checked)
 
-export function userRememberMe (checked) {
-  return {
-    type: USER_LOGIN_CHECKBOX,
-    response: checked,
-  }
-}
-
-export function userLogout () {
-  return {
-    type: USER_LOGOUT,
-  }
-}
-
-export function tokenSave (token) {
-  return {
-    type: TOKEN_SAVE,
-    response: { token }
-  }
-}
+export const tokenSave = (token) =>
+  actionWithPayload(c.AUTH_TOKEN_SAVE, token)
 
 export function tokenCheck (token) {
   const decoded = jwtDecode(token)
   const user = { email: decoded.email }
   const stillValid = decoded.exp > Date.now() / 1000
   return stillValid
-    ? { type: TOKEN_CHECK_SUCCESS, response: { token, user } }
-    : { type: TOKEN_CHECK_FAILURE }
+    ? { type: c.AUTH_TOKEN_CHECK_SUCCESS, payload: { token, user } }
+    : { type: c.AUTH_TOKEN_CHECK_FAILURE }
 }
 
-export function userLogin (email, password) {
+export function authLogin (email, password) {
   return authApi({
     types: [
-      USER_LOGIN_REQUEST,
-      USER_LOGIN_SUCCESS,
-      USER_LOGIN_FAILURE,
+      c.AUTH_LOGIN_REQUEST,
+      c.AUTH_LOGIN_SUCCESS,
+      c.AUTH_LOGIN_FAILURE,
     ],
     endpoint: 'auth/login/',
     data: { email, password },
@@ -147,12 +61,12 @@ export function userLogin (email, password) {
   })
 }
 
-export function userInfo (jwt) {
+export function authInfo (jwt) {
   return authApi({
     types: [
-      USER_INFO_REQUEST,
-      USER_INFO_SUCCESS,
-      USER_INFO_FAILURE,
+      c.AUTH_INFO_REQUEST,
+      c.AUTH_INFO_SUCCESS,
+      c.AUTH_INFO_FAILURE,
     ],
     endpoint: 'auth/user/',
     data: { jwt },
@@ -160,12 +74,12 @@ export function userInfo (jwt) {
   })
 }
 
-export function userInfoUpdate (jwt, username, first_name, last_name) {
+export function authInfoUpdate (jwt, username, first_name, last_name) {
   return authApi({
     types: [
-      USER_INFO_UPDATE_REQUEST,
-      USER_INFO_UPDATE_SUCCESS,
-      USER_INFO_UPDATE_FAILURE,
+      c.AUTH_INFO_UPDATE_REQUEST,
+      c.AUTH_INFO_UPDATE_SUCCESS,
+      c.AUTH_INFO_UPDATE_FAILURE,
     ],
     endpoint: 'auth/user/',
     data: { jwt, username, first_name, last_name },
@@ -173,12 +87,12 @@ export function userInfoUpdate (jwt, username, first_name, last_name) {
   })
 }
 
-export function userRegistration (email, password1, password2) {
+export function authRegistration (email, password1, password2) {
   return authApi({
     types: [
-      USER_REG_REQUEST,
-      USER_REG_SUCCESS,
-      USER_REG_FAILURE,
+      c.AUTH_REG_REQUEST,
+      c.AUTH_REG_SUCCESS,
+      c.AUTH_REG_FAILURE,
     ],
     endpoint: 'auth/registration/',
     data: { email, password1, password2 },
@@ -186,12 +100,12 @@ export function userRegistration (email, password1, password2) {
   })
 }
 
-export function userRegVerifyMail (key) {
+export function authRegVerifyMail (key) {
   return authApi({
     types: [
-      USER_REG_VERIFY_MAIL_REQUEST,
-      USER_REG_VERIFY_MAIL_SUCCESS,
-      USER_REG_VERIFY_MAIL_FAILURE,
+      c.AUTH_REG_VERIFY_MAIL_REQUEST,
+      c.AUTH_REG_VERIFY_MAIL_SUCCESS,
+      c.AUTH_REG_VERIFY_MAIL_FAILURE,
     ],
     endpoint: 'auth/registration/verify-email/',
     data: { key },
@@ -199,12 +113,12 @@ export function userRegVerifyMail (key) {
   })
 }
 
-export function userPasswordChange (jwt, old_password, new_password1, new_password2) {
+export function authPasswordChange (jwt, old_password, new_password1, new_password2) {
   return authApi({
     types: [
-      USER_PASSWORD_CHANGE_REQUEST,
-      USER_PASSWORD_CHANGE_SUCCESS,
-      USER_PASSWORD_CHANGE_FAILURE,
+      c.AUTH_PASSWORD_CHANGE_REQUEST,
+      c.AUTH_PASSWORD_CHANGE_SUCCESS,
+      c.AUTH_PASSWORD_CHANGE_FAILURE,
     ],
     endpoint: 'auth/password/change/',
     data: { jwt, old_password, new_password1, new_password2 },
@@ -212,12 +126,12 @@ export function userPasswordChange (jwt, old_password, new_password1, new_passwo
   })
 }
 
-export function userPasswordReset (email) {
+export function authPasswordReset (email) {
   return authApi({
     types: [
-      USER_PASSWORD_RESET_REQUEST,
-      USER_PASSWORD_RESET_SUCCESS,
-      USER_PASSWORD_RESET_FAILURE,
+      c.AUTH_PASSWORD_RESET_REQUEST,
+      c.AUTH_PASSWORD_RESET_SUCCESS,
+      c.AUTH_PASSWORD_RESET_FAILURE,
     ],
     endpoint: 'auth/password/reset/',
     data: { email },
@@ -225,12 +139,12 @@ export function userPasswordReset (email) {
   })
 }
 
-export function userPasswordResetConfirm (uid, token, new_password1, new_password2) {
+export function authPasswordResetConfirm (uid, token, new_password1, new_password2) {
   return authApi({
     types: [
-      USER_PASSWORD_RESET_CONFIRM_REQUEST,
-      USER_PASSWORD_RESET_CONFIRM_SUCCESS,
-      USER_PASSWORD_RESET_CONFIRM_FAILURE,
+      c.AUTH_PASSWORD_RESET_CONFIRM_REQUEST,
+      c.AUTH_PASSWORD_RESET_CONFIRM_SUCCESS,
+      c.AUTH_PASSWORD_RESET_CONFIRM_FAILURE,
     ],
     endpoint: 'auth/password/reset/confirm/',
     data: { uid, token, new_password1, new_password2 },

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 
-import { userLogout } from '../actions'
+import { authLogout } from '../actions'
 
 class Logout extends Component {
   componentWillMount () {
     if (this.props.isAuthenticated) {
-      this.props.userLogout()
+      this.props.authLogout()
       toastr.success('Выход выполнен', 'Сессия завершена')
     }
     this.props.history.push('/')
@@ -30,5 +30,5 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(mapStateToProps, {
-  userLogout
+  authLogout
 })(Logout)

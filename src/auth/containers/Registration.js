@@ -1,13 +1,14 @@
 import isEqual from 'lodash/isEqual'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { toastr } from 'react-redux-toastr'
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Row } from 'react-bootstrap'
 
 import { Header } from '../../main/components'
-import { userRegistration, userRegistrationErrorsRemove } from '../actions'
-import { EMAIL_REGEX } from '../constants'
+import { authRegistration, authRegistrationMsgRemove } from '../actions'
+import { EMAIL_REGEX } from '../utils'
 
 function validate (email, password1, password2) {
   return {
@@ -42,9 +43,8 @@ class Registration extends Component {
       password1Valid: null,
       password2Valid: null,
     })
-
-    if (!isEqual(nextProps.userRegErrors, this.props.userRegErrors)) {
-      const message = nextProps.userRegErrors
+    if (!isEqual(nextProps.authRegMsg, this.props.authRegMsg)) {
+      const message = nextProps.authRegMsg
       if (message.non_field_errors) {
         message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
@@ -61,7 +61,7 @@ class Registration extends Component {
   }
 
   componentWillUnmount () {
-    this.props.userRegistrationErrorsRemove()
+    this.props.authRegistrationMsgRemove()
   }
 
   canBeSubmitted () {
@@ -89,7 +89,7 @@ class Registration extends Component {
       return
     }
     const { email, password1, password2 } = this.state
-    this.props.userRegistration(
+    this.props.authRegistration(
       email,
       password1,
       password2,
@@ -100,7 +100,7 @@ class Registration extends Component {
     const header = 'Регистрация'
     const subheader = 'Зарегистрируйтесь, чтобы подписаться на обновления в расписании'
 
-    const { email, password1, password2 } = this.props.userRegErrors
+    const { email, password1, password2 } = this.props.authRegMsg
     const { emailValid, password1Valid, password2Valid } = this.state
 
     const errors = validate(this.state.email, this.state.password1, this.state.password2)
@@ -171,9 +171,15 @@ class Registration extends Component {
               block
               bsStyle='primary'
               disabled={this.props.isRegistering || isDisabled}>
-              Зарегистрироваться
+              { this.props.isRegistering
+                ? 'Пожалуйста, подождите...'
+                : 'Зарегистрироваться'}
             </Button>
           </Form>
+          <hr/>
+          <p>
+            Уже есть учетная запись? <Link to='/login'>Войти</Link>
+          </p>
         </Col>
         <Col sm={4}>{''}</Col>
       </Row>
@@ -183,15 +189,15 @@ class Registration extends Component {
 
 Registration.propTypes = {
   isRegistering: PropTypes.bool.isRequired,
-  userRegErrors: PropTypes.object.isRequired,
+  authRegMsg: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   isRegistering: state.auth.isRegistering,
-  userRegErrors: state.auth.userRegErrors,
+  authRegMsg: state.auth.authRegMsg,
 })
 
 export default connect(mapStateToProps, {
-  userRegistration,
-  userRegistrationErrorsRemove,
+  authRegistration,
+  authRegistrationMsgRemove,
 })(Registration)

@@ -6,7 +6,7 @@ import { toastr } from 'react-redux-toastr'
 import { Button, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Row } from 'react-bootstrap'
 
 import { Header } from '../../main/components'
-import { userPasswordResetConfirm, userPasswordResetConfirmErrorsRemove } from '../actions'
+import { authPasswordResetConfirm, authPasswordResetConfirmMsgRemove } from '../actions'
 
 function validate (new_password1, new_password2) {
   return {
@@ -37,8 +37,8 @@ class PasswordResetConfirm extends Component {
       newPassword2Valid: null,
     })
 
-    if (!isEqual(nextProps.userPasswordResetConfirmErrors, this.props.userPasswordResetConfirmErrors)) {
-      const message = nextProps.userPasswordResetConfirmErrors
+    if (!isEqual(nextProps.authPasswordResetConfirmMsg, this.props.authPasswordResetConfirmMsg)) {
+      const message = nextProps.authPasswordResetConfirmMsg
       if (message.non_field_errors) {
         message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
       }
@@ -56,7 +56,7 @@ class PasswordResetConfirm extends Component {
   }
 
   componentWillUnmount () {
-    this.props.userPasswordResetConfirmErrorsRemove()
+    this.props.authPasswordResetConfirmMsgRemove()
   }
 
   canBeSubmitted () {
@@ -84,7 +84,7 @@ class PasswordResetConfirm extends Component {
       return
     }
     const { uid, token } = this.props.match.params
-    this.props.userPasswordResetConfirm(
+    this.props.authPasswordResetConfirm(
       uid,
       token,
       this.state.new_password1,
@@ -96,7 +96,7 @@ class PasswordResetConfirm extends Component {
     const header = 'Восстановление пароля'
     const subheader = 'Укажите новый пароль'
 
-    const { new_password1, new_password2 } = this.props.userPasswordResetConfirmErrors
+    const { new_password1, new_password2 } = this.props.authPasswordResetConfirmMsg
     const { newPassword1Valid, newPassword2Valid } = this.state
 
     const errors = validate(this.state.new_password1, this.state.new_password2)
@@ -161,15 +161,15 @@ class PasswordResetConfirm extends Component {
 
 PasswordResetConfirm.propTypes = {
   isPasswordResetConfirming: PropTypes.bool.isRequired,
-  userPasswordResetConfirmErrors: PropTypes.object.isRequired,
+  authPasswordResetConfirmMsg: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   isPasswordResetConfirming: state.auth.isPasswordResetConfirming,
-  userPasswordResetConfirmErrors: state.auth.userPasswordResetConfirmErrors,
+  authPasswordResetConfirmMsg: state.auth.authPasswordResetConfirmMsg,
 })
 
 export default connect(mapStateToProps, {
-  userPasswordResetConfirm,
-  userPasswordResetConfirmErrorsRemove,
+  authPasswordResetConfirm,
+  authPasswordResetConfirmMsgRemove,
 })(PasswordResetConfirm)
