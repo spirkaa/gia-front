@@ -10,10 +10,6 @@ const placeFormat = (cell, row) => (
   </div>
 )
 
-const ateFormat = (cell, row) => (
-  <div>{cell.code}, {cell.name}</div>
-)
-
 export const PlacesTable = ({ places }) => (
   <Row>
     <BootstrapTable data={places} hover={true} condensed={true}>
@@ -27,10 +23,6 @@ export const PlacesTable = ({ places }) => (
         dataField='name'
         dataFormat={placeFormat}
       >Код, наименование, адрес ППЭ</TableHeaderColumn>
-      <TableHeaderColumn
-        dataField='ate'
-        dataFormat={ateFormat}
-      >Код, наименование АТЕ</TableHeaderColumn>
     </BootstrapTable>
   </Row>
 )

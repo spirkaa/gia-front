@@ -20,8 +20,6 @@ class Filter extends Component {
       findDOMNode(this.refs.code).value = nextProps.filterVals.code
       findDOMNode(this.refs.name).value = nextProps.filterVals.name
       findDOMNode(this.refs.addr).value = nextProps.filterVals.addr
-      findDOMNode(this.refs.ateCode).value = nextProps.filterVals.ateCode
-      findDOMNode(this.refs.ateName).value = nextProps.filterVals.ateName
     }
   }
 
@@ -35,9 +33,7 @@ class Filter extends Component {
     this.props.onChange({
       code: findDOMNode(this.refs.code).value,
       name: findDOMNode(this.refs.name).value,
-      addr: findDOMNode(this.refs.addr).value,
-      ateCode: findDOMNode(this.refs.ateCode).value,
-      ateName: findDOMNode(this.refs.ateName).value
+      addr: findDOMNode(this.refs.addr).value
     })
   }
 
@@ -72,24 +68,6 @@ class Filter extends Component {
                 placeholder='Адрес ППЭ'
                 ref='addr'
                 defaultValue={filterVals.addr}
-                onKeyUp={this.handleKeyUp}/>
-            </FormGroup>{' '}
-            <FormGroup controlId='formInlineAteCode'>
-              <ControlLabel srOnly>Код АТЕ</ControlLabel>
-              <FormControl
-                type='text'
-                placeholder='Код АТЕ'
-                ref='ateCode'
-                defaultValue={filterVals.ateCode}
-                onKeyUp={this.handleKeyUp}/>
-            </FormGroup>{' '}
-             <FormGroup controlId='formInlineAteName'>
-               <ControlLabel srOnly>Наименование АТЕ</ControlLabel>
-              <FormControl
-                type='text'
-                placeholder='Наименование АТЕ'
-                ref='ateName'
-                defaultValue={filterVals.ateName}
                 onKeyUp={this.handleKeyUp}/>
             </FormGroup>{' '}
             <Button bsStyle='primary' onClick={this.handleButtonClick}>

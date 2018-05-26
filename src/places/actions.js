@@ -13,15 +13,14 @@ export const PLACES_FILTER_CLEAR_PAGES = 'PLACES_FILTER_CLEAR_PAGES'
 export const PLACES_PAGE_SET = 'PLACES_PAGE_SET'
 
 export function loadPlaces (id = 1, filter = PLACES_FILTER_INITIAL_STATE) {
-  const { code, name, addr, ateCode, ateName } = filter
+  const { code, name, addr } = filter
   return loadThis({
     id: id,
     source: 'placesPage',
     types: [ PLACES_REQUEST, PLACES_SUCCESS, PLACES_FAILURE ],
     schema: Schemas.PLACES_PAGE,
     endpoint: `${PLACE_ENDPOINT}/
-?code=${code}&name=${name}&addr${addr}
-&ate_code=${ateCode}&ate_name=${ateName}&page=${id}`
+?code=${code}&name=${name}&addr${addr}&page=${id}`
   })
 }
 
