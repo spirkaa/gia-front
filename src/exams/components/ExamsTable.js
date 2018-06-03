@@ -42,18 +42,18 @@ export const ExamsTable = ({ exams }) => (
       <TableHeaderColumn
         dataField='employee'
         dataFormat={employeeFormat}
-        width='33%'
+        width='30%'
         tdAttr={{'data-title': 'Сотрудник'}}
       >Сотрудник</TableHeaderColumn>
       <TableHeaderColumn
         dataField='position'
-        width='16%'
+        width='17%'
         tdAttr={{'data-title': 'Должность'}}
       >Должность</TableHeaderColumn>
        <TableHeaderColumn
         dataField='place'
         dataFormat={placeFormat}
-        width='39%'
+        width='41%'
         tdAttr={{'data-title': 'ППЭ'}}
       >ППЭ</TableHeaderColumn>
     </BootstrapTable>
