@@ -3,7 +3,7 @@ import ReduxToastr from 'react-redux-toastr'
 import Helmet from 'react-helmet'
 import { Grid } from 'react-bootstrap'
 
-import { Footer } from '../components'
+import { Disclaimer, Footer } from '../components'
 import NavContainer from './NavContainer'
 import ScrollToTop from './ScrollToTop'
 import Routes from '../../routes'
@@ -24,6 +24,7 @@ export const App = () => (
     <NavContainer/>
     <ScrollToTop>
       <Grid fluid={true}>
+        <Disclaimer/>
         <Routes/>
       </Grid>
     </ScrollToTop>

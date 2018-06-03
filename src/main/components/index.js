@@ -1,4 +1,5 @@
 export { About } from './About'
+export { Disclaimer } from './Disclaimer'
 export { Footer } from './Footer'
 export { Header } from './Header'
 export { Home } from './Home'
