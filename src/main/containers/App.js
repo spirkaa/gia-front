@@ -18,9 +18,9 @@ export const App = () => (
       transitionIn='fadeIn'
       transitionOut='fadeOut'/>
     <Helmet
-      titleTemplate='%s | ГИА 2018 в Москве'
-      defaultTitle='ГИА 2018 в Москве'
-      meta={[ { 'name': 'description', 'content': 'ГИА 2018 в Москве' } ]}/>
+      titleTemplate='%s | ГИА 2019 в Москве'
+      defaultTitle='ГИА 2019 в Москве'
+      meta={[ { 'name': 'description', 'content': 'Список организаторов ППЭ ЕГЭ и ОГЭ во время ГИА 2019 в Москве' } ]}/>
     <NavContainer/>
     <ScrollToTop>
       <Grid fluid={true}>
