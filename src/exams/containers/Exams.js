@@ -15,7 +15,7 @@ class Exams extends Component {
   }
 
   render () {
-    const header = 'Список организаторов ГИА 2018'
+    const header = 'Список организаторов ЕГЭ и ОГЭ'
     const { exams, count } = this.props
     return (
       <Col lg={12}>

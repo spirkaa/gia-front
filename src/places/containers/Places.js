@@ -15,7 +15,7 @@ class Places extends Component {
   }
 
   render () {
-    const header = 'Пункты проведения экзамена'
+    const header = 'Список ППЭ (пункты проведения экзаменов)'
     const { places, count } = this.props
     return (
       <Col lg={12}>

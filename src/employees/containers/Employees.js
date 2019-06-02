@@ -15,7 +15,7 @@ class Employees extends Component {
   }
 
   render () {
-    const header = 'Сотрудники, участвующие в ГИА 2018'
+    const header = 'Сотрудники, участвующие в ГИА'
     const { employees, count } = this.props
     return (
       <Col lg={12}>

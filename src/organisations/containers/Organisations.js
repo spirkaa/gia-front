@@ -15,7 +15,7 @@ class Organisations extends Component {
   }
 
   render () {
-    const header = 'Организации сотрудников, участвующих в ГИА 2018'
+    const header = 'Организации сотрудников, участвующих в ГИА'
     const { organisations, count } = this.props
     return (
       <Col lg={12}>
