@@ -23,7 +23,7 @@ export const EmpTable = ({ employees }) => (
       <TableHeaderColumn
         dataField='num_exams'
         dataSort={true}
-      >Рабочих дней</TableHeaderColumn>
+      >Количество экзаменов</TableHeaderColumn>
     </BootstrapTable>
   </Row>
 )
