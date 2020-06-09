@@ -1,12 +1,12 @@
-export const SUBS_REQUEST = '@subs/REQUEST'
-export const SUBS_SUCCESS = '@subs/SUCCESS'
-export const SUBS_FAILURE = '@subs/FAILURE'
-export const SUBS_ADD_REQUEST = '@subs/ADD_REQUEST'
-export const SUBS_ADD_SUCCESS = '@subs/ADD_SUCCESS'
-export const SUBS_ADD_FAILURE = '@subs/ADD_FAILURE'
-export const SUBS_DEL_REQUEST = '@subs/DEL_REQUEST'
-export const SUBS_DEL_SUCCESS = '@subs/DEL_SUCCESS'
-export const SUBS_DEL_FAILURE = '@subs/DEL_FAILURE'
+export const SUBS_REQUEST = "@subs/REQUEST"
+export const SUBS_SUCCESS = "@subs/SUCCESS"
+export const SUBS_FAILURE = "@subs/FAILURE"
+export const SUBS_ADD_REQUEST = "@subs/ADD_REQUEST"
+export const SUBS_ADD_SUCCESS = "@subs/ADD_SUCCESS"
+export const SUBS_ADD_FAILURE = "@subs/ADD_FAILURE"
+export const SUBS_DEL_REQUEST = "@subs/DEL_REQUEST"
+export const SUBS_DEL_SUCCESS = "@subs/DEL_SUCCESS"
+export const SUBS_DEL_FAILURE = "@subs/DEL_FAILURE"
 
-export const SUBS_PAGE_SET = '@subs/PAGE_SET'
-export const SUBS_CLEAR_PAGES = '@subs/CLEAR_PAGES'
+export const SUBS_PAGE_SET = "@subs/PAGE_SET"
+export const SUBS_CLEAR_PAGES = "@subs/CLEAR_PAGES"

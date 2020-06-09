@@ -1,74 +1,102 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { Link } from "react-router-dom"
+import { Button, Form, Glyphicon } from "react-bootstrap"
+import BootstrapTable from "react-bootstrap-table-next"
 
-import { ExamTable } from '../../employees/components'
+import { ExamTable } from "../../employees/components"
 
 export class SubsTable extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.onRowDelete = this.onRowDelete.bind(this)
+    this.state = {
+      rowKeys: [],
+    }
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.onSelect = this.onSelect.bind(this)
+    this.onSelectAll = this.onSelectAll.bind(this)
   }
 
-  onRowDelete (rowKeys) {
+  handleSubmit = (evt) => {
+    evt.preventDefault()
     const { onDelete, token } = this.props
-    rowKeys.map(key => onDelete(token, key))
+    this.state.rowKeys.map((key) => onDelete(token, key))
   }
 
-  expandComponent (row) {
-    return (
-      <ExamTable exams={row.employee.exams}/>
-    )
+  onSelect(row, isSelect, rowIndex, e) {
+    if (isSelect) {
+      this.setState({
+        rowKeys: [...this.state.rowKeys, row.id],
+      })
+    } else {
+      this.setState({
+        rowKeys: this.state.rowKeys.filter((itemId) => itemId !== row.id),
+      })
+    }
   }
 
-  isExpandableRow () {
-    return true
+  onSelectAll(isSelect, rows, e) {
+    if (isSelect) {
+      this.setState({
+        rowKeys: rows.map((row) => row.id),
+      })
+    } else {
+      this.setState({
+        rowKeys: [],
+      })
+    }
   }
 
-  render () {
-    const options = {
-      afterDeleteRow: this.onRowDelete,
-      deleteText: 'Отписаться',
-      expandRowBgColor: 'rgb(242, 255, 163)'
+  render() {
+    const selectRow = {
+      mode: "checkbox",
+      clickToExpand: true,
+      onSelect: this.onSelect,
+      onSelectAll: this.onSelectAll,
     }
 
-    const selectRowProp = {
-      mode: 'checkbox',
-      clickToExpand: true
+    const expandRow = {
+      renderer: (row, rowIndex) => <ExamTable exams={row.employee.exams} />,
+      showExpandColumn: true,
     }
+
+    const columns = [
+      {
+        dataField: "id",
+        text: "pk",
+        hidden: true,
+      },
+      {
+        dataField: "employee",
+        text: "ФИО",
+        formatter: (cell, row) => (
+          <Link to={`/employees/detail/${cell.id}`}>{cell.name}</Link>
+        ),
+      },
+      {
+        dataField: "employee.org",
+        text: "Место работы",
+        formatter: (cell, row) => (
+          <Link to={`/organisations/detail/${cell.id}`}>{cell.name}</Link>
+        ),
+      },
+    ]
+
     return (
       <div>
+        <Form className="bottom-buffer-5px" onSubmit={this.handleSubmit}>
+          <Button bsStyle="warning" type="submit" disabled={!this.state.rowKeys.length}>
+            <Glyphicon glyph="trash" /> Отменить подписку
+          </Button>
+        </Form>
         <BootstrapTable
+          keyField="id"
+          columns={columns}
           data={this.props.subscriptions}
           hover={true}
           condensed={true}
-          deleteRow={true}
-          selectRow={selectRowProp}
-          options={options}
-          expandableRow={this.isExpandableRow}
-          expandComponent={this.expandComponent}
-          expandColumnOptions={ { expandColumnVisible: true, expandColumnBeforeSelectColumn: false } }
-          >
-        <TableHeaderColumn
-            dataField='id'
-            dataSort={true}
-            isKey={true}
-            hidden={true}
-          >pk</TableHeaderColumn>
-          <TableHeaderColumn
-            dataField='employee'
-            dataSort={true}
-            dataFormat={ (cell, row) =>
-              (<Link to={`/employees/detail/${cell.id}`}>{cell.name}</Link>) }
-          >ФИО</TableHeaderColumn>
-          <TableHeaderColumn
-            dataField='employee'
-            dataFormat={ (cell, row) =>
-              (<Link to={`/organisations/detail/${cell.org.id}`}>{cell.org.name}</Link>) }
-          >Место работы</TableHeaderColumn>
-        </BootstrapTable>
+          selectRow={selectRow}
+          expandRow={expandRow}></BootstrapTable>
       </div>
     )
   }

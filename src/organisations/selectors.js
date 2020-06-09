@@ -3,38 +3,35 @@ import createDeepEqualSelector, {
   getEmployee,
   getOrganisation,
   getOrgFilter,
-  getOrgActivePage
-} from '../main/selectors'
+  getOrgActivePage,
+} from "../main/selectors"
 
-const getCount = state => state.entities.orgPage[ 1 ] || { count: null }
+const getCount = (state) => state.entities.orgPage[1] || { count: null }
 const getOrganisationDetail = (state, props) =>
   state.entities.organisation[props.match.params.orgId] || { employees: [] }
 
 export const orgActivePageSelector = createDeepEqualSelector(
   getOrgActivePage,
-  page => page
+  (page) => page,
 )
 
 export const orgFilterSelector = createDeepEqualSelector(
   getOrgFilter,
-  filter => filter
+  (filter) => filter,
 )
 
 const currentPageSelector = createDeepEqualSelector(
   getOrgPage,
   orgActivePageSelector,
-  (page, number) => page[number] || { results: [] }
+  (page, number) => page[number] || { results: [] },
 )
 
-export const countSelector = createDeepEqualSelector(
-  getCount,
-  page => page.count
-)
+export const countSelector = createDeepEqualSelector(getCount, (page) => page.count)
 
 export const organisationsOnPageSelector = createDeepEqualSelector(
   currentPageSelector,
   getOrganisation,
-  (page, organisation) => page.results.map(id => organisation[ id ])
+  (page, organisation) => page.results.map((id) => organisation[id]),
 )
 
 export const organisationDetailSelector = createDeepEqualSelector(
@@ -42,6 +39,6 @@ export const organisationDetailSelector = createDeepEqualSelector(
   getEmployee,
   (org, employee) =>
     org.employees
-      ? ({...org, employees: org.employees.map(id => employee[ id ])})
-      : org
+      ? { ...org, employees: org.employees.map((id) => employee[id]) }
+      : org,
 )

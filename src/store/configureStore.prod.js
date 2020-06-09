@@ -1,11 +1,12 @@
-import { createStore, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import api from '../middleware/api'
-import rootReducer from '../reducer'
+import { createStore, applyMiddleware } from "redux"
+import thunk from "redux-thunk"
 
-export default function configureStore (middleware) {
+import api from "../middleware/api"
+import createRootReducer from "../reducer"
+
+export default function configureStore(history, middleware) {
   return createStore(
-    rootReducer,
-    applyMiddleware(thunk, api, middleware)
+    createRootReducer(history),
+    applyMiddleware(thunk, api, middleware),
   )
 }

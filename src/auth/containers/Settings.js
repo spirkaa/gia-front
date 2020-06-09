@@ -1,17 +1,30 @@
-import isEqual from 'lodash/isEqual'
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { toastr } from 'react-redux-toastr'
-import { Button, Col, ControlLabel, Form, FormControl, FormGroup, Row } from 'react-bootstrap'
+import isEqual from "lodash/isEqual"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { toastr } from "react-redux-toastr"
+import {
+  Button,
+  Col,
+  ControlLabel,
+  Form,
+  FormControl,
+  FormGroup,
+  Row,
+} from "react-bootstrap"
 
-import { Header } from '../../main/components'
-import { modalShow, authInfo, authInfoUpdate, authInfoUpdateMsgRemove, authLogout } from '../actions'
-import SettingsPassword from './SettingsPassword'
+import { Header } from "../../main/components"
+import {
+  modalShow,
+  authInfo,
+  authInfoUpdate,
+  authInfoUpdateMsgRemove,
+  authLogout,
+} from "../actions"
+import SettingsPassword from "./SettingsPassword"
 
 class Settings extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       email: props.user.email,
@@ -20,11 +33,11 @@ class Settings extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.authInfo(this.props.token)
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!isEqual(nextProps.user, this.props.user)) {
       this.setState({
         first_name: nextProps.user.first_name,
@@ -34,21 +47,20 @@ class Settings extends Component {
     if (!isEqual(nextProps.authInfoUpdateMsg, this.props.authInfoUpdateMsg)) {
       const message = nextProps.authInfoUpdateMsg
       if (message.non_field_errors) {
-        message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
+        message.non_field_errors.map((msg) => toastr.error("Ошибка", msg))
       }
       if (message.detail) {
-        if (message.detail === 'Signature has expired.') {
-          toastr.error('Сессия истекла', 'Требуется повторный вход')
+        if (message.detail === "Signature has expired.") {
+          toastr.error("Сессия истекла", "Требуется повторный вход")
           this.props.authLogout()
-        }
-        else {
-          toastr.success('', message.detail)
+        } else {
+          toastr.success("", message.detail)
         }
       }
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.authInfoUpdateMsgRemove()
   }
 
@@ -69,58 +81,56 @@ class Settings extends Component {
     )
   }
 
-  render () {
+  render() {
     const { isInfoUpdateRequesting, modalShow } = this.props
-    const header = 'Настройки'
-    const subheader = 'Личная информация'
+    const header = "Настройки"
+    const subheader = "Личная информация"
     return (
-      <Row className='bottom-buffer'>
-        <Header header={header} subHeader={subheader}/>
-        <Col sm={4}>{''}</Col>
+      <Row className="bottom-buffer">
+        <Header header={header} subHeader={subheader} />
+        <Col sm={4}>{""}</Col>
         <Col sm={4}>
           <Form onSubmit={this.handleSubmit}>
             <FormGroup>
               <ControlLabel>Электронная почта</ControlLabel>
-              <FormControl.Static>
-                {this.state.email}
-              </FormControl.Static>
+              <FormControl.Static>{this.state.email}</FormControl.Static>
             </FormGroup>
-            <FormGroup controlId='formFirstName'>
+            <FormGroup controlId="formFirstName">
               <ControlLabel>Имя</ControlLabel>
               <FormControl
-                type='text'
-                name='first_name'
-                placeholder='Укажите имя'
+                type="text"
+                name="first_name"
+                placeholder="Укажите имя"
                 value={this.state.first_name}
-                onChange={this.handleInputChange}/>
+                onChange={this.handleInputChange}
+              />
             </FormGroup>
-            <FormGroup controlId='formLastName'>
+            <FormGroup controlId="formLastName">
               <ControlLabel>Фамилия</ControlLabel>
               <FormControl
-                type='text'
-                name='last_name'
-                placeholder='Укажите фамилию'
+                type="text"
+                name="last_name"
+                placeholder="Укажите фамилию"
                 value={this.state.last_name}
-                onChange={this.handleInputChange}/>
+                onChange={this.handleInputChange}
+              />
             </FormGroup>
             <p>
-              <Button
-                block
-                onClick={modalShow}>
+              <Button block onClick={modalShow}>
                 Изменить пароль
               </Button>
             </p>
             <Button
-              type='submit'
+              type="submit"
               block
-              bsStyle='primary'
+              bsStyle="primary"
               disabled={isInfoUpdateRequesting}>
               Сохранить
             </Button>
           </Form>
         </Col>
-        <Col sm={4}>{''}</Col>
-        <SettingsPassword/>
+        <Col sm={4}>{""}</Col>
+        <SettingsPassword />
       </Row>
     )
   }

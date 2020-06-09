@@ -8,33 +8,30 @@ import createDeepEqualSelector, {
   getPlace,
   getOrganisation,
   getEmpFilter,
-  getEmpActivePage
-} from '../main/selectors'
+  getEmpActivePage,
+} from "../main/selectors"
 
-const getCount = state => state.entities.empPage[ 1 ] || { count: null }
+const getCount = (state) => state.entities.empPage[1] || { count: null }
 const getEmployeeDetail = (state, props) =>
   state.entities.employee[props.match.params.employeeId] || { exams: [], org: null }
 
 export const empActivePageSelector = createDeepEqualSelector(
   getEmpActivePage,
-  page => page
+  (page) => page,
 )
 
 export const empFilterSelector = createDeepEqualSelector(
   getEmpFilter,
-  filter => filter
+  (filter) => filter,
 )
 
 const currentPageSelector = createDeepEqualSelector(
   getEmpPage,
   empActivePageSelector,
-  (page, number) => page[number] || { results: [] }
+  (page, number) => page[number] || { results: [] },
 )
 
-export const countSelector = createDeepEqualSelector(
-  getCount,
-  page => page.count
-)
+export const countSelector = createDeepEqualSelector(getCount, (page) => page.count)
 
 export const employeesOnPageSelector = createDeepEqualSelector(
   currentPageSelector,
@@ -42,8 +39,8 @@ export const employeesOnPageSelector = createDeepEqualSelector(
   getOrganisation,
   (page, employee, organisation) =>
     page.results
-      .map(id => employee[ id ])
-      .map(employee => ({ ...employee, org: organisation[ employee.org ] }))
+      .map((id) => employee[id])
+      .map((employee) => ({ ...employee, org: organisation[employee.org] })),
 )
 
 export const examDetailSelector = createDeepEqualSelector(
@@ -56,15 +53,15 @@ export const examDetailSelector = createDeepEqualSelector(
   (employee, exam, date, level, position, place) =>
     employee.exams
       ? employee.exams
-      .map(id => exam[ id ])
-      .map(ex => ({
-        ...ex,
-        date: date[ ex.date ].date,
-        level: level[ ex.level ].level,
-        position: position[ ex.position ].name,
-        place: place[ ex.place ]
-      }))
-      : employee
+          .map((id) => exam[id])
+          .map((ex) => ({
+            ...ex,
+            date: date[ex.date].date,
+            level: level[ex.level].level,
+            position: position[ex.position].name,
+            place: place[ex.place],
+          }))
+      : employee,
 )
 
 export const employeeDetailSelector = createDeepEqualSelector(
@@ -72,7 +69,5 @@ export const employeeDetailSelector = createDeepEqualSelector(
   examDetailSelector,
   getOrganisation,
   (employee, exams, organisation) =>
-    employee.exams
-      ? ({ ...employee, exams, org: organisation[ employee.org ] })
-      : employee
+    employee.exams ? { ...employee, exams, org: organisation[employee.org] } : employee,
 )

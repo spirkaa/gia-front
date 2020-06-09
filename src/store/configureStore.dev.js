@@ -1,22 +1,24 @@
-import { createStore, compose, applyMiddleware } from 'redux'
-import thunk from 'redux-thunk'
-import { createLogger } from 'redux-logger'
-import api from '../middleware/api'
-import rootReducer from '../reducer'
+import { createStore, compose, applyMiddleware } from "redux"
+import thunk from "redux-thunk"
+import { createLogger } from "redux-logger"
 
-export default function configureStore (middleware) {
+import api from "../middleware/api"
+import createRootReducer from "../reducer"
+
+export default function configureStore(history, middleware) {
   const store = createStore(
-    rootReducer,
+    createRootReducer(history),
     compose(
       applyMiddleware(thunk, api, middleware, createLogger()),
-      window.devToolsExtension ? window.devToolsExtension() : f => f
-    )
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+        ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()
+        : (f) => f,
+    ),
   )
 
   if (module.hot) {
-    module.hot.accept('../reducer', () => {
-      const nextRootReducer = require('../reducer').default
-      store.replaceReducer(nextRootReducer)
+    module.hot.accept("../reducer", () => {
+      store.replaceReducer(createRootReducer(history))
     })
   }
 

@@ -1,8 +1,10 @@
-FROM fholzer/nginx-brotli:mainline-latest
+FROM fholzer/nginx-brotli:latest
 
-RUN apk add --no-cache tzdata \
-    && ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+ENV TZ=Europe/Moscow
 
-ADD ./compose/nginx/nginx.conf /etc/nginx/nginx.conf
+RUN set -eux \
+    && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime
+
+COPY ./compose/nginx/nginx.conf /etc/nginx/nginx.conf
 
 COPY ./build /app

@@ -1,4 +1,4 @@
-import * as c from './constants'
+import * as c from "./constants"
 
 const SUBS_INITIAL_STATE = {
   subsMsg: {},
@@ -9,7 +9,7 @@ const SUBS_INITIAL_STATE = {
   isSubDelRequested: false,
 }
 
-export function subs (state = SUBS_INITIAL_STATE, action) {
+export function subs(state = SUBS_INITIAL_STATE, action) {
   switch (action.type) {
     case c.SUBS_REQUEST:
       return {
@@ -57,7 +57,7 @@ export function subs (state = SUBS_INITIAL_STATE, action) {
   }
 }
 
-export function subsActivePage (state = 1, action) {
+export function subsActivePage(state = 1, action) {
   if (action.type === c.SUBS_PAGE_SET) {
     return action.payload
   }

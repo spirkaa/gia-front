@@ -1,18 +1,18 @@
-import React, { Component } from 'react' // eslint-disable-line
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import React, { Component } from "react" // eslint-disable-line
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
 
-import { PaginationAdvanced } from '../../main/components'
-import { subsLoad, subsPageSet } from '../actions'
-import { countSelector, subsActivePageSelector } from '../selectors'
+import { UltimatePagination } from "../../main/components"
+import { subsLoad, subsPageSet } from "../actions"
+import { countSelector, subsActivePageSelector } from "../selectors"
 
 class Pagination extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.handlePaginationClick = this.handlePaginationClick.bind(this)
   }
 
-  handlePaginationClick (pageNum) {
+  handlePaginationClick(pageNum) {
     if (pageNum !== this.props.activePage) {
       const { token, setPage, loadNext } = this.props
       setPage(pageNum)
@@ -20,15 +20,15 @@ class Pagination extends Component {
     }
   }
 
-  render () {
+  render() {
     const { activePage, count } = this.props
-    return (count > 50
-        ? <PaginationAdvanced
-          onPaginationClick={this.handlePaginationClick}
-          activePage={activePage}
-          pageCount={Math.ceil(count / 50)}/>
-        : null
-    )
+    return count > 50 ? (
+      <UltimatePagination
+        onChange={this.handlePaginationClick}
+        currentPage={activePage}
+        totalPages={Math.ceil(count / 50)}
+      />
+    ) : null
   }
 }
 

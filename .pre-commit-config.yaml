@@ -1,0 +1,31 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.1.0
+    hooks:
+      - id: check-merge-conflict
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+  - repo: https://github.com/prettier/prettier
+    rev: 2.0.5
+    hooks:
+      - id: prettier
+        files: \.(js|jsx|ts|tsx)$
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v6.8.0
+    hooks:
+      - id: eslint
+        additional_dependencies:
+          - "eslint@6.x"
+          - "babel-eslint@10.x"
+          - "eslint-config-react-app@5.2.1"
+          - "eslint-plugin-flowtype@4.x"
+          - "eslint-plugin-import@2.x"
+          - "eslint-plugin-jsx-a11y@6.x"
+          - "eslint-plugin-react@7.x"
+          - "eslint-plugin-react-hooks@2.x"
+          - "@typescript-eslint/parser@2.x"
+          - "@typescript-eslint/eslint-plugin@2.x"
+          - "prettier@2.0.5"
+          - "eslint-config-prettier@6.11.0"
+          - "eslint-plugin-prettier@3.1.3"

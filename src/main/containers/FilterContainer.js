@@ -1,14 +1,14 @@
-import isEqual from 'lodash/isEqual'
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import isEqual from "lodash/isEqual"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
 
 export default class FilterContainer extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.handleFilterChange = this.handleFilterChange.bind(this)
   }
 
-  handleFilterChange (filterVals) {
+  handleFilterChange(filterVals) {
     if (!isEqual(filterVals, this.props.filterVals)) {
       const { filterSet, loadFiltered, filterClearPages, pageSet } = this.props
       filterSet(filterVals)
@@ -18,14 +18,9 @@ export default class FilterContainer extends Component {
     }
   }
 
-  render () {
+  render() {
     const { Filter, filterVals } = this.props
-    return (
-      <Filter
-        filterVals={filterVals}
-        onChange={this.handleFilterChange}
-      />
-    )
+    return <Filter filterVals={filterVals} onChange={this.handleFilterChange} />
   }
 }
 
@@ -35,5 +30,5 @@ FilterContainer.propTypes = {
   loadFiltered: PropTypes.func.isRequired,
   filterSet: PropTypes.func.isRequired,
   filterClearPages: PropTypes.func.isRequired,
-  pageSet: PropTypes.func.isRequired
+  pageSet: PropTypes.func.isRequired,
 }

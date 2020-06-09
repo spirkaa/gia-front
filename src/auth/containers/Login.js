@@ -1,16 +1,26 @@
-import isEqual from 'lodash/isEqual'
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { toastr } from 'react-redux-toastr'
-import { Button, Checkbox, Col, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Row } from 'react-bootstrap'
+import isEqual from "lodash/isEqual"
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { Link } from "react-router-dom"
+import { connect } from "react-redux"
+import { toastr } from "react-redux-toastr"
+import {
+  Button,
+  Checkbox,
+  Col,
+  ControlLabel,
+  Form,
+  FormControl,
+  FormGroup,
+  HelpBlock,
+  Row,
+} from "react-bootstrap"
 
-import { Header } from '../../main/components'
-import { authLogin, authLoginMsgRemove, authRememberMe } from '../actions'
-import { EMAIL_REGEX } from '../utils'
+import { Header } from "../../main/components"
+import { authLogin, authLoginMsgRemove, authRememberMe } from "../actions"
+import { EMAIL_REGEX } from "../utils"
 
-function validate (email, password) {
+function validate(email, password) {
   return {
     email: !EMAIL_REGEX.test(email),
     password: password.length === 0,
@@ -18,14 +28,13 @@ function validate (email, password) {
 }
 
 class Login extends Component {
-
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       emailValid: null,
       passwordValid: null,
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       rememberMe: true,
       touched: {
         email: false,
@@ -34,7 +43,7 @@ class Login extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       emailValid: null,
       passwordValid: null,
@@ -43,24 +52,24 @@ class Login extends Component {
     if (!isEqual(nextProps.authLoginMsg, this.props.authLoginMsg)) {
       const message = nextProps.authLoginMsg
       if (message.non_field_errors) {
-        message.non_field_errors.map(msg => toastr.error('Ошибка', msg))
+        message.non_field_errors.map((msg) => toastr.error("Ошибка", msg))
       }
       if (message.email) {
-        this.setState({ emailValid: 'error' })
+        this.setState({ emailValid: "error" })
       }
       if (message.password) {
-        this.setState({ passwordValid: 'error' })
+        this.setState({ passwordValid: "error" })
       }
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.authLoginMsgRemove()
   }
 
-  canBeSubmitted () {
+  canBeSubmitted() {
     const errors = validate(this.state.email, this.state.password)
-    const isDisabled = Object.keys(errors).some(x => errors[ x ])
+    const isDisabled = Object.keys(errors).some((x) => errors[x])
     return !isDisabled
   }
 
@@ -72,7 +81,7 @@ class Login extends Component {
 
   handleInputChange = (evt) => {
     const target = evt.target
-    const value = target.type === 'checkbox' ? target.checked : target.value
+    const value = target.type === "checkbox" ? target.checked : target.value
     const name = target.name
     this.setState({ [name]: value })
   }
@@ -83,94 +92,91 @@ class Login extends Component {
       return
     }
     const { email, password, rememberMe } = this.state
-    this.props.authLogin(
-      email,
-      password,
-    )
+    this.props.authLogin(email, password)
     this.props.authRememberMe(rememberMe)
   }
 
-  render () {
-    const header = 'Вход'
-    const subheader = 'Введите данные учетной записи'
+  render() {
+    const header = "Вход"
+    const subheader = "Введите данные учетной записи"
 
     const { email, password } = this.props.authLoginMsg
     const { emailValid, passwordValid } = this.state
 
     const errors = validate(this.state.email, this.state.password)
-    const isDisabled = Object.keys(errors).some(x => errors[ x ])
+    const isDisabled = Object.keys(errors).some((x) => errors[x])
 
     const shouldMarkError = (field) => {
-      const hasError = errors[ field ]
-      const shouldShow = this.state.touched[ field ]
+      const hasError = errors[field]
+      const shouldShow = this.state.touched[field]
       return hasError ? shouldShow : false
     }
 
     return (
-      <Row className='bottom-buffer'>
-        <Header header={header} subHeader={subheader}/>
-        <Col sm={4}>{''}</Col>
+      <Row className="bottom-buffer">
+        <Header header={header} subHeader={subheader} />
+        <Col sm={4}>{""}</Col>
         <Col sm={4}>
           <Form onSubmit={this.handleSubmit}>
-            <FormGroup controlId='formEmail'
-                       validationState={shouldMarkError('email') || emailValid
-                         ? 'error'
-                         : null}>
+            <FormGroup
+              controlId="formEmail"
+              validationState={shouldMarkError("email") || emailValid ? "error" : null}>
               <ControlLabel>Электронная почта</ControlLabel>
               <FormControl
-                type='email'
-                name='email'
+                type="email"
+                name="email"
                 value={this.state.email}
                 onChange={this.handleInputChange}
-                onBlur={this.handleBlur('email')}/>
-              {emailValid
-                ? email.map(msg => <HelpBlock>{msg}</HelpBlock>)
-                : null }
-              {shouldMarkError('email')
-                ? <HelpBlock>Введите корректный адрес электронной почты.</HelpBlock>
-                : null}
+                onBlur={this.handleBlur("email")}
+              />
+              {emailValid ? email.map((msg) => <HelpBlock>{msg}</HelpBlock>) : null}
+              {shouldMarkError("email") ? (
+                <HelpBlock>Введите корректный адрес электронной почты.</HelpBlock>
+              ) : null}
             </FormGroup>
-            <FormGroup controlId='formPassword'
-                       validationState={shouldMarkError('password') || passwordValid
-                         ? 'error'
-                         : null}>
+            <FormGroup
+              controlId="formPassword"
+              validationState={
+                shouldMarkError("password") || passwordValid ? "error" : null
+              }>
               <ControlLabel>Пароль</ControlLabel>
               <FormControl
-                type='password'
-                name='password'
+                type="password"
+                name="password"
                 value={this.state.password}
                 onChange={this.handleInputChange}
-                onBlur={this.handleBlur('password')}/>
+                onBlur={this.handleBlur("password")}
+              />
               {passwordValid
-                ? password.map(msg => <HelpBlock>{msg}</HelpBlock>)
-                : null }
-              {shouldMarkError('password')
-                ? <HelpBlock>Пароль не может быть пустым.</HelpBlock>
+                ? password.map((msg) => <HelpBlock>{msg}</HelpBlock>)
                 : null}
+              {shouldMarkError("password") ? (
+                <HelpBlock>Пароль не может быть пустым.</HelpBlock>
+              ) : null}
             </FormGroup>
             <Checkbox
-              name='rememberMe'
+              name="rememberMe"
               checked={this.state.rememberMe}
               onChange={this.handleInputChange}>
               Запомнить
             </Checkbox>
             <Button
-              type='submit'
+              type="submit"
               block
-              bsStyle='primary'
+              bsStyle="primary"
               disabled={this.props.isAuthenticating || isDisabled}>
               Войти
             </Button>
           </Form>
-          <hr/>
+          <hr />
           <p>
-            <Link to='/password-reset'>Забыли пароль?</Link>
+            <Link to="/password-reset">Забыли пароль?</Link>
           </p>
           <p>
-            <Link to='/registration'>Регистрация</Link>
+            <Link to="/registration">Регистрация</Link>
           </p>
         </Col>
-        <Col sm={4}>{''}</Col>
+        <Col sm={4}>{""}</Col>
       </Row>
     )
   }
