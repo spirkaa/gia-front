@@ -21,5 +21,12 @@ Temporary Items
 .apdisk
 
 .project
-.idea/
+.idea
+.vscode
 TODO
+README.md
+
+.git
+.gitignore
+.dockerignore
+node_modules

@@ -1,0 +1,21 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: build
+    image: node:14.4.0-alpine3.12
+    commands:
+      - npm ci
+      - npm run build
+
+  - name: publish
+    image: plugins/docker
+    settings:
+      repo: registry.home.devmem.ru/gia/front
+      registry: registry.home.devmem.ru
+      dockerfile: ./compose/Dockerfile
+      tags:
+        - ${DRONE_COMMIT_SHA:0:8}
+        - latest
