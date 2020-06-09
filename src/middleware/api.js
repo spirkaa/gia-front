@@ -1,29 +1,27 @@
-import Symbol from 'es6-symbol'
-import { normalize } from 'normalizr'
-import { toastr } from 'react-redux-toastr'
+import { normalize } from "normalizr"
+import { toastr } from "react-redux-toastr"
 
-const API_ROOT = (
-  process.env.NODE_ENV !== 'production'
-    ? 'http://localhost:8000/api/v1/'
-    : 'https://gia-api.devmem.ru/api/v1/'
-)
+const API_ROOT =
+  process.env.NODE_ENV !== "production"
+    ? "http://localhost:8000/api/v1/"
+    : "https://gia-api.devmem.ru/api/v1/"
 
 let logger = () => null
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   logger = (json, norm) => {
-    console.groupCollapsed('callApi')
-    console.log('%cresponse', 'color:#9E9E9E;', json)
-    console.log('%cnormalize', 'color:#4CAF50;', norm)
+    console.groupCollapsed("callApi")
+    console.log("%cresponse", "color:#9E9E9E;", json)
+    console.log("%cnormalize", "color:#4CAF50;", norm)
     console.groupEnd()
   }
 }
 
-function callApi (endpoint, schema, method, data) {
-  const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
+function callApi(endpoint, schema, method, data) {
+  const fullUrl = endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint
 
   const headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
+    Accept: "application/json",
+    "Content-Type": "application/json",
   }
   const request = { method, headers }
 
@@ -31,7 +29,7 @@ function callApi (endpoint, schema, method, data) {
     headers.Authorization = `JWT ${data.jwt}`
   }
 
-  if (method !== 'GET') {
+  if (method !== "GET") {
     request.body = JSON.stringify(data)
   }
 
@@ -45,55 +43,65 @@ function callApi (endpoint, schema, method, data) {
   }
 
   return fetch(fullUrl, request)
-    .then(response =>
+    .then((response) =>
       response.ok
         ? response.json()
-        : response.json().then(err => Promise.reject(err)))
+        : response.json().then((err) => Promise.reject(err)),
+    )
     .then(normalizeResp)
 }
 
 // Action key that carries API call info interpreted by this Redux middleware.
-export const CALL_API = Symbol('Call API')
+export const CALL_API = Symbol("Call API")
 
 // A Redux middleware that interprets actions with CALL_API info specified.
 // Performs the call and promises when such actions are dispatched.
-export default store => next => action => {
-  const callAPI = action[ CALL_API ]
-  if (typeof callAPI === 'undefined') {
+export default (store) => (next) => (action) => {
+  const callAPI = action[CALL_API]
+  if (typeof callAPI === "undefined") {
     return next(action)
   }
 
   const { endpoint, schema, types, method, data } = callAPI
 
-  if (typeof endpoint !== 'string') {
-    throw new Error('Specify a string endpoint URL.')
+  if (typeof endpoint !== "string") {
+    throw new Error("Specify a string endpoint URL.")
   }
   if (!Array.isArray(types) || types.length !== 3) {
-    throw new Error('Expected an array of three action types.')
+    throw new Error("Expected an array of three action types.")
   }
-  if (!types.every(type => typeof type === 'string')) {
-    throw new Error('Expected action types to be strings.')
+  if (!types.every((type) => typeof type === "string")) {
+    throw new Error("Expected action types to be strings.")
   }
 
-  function actionWith (data) {
+  function actionWith(data) {
     const finalAction = { ...action, ...data }
-    delete finalAction[ CALL_API ]
+    delete finalAction[CALL_API]
     return finalAction
   }
 
-  const [ requestType, successType, failureType ] = types
+  const [requestType, successType, failureType] = types
   next(actionWith({ type: requestType }))
 
   return callApi(endpoint, schema, method, data).then(
-    response => next(actionWith({
-      type: successType,
-      payload: response,
-    })),
-    error => {next(actionWith({
-      type: failureType,
-      payload: error.message || error,
-      error: true,
-    }))
-      if (error.message) { toastr.error('API Error', error.message) }},
+    (response) =>
+      next(
+        actionWith({
+          type: successType,
+          payload: response,
+        }),
+      ),
+    (error) => {
+      next(
+        actionWith({
+          type: failureType,
+          payload: error.message || error,
+          error: true,
+        }),
+      )
+      if (error.message) {
+        toastr.error("API Error", error.message)
+      }
+    },
   )
 }

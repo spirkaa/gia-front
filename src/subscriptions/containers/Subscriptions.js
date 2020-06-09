@@ -1,21 +1,21 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { Col, Row } from 'react-bootstrap'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { Link } from "react-router-dom"
+import { connect } from "react-redux"
+import { Col, Row } from "react-bootstrap"
 
-import { Header } from '../../main/components'
-import { SubsTable } from '../components'
-import { subsAdd, subsClearPages, subsDel, subsLoad, subsPageSet } from '../actions'
-import { countSelector, subsWithExamsSelector } from '../selectors'
-import Pagination from './Pagination'
+import { Header } from "../../main/components"
+import { SubsTable } from "../components"
+import { subsAdd, subsClearPages, subsDel, subsLoad, subsPageSet } from "../actions"
+import { countSelector, subsWithExamsSelector } from "../selectors"
+import Pagination from "./Pagination"
 
 class Subscriptions extends Component {
-  componentDidMount () {
+  componentDidMount() {
     this.props.subsLoad(this.props.token)
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const { subsClearPages, subsLoad, subsPageSet, token, count } = this.props
     if (nextProps.isSubDelRequested) {
       subsClearPages()
@@ -29,33 +29,42 @@ class Subscriptions extends Component {
     }
   }
 
-  render () {
+  render() {
     const { token, count, subscriptions, subsDel, isSubRequesting } = this.props
-    const header = 'Подписки'
+    const header = "Подписки"
     return (
-      <Row className='bottom-buffer'>
-        <Header header={header} subHeader={count}/>
-        <Col sm={2}>{''}</Col>
-        {isSubRequesting && !subscriptions.length
-          ? <Col sm={8} className='text-center'>Loading...</Col>
-          : <Col sm={8}>
-            {subscriptions.length
-              ? <div>
-                <p className='text-center'>При появлении новых экзаменов мы отправим уведомление на почту</p>
+      <Row className="bottom-buffer">
+        <Header header={header} subHeader={count} />
+        <Col sm={2}>{""}</Col>
+        {isSubRequesting && !subscriptions.length ? (
+          <Col sm={8} className="text-center">
+            Loading...
+          </Col>
+        ) : (
+          <Col sm={8}>
+            {subscriptions.length ? (
+              <div>
+                <p className="text-center">
+                  При появлении новых экзаменов мы отправим уведомление на почту
+                </p>
                 <SubsTable
                   subscriptions={subscriptions}
                   onDelete={subsDel}
-                  token={token}/>
-                <Pagination/>
+                  token={token}
+                />
+                <Pagination />
               </div>
-              : <p>
+            ) : (
+              <p>
                 Для того, чтобы получать на почту уведомления о новых экзаменах,
-                перейдите на страницу <Link to='/employees'>Сотрудники</Link>,
-                найдите себя (или кого-нибудь еще)
-                и на странице подробностей нажмите кнопку «Подписаться на обновления»
-              </p>}
-          </Col>}
-        <Col sm={2}>{''}</Col>
+                перейдите на страницу <Link to="/employees">Сотрудники</Link>, найдите
+                себя (или кого-нибудь еще) и на странице подробностей нажмите кнопку
+                «Подписаться на обновления»
+              </p>
+            )}
+          </Col>
+        )}
+        <Col sm={2}>{""}</Col>
       </Row>
     )
   }

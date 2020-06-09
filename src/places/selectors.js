@@ -3,30 +3,27 @@ import createDeepEqualSelector, {
   getPlace,
   getTerritory,
   getPlacesActivePage,
-  getPlacesFilter
-} from '../main/selectors'
+  getPlacesFilter,
+} from "../main/selectors"
 
-const getCount = state => state.entities.placesPage[ 1 ] || { count: null }
+const getCount = (state) => state.entities.placesPage[1] || { count: null }
 
 export const placesActivePageSelector = createDeepEqualSelector(
   getPlacesActivePage,
-  page => page
+  (page) => page,
 )
 
 export const placesFilterSelector = createDeepEqualSelector(
   getPlacesFilter,
-  filter => filter
+  (filter) => filter,
 )
 
-export const countSelector = createDeepEqualSelector(
-  getCount,
-  page => page.count
-)
+export const countSelector = createDeepEqualSelector(getCount, (page) => page.count)
 
 const currentPageSelector = createDeepEqualSelector(
   getPlacesPage,
   placesActivePageSelector,
-  (page, number) => page[number] || { results: [] }
+  (page, number) => page[number] || { results: [] },
 )
 
 export const placesOnPageSelector = createDeepEqualSelector(
@@ -35,6 +32,6 @@ export const placesOnPageSelector = createDeepEqualSelector(
   getTerritory,
   (page, place, territory) =>
     page.results
-      .map(id => place[ id ])
-      .map(place => ({ ...place, ate: territory[ place.ate ] }))
+      .map((id) => place[id])
+      .map((place) => ({ ...place, ate: territory[place.ate] })),
 )

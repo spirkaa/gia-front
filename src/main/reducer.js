@@ -1,10 +1,10 @@
-import merge from 'lodash/merge'
-import { EMPLOYEES_FILTER_CLEAR_PAGES } from '../employees/actions'
-import { EXAMS_FILTER_CLEAR_PAGES } from '../exams/actions'
-import { ORGANISATIONS_FILTER_CLEAR_PAGES } from '../organisations/actions'
-import { PLACES_FILTER_CLEAR_PAGES } from '../places/actions'
-import { AUTH_LOGOUT } from '../auth/constants'
-import { SUBS_CLEAR_PAGES } from '../subscriptions/constants'
+import merge from "lodash/merge"
+import { EMPLOYEES_FILTER_CLEAR_PAGES } from "../employees/actions"
+import { EXAMS_FILTER_CLEAR_PAGES } from "../exams/actions"
+import { ORGANISATIONS_FILTER_CLEAR_PAGES } from "../organisations/actions"
+import { PLACES_FILTER_CLEAR_PAGES } from "../places/actions"
+import { AUTH_LOGOUT } from "../auth/constants"
+import { SUBS_CLEAR_PAGES } from "../subscriptions/constants"
 
 const INITIAL_STATE = {
   dataSourcePage: {},
@@ -27,7 +27,7 @@ const INITIAL_STATE = {
   subscription: {},
 }
 
-export function entities (state = INITIAL_STATE, action) {
+export function entities(state = INITIAL_STATE, action) {
   if (action.payload && action.payload.entities) {
     return merge({}, state, action.payload.entities)
   }
@@ -42,7 +42,7 @@ export function entities (state = INITIAL_STATE, action) {
       return { ...state, placesPage: {} }
     case SUBS_CLEAR_PAGES:
     case AUTH_LOGOUT:
-      return { ...state, subsPage: {}, subscription: {}}
+      return { ...state, subsPage: {}, subscription: {} }
     default:
       return state
   }

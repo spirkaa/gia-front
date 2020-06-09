@@ -1,1 +1,1 @@
-export { default as SubsTable } from './SubsTable'
+export { default as SubsTable } from "./SubsTable"

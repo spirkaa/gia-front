@@ -1,1 +1,1 @@
-export { PlacesTable } from './PlacesTable'
+export { PlacesTable } from "./PlacesTable"

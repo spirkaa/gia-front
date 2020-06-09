@@ -1,27 +1,27 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { Col } from 'react-bootstrap'
-import { Header } from '../../main/components'
-import { loadExams } from '../actions'
-import { examsWithDetailsSelector, countSelector } from '../selectors'
-import { ExamsTable } from '../components'
-import FilterContainer from './FilterContainer'
-import Pagination from './Pagination'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { connect } from "react-redux"
+import { Col } from "react-bootstrap"
+import { Header } from "../../main/components"
+import { loadExams } from "../actions"
+import { examsWithDetailsSelector, countSelector } from "../selectors"
+import { ExamsTable } from "../components"
+import FilterContainer from "./FilterContainer"
+import Pagination from "./Pagination"
 
 class Exams extends Component {
-  componentDidMount () {
+  componentDidMount() {
     this.props.loadExams()
   }
 
-  render () {
-    const header = 'Список организаторов ЕГЭ и ОГЭ'
+  render() {
+    const header = "Список организаторов ЕГЭ и ОГЭ"
     const { exams, count } = this.props
     return (
       <Col lg={12}>
-        <Header header={header} subHeader={count}/>
+        <Header header={header} subHeader={count} />
         <FilterContainer />
-        <ExamsTable exams={exams}/>
+        <ExamsTable exams={exams} />
         <Pagination />
       </Col>
     )
@@ -31,14 +31,14 @@ class Exams extends Component {
 Exams.propTypes = {
   exams: PropTypes.array.isRequired,
   count: PropTypes.number,
-  loadExams: PropTypes.func.isRequired
+  loadExams: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   exams: examsWithDetailsSelector(state),
-  count: countSelector(state)
+  count: countSelector(state),
 })
 
 export default connect(mapStateToProps, {
-  loadExams
+  loadExams,
 })(Exams)

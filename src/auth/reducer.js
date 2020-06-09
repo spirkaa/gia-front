@@ -1,4 +1,4 @@
-import * as c from './constants'
+import * as c from "./constants"
 
 export const AUTH_INITIAL_STATE = {
   token: null,
@@ -23,7 +23,7 @@ export const AUTH_INITIAL_STATE = {
   showModal: false,
 }
 
-export function auth (state = AUTH_INITIAL_STATE, action) {
+export function auth(state = AUTH_INITIAL_STATE, action) {
   let token = null
   let user = {}
   if (action.payload) {
@@ -43,14 +43,14 @@ export function auth (state = AUTH_INITIAL_STATE, action) {
         authLoginMsg: {},
       }
     case c.AUTH_LOGIN_SUCCESS:
-      sessionStorage.setItem('token', token)
+      sessionStorage.setItem("token", token)
       return {
         ...state,
         isAuthenticating: false,
         isAuthenticated: true,
         token: token,
         user: user,
-        authLoginMsg: { detail: 'Вход выполнен' },
+        authLoginMsg: { detail: "Вход выполнен" },
       }
     case c.AUTH_LOGIN_FAILURE:
       return {
@@ -72,9 +72,9 @@ export function auth (state = AUTH_INITIAL_STATE, action) {
         rememberMe: action.payload,
       }
     case c.AUTH_TOKEN_SAVE:
-      localStorage.setItem('token', action.payload)
+      localStorage.setItem("token", action.payload)
       return {
-        ...state
+        ...state,
       }
     case c.AUTH_TOKEN_CHECK_SUCCESS:
       return {
@@ -86,8 +86,8 @@ export function auth (state = AUTH_INITIAL_STATE, action) {
       }
     case c.AUTH_TOKEN_CHECK_FAILURE:
     case c.AUTH_LOGOUT:
-      localStorage.removeItem('token')
-      sessionStorage.removeItem('token')
+      localStorage.removeItem("token")
+      sessionStorage.removeItem("token")
       return {
         ...state,
         isAuthenticated: false,
@@ -102,7 +102,7 @@ export function auth (state = AUTH_INITIAL_STATE, action) {
         authRegMsg: {},
       }
     case c.AUTH_REG_SUCCESS:
-      sessionStorage.setItem('token', token)
+      sessionStorage.setItem("token", token)
       return {
         ...state,
         isAuthenticating: false,
@@ -110,7 +110,7 @@ export function auth (state = AUTH_INITIAL_STATE, action) {
         isRegistering: false,
         token: token,
         user: user,
-        authRegMsg: { detail: 'Регистрация успешно завершена' },
+        authRegMsg: { detail: "Регистрация успешно завершена" },
       }
     case c.AUTH_REG_FAILURE:
       return {
@@ -248,7 +248,7 @@ export function auth (state = AUTH_INITIAL_STATE, action) {
         ...state,
         isInfoUpdateRequesting: false,
         user: action.payload,
-        authInfoUpdateMsg: { detail: 'Настройки успешно обновлены' },
+        authInfoUpdateMsg: { detail: "Настройки успешно обновлены" },
       }
     case c.AUTH_INFO_UPDATE_FAILURE:
       return {

@@ -1,11 +1,11 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Row, Col } from 'react-bootstrap'
+import React from "react"
+import { Link } from "react-router-dom"
+import { Row, Col } from "react-bootstrap"
 
 export const NotFound = () => (
   <Row>
     <Col lg={12}>
-      Страница не найдена. Вернуться на <Link to='/'>главную</Link>?
+      Страница не найдена. Вернуться на <Link to="/">главную</Link>?
     </Col>
   </Row>
 )

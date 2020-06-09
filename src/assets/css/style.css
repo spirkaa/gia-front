@@ -1,79 +1,83 @@
 .dpad {
-    margin: 15px;
+  margin: 15px;
 }
 
 .bottom-buffer {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.bottom-buffer-5px {
+  margin-bottom: 5px;
 }
 
 .page-header {
-    margin: 0 0 26px;
+  margin: 0 0 26px;
 }
 
-.react-bs-table table tr td, .react-bs-table table tr th {
-    white-space: normal;
-    vertical-align: middle;
+.react-bs-table table tr td,
+.react-bs-table table tr th {
+  white-space: normal;
+  vertical-align: middle;
 }
 
 .form-control {
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 form > .btn {
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 @media only screen and (max-width: 767px),
-(min-device-width: 768px) and (max-device-width: 1024px) {
+  (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* Force table to not be like tables anymore */
+  .no-more-tables table,
+  .no-more-tables thead,
+  .no-more-tables tbody,
+  .no-more-tables th,
+  .no-more-tables td,
+  .no-more-tables tr {
+    display: block;
+  }
 
-    /* Force table to not be like tables anymore */
-    .no-more-tables table,
-    .no-more-tables thead,
-    .no-more-tables tbody,
-    .no-more-tables th,
-    .no-more-tables td,
-    .no-more-tables tr {
-        display: block;
-    }
+  /* Hide table headers (but not display: none;, for accessibility) */
+  .no-more-tables thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
 
-    /* Hide table headers (but not display: none;, for accessibility) */
-    .no-more-tables thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
+  .no-more-tables tr {
+    border: 1px solid #ccc;
+  }
 
-    .no-more-tables tr {
-        border: 1px solid #ccc;
-    }
+  .no-more-tables td {
+    /* Behave  like a "row" */
+    border: none !important;
+    border-bottom: 1px solid #eee !important;
+    position: relative !important;
+    padding-left: 35% !important;
+    white-space: normal !important;
+    text-align: left !important;
+  }
 
-    .no-more-tables td {
-        /* Behave  like a "row" */
-        border: none !important;
-        border-bottom: 1px solid #eee !important;
-        position: relative !important;
-        padding-left: 35% !important;
-        white-space: normal !important;
-        text-align: left !important;
-    }
+  .no-more-tables td:before {
+    /* Now like a table header */
+    position: absolute;
+    /* Top/left values mimic padding */
+    top: 6px;
+    left: 6px;
+    width: 30%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: bold;
+  }
 
-    .no-more-tables td:before {
-        /* Now like a table header */
-        position: absolute;
-        /* Top/left values mimic padding */
-        top: 6px;
-        left: 6px;
-        width: 30%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align: left;
-        font-weight: bold;
-    }
-
-    /*
+  /*
     Label the data
     */
-    .no-more-tables td:before {
-        content: attr(data-title);
-    }
+  .no-more-tables td:before {
+    content: attr(data-title);
+  }
 }
