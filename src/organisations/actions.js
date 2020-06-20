@@ -17,13 +17,13 @@ export const ORGANISATIONS_FILTER_CLEAR_PAGES = "ORGANISATIONS_FILTER_CLEAR_PAGE
 export const ORGANISATIONS_PAGE_SET = "ORGANISATIONS_PAGE_SET"
 
 export function loadOrganisations(id = 1, filter = ORG_FILTER_INITIAL_STATE) {
-  const { name } = filter
+  const { search } = filter
   return loadThis({
     id: id,
     source: "orgPage",
     types: [ORGANISATIONS_REQUEST, ORGANISATIONS_SUCCESS, ORGANISATIONS_FAILURE],
     schema: Schemas.ORG_PAGE,
-    endpoint: `${ORGANISATION_ENDPOINT}/?name=${name}&page=${id}`,
+    endpoint: `${ORGANISATION_ENDPOINT}/?search=${search}&page=${id}`,
   })
 }
 

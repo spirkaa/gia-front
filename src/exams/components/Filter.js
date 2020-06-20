@@ -1,7 +1,5 @@
-import isEqual from "lodash/isEqual"
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import { findDOMNode } from "react-dom"
 import { connect } from "react-redux"
 import {
   Row,
@@ -12,6 +10,9 @@ import {
   ControlLabel,
   Button,
   Glyphicon,
+  InputGroup,
+  DropdownButton,
+  MenuItem,
 } from "react-bootstrap"
 import { loadDates, loadLevels } from "../actions"
 import { datesSelector, levelsSelector } from "../selectors"
@@ -19,29 +20,22 @@ import { datesSelector, levelsSelector } from "../selectors"
 class Filter extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      date: "",
+      level: "",
+      search: "",
+    }
     this.handleKeyUp = this.handleKeyUp.bind(this)
-    this.handleButtonClick = this.handleButtonClick.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSelectDate = this.handleSelectDate.bind(this)
+    this.handleSelectLevel = this.handleSelectLevel.bind(this)
+    this.handleClickSubmit = this.handleClickSubmit.bind(this)
+    this.handleClickReset = this.handleClickReset.bind(this)
   }
 
   componentDidMount() {
     this.props.loadDates()
     this.props.loadLevels()
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.filterVals, this.props.filterVals)) {
-      findDOMNode(this.refs.date).value = nextProps.filterVals.date
-      findDOMNode(this.refs.level).value = nextProps.filterVals.level
-      findDOMNode(this.refs.placeCode).value = nextProps.filterVals.placeCode
-      findDOMNode(this.refs.placeName).value = nextProps.filterVals.placeName
-      findDOMNode(this.refs.placeAddr).value = nextProps.filterVals.placeAddr
-      findDOMNode(this.refs.empName).value = nextProps.filterVals.empName
-      findDOMNode(this.refs.empOrgName).value = nextProps.filterVals.empOrgName
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return !isEqual(nextProps, this.props)
   }
 
   handleKeyUp(e) {
@@ -50,107 +44,115 @@ class Filter extends Component {
     }
   }
 
-  handleButtonClick() {
+  handleChange(e) {
+    this.setState({
+      search: e.target.value,
+    })
+  }
+
+  handleSelectDate(date) {
+    this.setState({
+      date: new Date(date).toLocaleDateString("ru"),
+    })
+  }
+
+  handleSelectLevel(level) {
+    this.setState({
+      level: level,
+    })
+  }
+
+  handleClickSubmit() {
     this.props.onChange({
-      date: findDOMNode(this.refs.date).value,
-      level: findDOMNode(this.refs.level).value,
-      placeCode: findDOMNode(this.refs.placeCode).value,
-      placeName: findDOMNode(this.refs.placeName).value,
-      placeAddr: findDOMNode(this.refs.placeAddr).value,
-      empName: findDOMNode(this.refs.empName).value,
-      empOrgName: findDOMNode(this.refs.empOrgName).value,
+      date: this.state.date,
+      level: this.state.level,
+      search: this.state.search,
+    })
+  }
+
+  handleClickReset() {
+    Array.from(document.querySelectorAll("input")).forEach(
+      (input) => (input.value = ""),
+    )
+    this.setState({
+      date: "",
+      level: "",
+      search: "",
+    })
+    this.props.onChange({
+      date: "",
+      level: "",
+      search: "",
     })
   }
 
   render() {
-    const { filterVals, dates, levels } = this.props
+    const { dates, levels } = this.props
     return (
       <Row className="bottom-buffer">
-        <Col lg={12} className="text-center">
-          <Form inline>
+        <Col md={3} sm={3}></Col>
+        <Col md={6} sm={6} className="text-center">
+          <Form onSubmit={(e) => e.preventDefault()}>
             <FormGroup controlId="formInlineDate">
-              <ControlLabel srOnly>Дата</ControlLabel>
-              <FormControl
-                componentClass="select"
-                placeholder="Дата"
-                ref="date"
-                defaultValue={filterVals.date}
-                onKeyUp={this.handleKeyUp}>
-                {<option></option>}
-                {dates.map((date) => (
-                  <option key={date}>{new Date(date).toLocaleDateString("ru")}</option>
-                ))}
-              </FormControl>
-            </FormGroup>{" "}
-            <FormGroup controlId="formInlineLevel">
-              <ControlLabel srOnly>Уровень</ControlLabel>
-              <FormControl
-                componentClass="select"
-                placeholder="Уровень"
-                ref="level"
-                defaultValue={filterVals.level}
-                onKeyUp={this.handleKeyUp}>
-                {<option></option>}
-                {levels.map((level) => (
-                  <option key={level}>{level}</option>
-                ))}
-              </FormControl>
-            </FormGroup>{" "}
-            <FormGroup controlId="formInlinePlaceCode">
-              <ControlLabel srOnly>Код ППЭ</ControlLabel>
-              <FormControl
-                type="text"
-                placeholder="Код ППЭ"
-                ref="placeCode"
-                defaultValue={filterVals.placeCode}
-                onKeyUp={this.handleKeyUp}
-              />
-            </FormGroup>{" "}
-            <FormGroup controlId="formInlinePlaceName">
-              <ControlLabel srOnly>Наименование ППЭ</ControlLabel>
-              <FormControl
-                type="text"
-                placeholder="Наименование ППЭ"
-                ref="placeName"
-                defaultValue={filterVals.placeName}
-                onKeyUp={this.handleKeyUp}
-              />
-            </FormGroup>{" "}
-            <FormGroup controlId="formInlinePlaceAddr">
-              <ControlLabel srOnly>Адрес ППЭ</ControlLabel>
-              <FormControl
-                type="text"
-                placeholder="Адрес ППЭ"
-                ref="placeAddr"
-                defaultValue={filterVals.placeAddr}
-                onKeyUp={this.handleKeyUp}
-              />
-            </FormGroup>{" "}
-            <FormGroup controlId="formInlineEmpName">
-              <ControlLabel srOnly>ФИО сотрудника</ControlLabel>
-              <FormControl
-                type="text"
-                placeholder="ФИО сотрудника"
-                ref="empName"
-                defaultValue={filterVals.empName}
-                onKeyUp={this.handleKeyUp}
-              />
-            </FormGroup>{" "}
-            <FormGroup controlId="formInlineEmpOrgName">
-              <ControlLabel srOnly>Место работы</ControlLabel>
-              <FormControl
-                type="text"
-                placeholder="Место работы"
-                ref="empOrgName"
-                defaultValue={filterVals.empOrgName}
-                onKeyUp={this.handleKeyUp}
-              />
-            </FormGroup>{" "}
-            <Button bsStyle="primary" onClick={this.handleButtonClick}>
-              <Glyphicon glyph="search" />
-            </Button>
+              <InputGroup>
+                <ControlLabel srOnly>Дата</ControlLabel>
+                <DropdownButton
+                  componentClass={InputGroup.Button}
+                  id="date"
+                  title={this.state.date}>
+                  {dates.map((date) => (
+                    <MenuItem key={date} onSelect={() => this.handleSelectDate(date)}>
+                      {new Date(date).toLocaleDateString("ru")}
+                    </MenuItem>
+                  ))}
+                </DropdownButton>
+
+                <DropdownButton
+                  componentClass={InputGroup.Button}
+                  id="level"
+                  title={this.state.level}>
+                  {levels.map((level) => (
+                    <MenuItem
+                      key={level}
+                      onSelect={() => this.handleSelectLevel(level)}>
+                      {level}
+                    </MenuItem>
+                  ))}
+                </DropdownButton>
+
+                <ControlLabel srOnly>Поиск</ControlLabel>
+                <FormControl
+                  autoFocus
+                  type="text"
+                  placeholder="Поиск..."
+                  defaultValue={this.state.search}
+                  onKeyUp={this.handleKeyUp}
+                  onChange={this.handleChange}
+                />
+
+                <InputGroup.Button>
+                  <Button
+                    bsStyle="default"
+                    disabled={
+                      !this.state.search.length &&
+                      !this.state.date.length &&
+                      !this.state.level.length
+                    }
+                    onClick={this.handleClickReset}>
+                    <Glyphicon glyph="remove" />
+                  </Button>
+                </InputGroup.Button>
+
+                <InputGroup.Button>
+                  <Button bsStyle="primary" onClick={this.handleClickSubmit}>
+                    Найти
+                  </Button>
+                </InputGroup.Button>
+              </InputGroup>
+            </FormGroup>
           </Form>
         </Col>
+        <Col md={3} sm={3}></Col>
       </Row>
     )
   }

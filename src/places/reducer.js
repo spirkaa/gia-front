@@ -9,11 +9,7 @@ export function placesActivePage(state = 1, action) {
 }
 
 export const PLACES_FILTER_INITIAL_STATE = {
-  code: "",
-  name: "",
-  addr: "",
-  ateCode: "",
-  ateName: "",
+  search: "",
 }
 
 export function placesFilter(state = PLACES_FILTER_INITIAL_STATE, action) {

@@ -17,13 +17,13 @@ export const EMPLOYEES_FILTER_CLEAR_PAGES = "EMPLOYEES_FILTER_CLEAR_PAGES"
 export const EMPLOYEES_PAGE_SET = "EMPLOYEES_PAGE_SET"
 
 export function loadEmployees(id = 1, filter = EMP_FILTER_INITIAL_STATE) {
-  const { name, orgName } = filter
+  const { search } = filter
   return loadThis({
     id: id,
     source: "empPage",
     types: [EMPLOYEES_REQUEST, EMPLOYEES_SUCCESS, EMPLOYEES_FAILURE],
     schema: Schemas.EMP_PAGE,
-    endpoint: `${EMPLOYEE_ENDPOINT}/?name=${name}&org_name=${orgName}&page=${id}`,
+    endpoint: `${EMPLOYEE_ENDPOINT}/?search=${search}&page=${id}`,
   })
 }
 

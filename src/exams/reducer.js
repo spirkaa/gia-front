@@ -11,11 +11,7 @@ export function examActivePage(state = 1, action) {
 export const EXAM_FILTER_INITIAL_STATE = {
   date: "",
   level: "",
-  placeCode: "",
-  placeName: "",
-  placeAddr: "",
-  empName: "",
-  empOrgName: "",
+  search: "",
 }
 
 export function examFilter(state = EXAM_FILTER_INITIAL_STATE, action) {

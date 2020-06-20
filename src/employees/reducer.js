@@ -9,8 +9,7 @@ export function empActivePage(state = 1, action) {
 }
 
 export const EMP_FILTER_INITIAL_STATE = {
-  name: "",
-  orgName: "",
+  search: "",
 }
 
 export function empFilter(state = EMP_FILTER_INITIAL_STATE, action) {

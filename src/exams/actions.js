@@ -23,15 +23,14 @@ export const EXAMS_FILTER_CLEAR_PAGES = "EXAMS_FILTER_CLEAR_PAGES"
 export const EXAMS_PAGE_SET = "EXAMS_PAGE_SET"
 
 export function loadExams(id = 1, filter = EXAM_FILTER_INITIAL_STATE) {
-  const { date, level, placeCode, placeName, placeAddr, empName, empOrgName } = filter
+  const { date, level, search } = filter
   return loadThis({
     id: id,
     source: "examPage",
     types: [EXAMS_REQUEST, EXAMS_SUCCESS, EXAMS_FAILURE],
     schema: Schemas.EXAM_PAGE,
     endpoint: `${EXAM_ENDPOINT}/?date=${date}&level=${level}
-&p_code=${placeCode}&p_name=${placeName}&p_addr=${placeAddr}
-&emp_name=${empName}&emp_org_name=${empOrgName}&page=${id}`,
+&search=${search}&page=${id}`,
   })
 }
 
