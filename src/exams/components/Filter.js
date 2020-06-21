@@ -117,7 +117,6 @@ class Filter extends Component {
                     </MenuItem>
                   ))}
                 </DropdownButton>
-
                 <DropdownButton
                   componentClass={InputGroup.Button}
                   id="level"
@@ -132,10 +131,10 @@ class Filter extends Component {
                     </MenuItem>
                   ))}
                 </DropdownButton>
-
                 <ControlLabel srOnly>Поиск</ControlLabel>
                 <FormControl
                   autoFocus
+                  autoComplete="off"
                   type="text"
                   placeholder="Поиск..."
                   defaultValue={this.state.search}

@@ -76,6 +76,7 @@ export default class FilterContainer extends Component {
                 <ControlLabel srOnly>Поиск</ControlLabel>
                 <FormControl
                   autoFocus
+                  autoComplete="off"
                   type="text"
                   placeholder="Поиск..."
                   ref="search"
