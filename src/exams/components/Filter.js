@@ -9,7 +9,6 @@ import {
   FormControl,
   ControlLabel,
   Button,
-  Glyphicon,
   InputGroup,
   DropdownButton,
   MenuItem,
@@ -51,15 +50,24 @@ class Filter extends Component {
   }
 
   handleSelectDate(date) {
-    this.setState({
-      date: new Date(date).toLocaleDateString("ru"),
-    })
+    const dateString = new Date(date).toLocaleDateString("ru")
+    this.state.date === dateString
+      ? this.setState({
+          date: "",
+        })
+      : this.setState({
+          date: dateString,
+        })
   }
 
   handleSelectLevel(level) {
-    this.setState({
-      level: level,
-    })
+    this.state.level === level
+      ? this.setState({
+          level: "",
+        })
+      : this.setState({
+          level: level,
+        })
   }
 
   handleClickSubmit() {
@@ -98,11 +106,14 @@ class Filter extends Component {
                 <DropdownButton
                   componentClass={InputGroup.Button}
                   id="date"
-                  title={this.state.date}
+                  title={this.state.date ? "☑" : ""}
                   aria-label="Дата экзамена">
                   {dates.map((date) => (
                     <MenuItem key={date} onSelect={() => this.handleSelectDate(date)}>
                       {new Date(date).toLocaleDateString("ru")}
+                      {this.state.date === new Date(date).toLocaleDateString("ru")
+                        ? " ✔"
+                        : ""}
                     </MenuItem>
                   ))}
                 </DropdownButton>
@@ -110,13 +121,14 @@ class Filter extends Component {
                 <DropdownButton
                   componentClass={InputGroup.Button}
                   id="level"
-                  title={this.state.level}
+                  title={this.state.level ? "☑" : ""}
                   aria-label="Уровень экзамена">
                   {levels.map((level) => (
                     <MenuItem
                       key={level}
                       onSelect={() => this.handleSelectLevel(level)}>
                       {level}
+                      {this.state.level === level ? " ✔" : ""}
                     </MenuItem>
                   ))}
                 </DropdownButton>
@@ -130,21 +142,20 @@ class Filter extends Component {
                   onKeyUp={this.handleKeyUp}
                   onChange={this.handleChange}
                 />
-
-                <InputGroup.Button>
-                  <Button
-                    bsStyle="default"
-                    disabled={
-                      !this.state.search.length &&
-                      !this.state.date.length &&
-                      !this.state.level.length
-                    }
-                    onClick={this.handleClickReset}
-                    aria-label="Очистить">
-                    <Glyphicon glyph="remove" />
-                  </Button>
-                </InputGroup.Button>
-
+                {!this.state.search.length &&
+                !this.state.date.length &&
+                !this.state.level.length ? (
+                  ""
+                ) : (
+                  <InputGroup.Button>
+                    <Button
+                      bsStyle="default"
+                      onClick={this.handleClickReset}
+                      aria-label="Очистить">
+                      {"✕"}
+                    </Button>
+                  </InputGroup.Button>
+                )}
                 <InputGroup.Button>
                   <Button bsStyle="primary" onClick={this.handleClickSubmit}>
                     Найти
