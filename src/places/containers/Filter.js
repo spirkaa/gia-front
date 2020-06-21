@@ -25,7 +25,7 @@ class Filter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      search: "",
+      search: this.props.filterVals.search ? this.props.filterVals.search : "",
     }
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)

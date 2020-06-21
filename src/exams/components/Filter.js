@@ -21,9 +21,9 @@ class Filter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      date: "",
-      level: "",
-      search: "",
+      date: this.props.filterVals.date ? this.props.filterVals.date : "",
+      level: this.props.filterVals.level ? this.props.filterVals.level : "",
+      search: this.props.filterVals.search ? this.props.filterVals.search : "",
     }
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)
