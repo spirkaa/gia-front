@@ -31,7 +31,17 @@ const columns = [
     attrs: { "data-title": "Дата" },
     formatter: (cell, row) => new Date(row.date).toLocaleDateString("ru"),
     headerStyle: (column, colIndex) => {
-      return { width: "7%" }
+      return {
+        width: "8%",
+        maxWidth: "0",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+      }
+    },
+    style: {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
     },
   },
   {
@@ -39,7 +49,17 @@ const columns = [
     text: "Уровень",
     attrs: { "data-title": "Уровень" },
     headerStyle: (column, colIndex) => {
-      return { width: "5%" }
+      return {
+        width: "4%",
+        maxWidth: "0",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+      }
+    },
+    style: {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
     },
   },
   {
