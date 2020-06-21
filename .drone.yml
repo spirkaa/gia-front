@@ -1,7 +1,13 @@
 ---
 kind: pipeline
-type: docker
-name: default
+name: build
+trigger:
+  branch:
+    - master
+  event:
+    exclude:
+      - promote
+      - rollback
 
 steps:
   - name: build
@@ -13,8 +19,8 @@ steps:
   - name: publish
     image: plugins/docker
     settings:
-      repo: registry.home.devmem.ru/gia/front
       registry: registry.home.devmem.ru
+      repo: registry.home.devmem.ru/gia/front
       dockerfile: ./compose/Dockerfile
       tags:
         - ${DRONE_COMMIT_SHA:0:8}
