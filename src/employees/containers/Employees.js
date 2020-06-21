@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { Col } from "react-bootstrap"
+import { Col, Row } from "react-bootstrap"
 import { Header } from "../../main/components"
 import { loadEmployees } from "../actions"
 import { employeesOnPageSelector, countSelector } from "../selectors"
@@ -18,12 +18,18 @@ class Employees extends Component {
     const header = "Сотрудники, участвующие в ГИА"
     const { employees, count } = this.props
     return (
-      <Col lg={12}>
+      <div>
         <Header header={header} subHeader={count} />
         <Filter />
-        <EmpTable employees={employees} />
-        <Pagination />
-      </Col>
+        <Row>
+          <Col lg={1}></Col>
+          <Col lg={10}>
+            <EmpTable employees={employees} />
+            <Pagination />
+          </Col>
+          <Col lg={1}></Col>
+        </Row>
+      </div>
     )
   }
 }

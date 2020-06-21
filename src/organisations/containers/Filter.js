@@ -85,7 +85,8 @@ class Filter extends Component {
                   <Button
                     bsStyle="default"
                     disabled={!this.state.search.length}
-                    onClick={this.handleClickReset}>
+                    onClick={this.handleClickReset}
+                    aria-label="Очистить">
                     <Glyphicon glyph="remove" />
                   </Button>
                 </InputGroup.Button>

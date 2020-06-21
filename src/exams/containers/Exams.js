@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { Col } from "react-bootstrap"
+import { Col, Row } from "react-bootstrap"
 import { Header } from "../../main/components"
 import { loadExams } from "../actions"
 import { examsWithDetailsSelector, countSelector } from "../selectors"
@@ -18,12 +18,16 @@ class Exams extends Component {
     const header = "Список организаторов ЕГЭ и ОГЭ"
     const { exams, count } = this.props
     return (
-      <Col lg={12}>
+      <div>
         <Header header={header} subHeader={count} />
         <FilterContainer />
-        <ExamsTable exams={exams} />
-        <Pagination />
-      </Col>
+        <Row>
+          <Col lg={12}>
+            <ExamsTable exams={exams} />
+            <Pagination />
+          </Col>
+        </Row>
+      </div>
     )
   }
 }

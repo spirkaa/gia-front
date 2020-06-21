@@ -46,33 +46,41 @@ class EmployeeDetail extends Component {
         <Link to={`/organisations/detail/${employee.org.id}`}>{employee.org.name}</Link>
       )
       return (
-        <Row className="bottom-buffer">
+        <div>
           <Header header={employee.name} subHeader={org} />
-          <Col sm={4}>{""}</Col>
-          <Col sm={4} className="bottom-buffer">
-            <Form onSubmit={this.handleSubmit}>
-              <Button
-                block
-                type="submit"
-                bsStyle="primary"
-                disabled={isSubAddRequesting}>
-                {isSubAddRequesting
-                  ? "Пожалуйста, подождите..."
-                  : "Подписаться на обновления"}
-              </Button>
-            </Form>
-          </Col>
-          <Col sm={4}>{""}</Col>
-          <Col sm={12}>
-            <ExamTable exams={employee.exams} />
-          </Col>
-        </Row>
+          <Row>
+            <Col sm={4}></Col>
+            <Col sm={4} className="bottom-buffer">
+              <Form onSubmit={this.handleSubmit}>
+                <Button
+                  block
+                  type="submit"
+                  bsStyle="primary"
+                  disabled={isSubAddRequesting}>
+                  {isSubAddRequesting
+                    ? "Пожалуйста, подождите..."
+                    : "Подписаться на обновления"}
+                </Button>
+              </Form>
+            </Col>
+            <Col sm={4}></Col>
+          </Row>
+          <Row>
+            <Col lg={1}></Col>
+            <Col lg={10}>
+              <ExamTable exams={employee.exams} />
+            </Col>
+            <Col lg={1}></Col>
+          </Row>
+        </div>
       )
     }
     return (
-      <Col lg={12} className="text-center">
-        Loading...
-      </Col>
+      <Row>
+        <Col lg={12} className="text-center">
+          Loading...
+        </Col>
+      </Row>
     )
   }
 }

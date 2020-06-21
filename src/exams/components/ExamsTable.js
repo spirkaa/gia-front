@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
-import { Row, Glyphicon } from "react-bootstrap"
+import { Glyphicon } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 
 const placeFormat = (cell, row) => (
@@ -42,7 +42,17 @@ const columns = [
     attrs: { "data-title": "Дата" },
     formatter: (cell, row) => new Date(row.date).toLocaleDateString("ru"),
     headerStyle: (column, colIndex) => {
-      return { width: "7%" }
+      return {
+        width: "8%",
+        maxWidth: "0",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+      }
+    },
+    style: {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
     },
   },
   {
@@ -50,7 +60,17 @@ const columns = [
     text: "Уровень",
     attrs: { "data-title": "Уровень" },
     headerStyle: (column, colIndex) => {
-      return { width: "5%" }
+      return {
+        width: "4%",
+        maxWidth: "0",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+      }
+    },
+    style: {
+      overflow: "hidden",
+      textOverflow: "ellipsis",
     },
   },
   {
@@ -82,15 +102,13 @@ const columns = [
 ]
 
 export const ExamsTable = ({ exams }) => (
-  <Row>
-    <BootstrapTable
-      keyField="id"
-      columns={columns}
-      data={exams}
-      hover={true}
-      condensed={true}
-      wrapperClasses="no-more-tables"></BootstrapTable>
-  </Row>
+  <BootstrapTable
+    keyField="id"
+    columns={columns}
+    data={exams}
+    hover={true}
+    condensed={true}
+    wrapperClasses="no-more-tables"></BootstrapTable>
 )
 
 ExamsTable.propTypes = {

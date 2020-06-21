@@ -95,11 +95,11 @@ class Filter extends Component {
           <Form onSubmit={(e) => e.preventDefault()}>
             <FormGroup controlId="formInlineDate">
               <InputGroup>
-                <ControlLabel srOnly>Дата</ControlLabel>
                 <DropdownButton
                   componentClass={InputGroup.Button}
                   id="date"
-                  title={this.state.date}>
+                  title={this.state.date}
+                  aria-label="Дата экзамена">
                   {dates.map((date) => (
                     <MenuItem key={date} onSelect={() => this.handleSelectDate(date)}>
                       {new Date(date).toLocaleDateString("ru")}
@@ -110,7 +110,8 @@ class Filter extends Component {
                 <DropdownButton
                   componentClass={InputGroup.Button}
                   id="level"
-                  title={this.state.level}>
+                  title={this.state.level}
+                  aria-label="Уровень экзамена">
                   {levels.map((level) => (
                     <MenuItem
                       key={level}
@@ -138,7 +139,8 @@ class Filter extends Component {
                       !this.state.date.length &&
                       !this.state.level.length
                     }
-                    onClick={this.handleClickReset}>
+                    onClick={this.handleClickReset}
+                    aria-label="Очистить">
                     <Glyphicon glyph="remove" />
                   </Button>
                 </InputGroup.Button>

@@ -4,7 +4,7 @@ import { Header } from "./Header"
 
 export const About = () => (
   <div>
-    <Header header="О сайте" subHeader=" " />
+    <Header header="О сайте" />
     <Row>
       <Col sm={1}> </Col>
       <Col sm={10}>

@@ -1,15 +1,17 @@
 import React from "react"
 import PropTypes from "prop-types"
 import Helmet from "react-helmet"
-import { PageHeader } from "react-bootstrap"
+import { PageHeader, Row } from "react-bootstrap"
 
 export const Header = ({ header, subHeader }) => (
-  <PageHeader className="text-center">
-    <Helmet title={header} />
-    {header}
-    <br />
-    <small>{!subHeader ? "..." : subHeader}</small>
-  </PageHeader>
+  <Row>
+    <PageHeader className="text-center">
+      <Helmet title={header} />
+      {header}
+      <br />
+      <small>{!subHeader ? "..." : subHeader}</small>
+    </PageHeader>
+  </Row>
 )
 
 Header.propTypes = {

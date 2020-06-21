@@ -1,7 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
-import { Row } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 
 const columns = [
@@ -20,14 +19,12 @@ const columns = [
 ]
 
 export const OrgTable = ({ organisations }) => (
-  <Row>
-    <BootstrapTable
-      keyField="id"
-      columns={columns}
-      data={organisations}
-      hover={true}
-      condensed={true}></BootstrapTable>
-  </Row>
+  <BootstrapTable
+    keyField="id"
+    columns={columns}
+    data={organisations}
+    hover={true}
+    condensed={true}></BootstrapTable>
 )
 
 OrgTable.propTypes = {

@@ -1,6 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { Row, Glyphicon } from "react-bootstrap"
+import { Glyphicon } from "react-bootstrap"
 import BootstrapTable from "react-bootstrap-table-next"
 
 const placeFormat = (cell, row) => (
@@ -33,14 +33,12 @@ const columns = [
 ]
 
 export const PlacesTable = ({ places }) => (
-  <Row>
-    <BootstrapTable
-      keyField="id"
-      columns={columns}
-      data={places}
-      hover={true}
-      condensed={true}></BootstrapTable>
-  </Row>
+  <BootstrapTable
+    keyField="id"
+    columns={columns}
+    data={places}
+    hover={true}
+    condensed={true}></BootstrapTable>
 )
 
 PlacesTable.propTypes = {
