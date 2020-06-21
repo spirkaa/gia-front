@@ -9,7 +9,7 @@ const placeFormat = (cell, row) => (
     №{cell.code}: {cell.name}
     <br />
     <a
-      href={`https://yandex.ru/maps/?text=${cell.addr}`}
+      href={encodeURI(`https://yandex.ru/maps/?text=${cell.addr}`)}
       target="_blank"
       rel="noopener noreferrer"
       title="Открыть карту">
