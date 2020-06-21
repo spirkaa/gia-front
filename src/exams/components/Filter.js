@@ -40,7 +40,7 @@ class Filter extends Component {
 
   handleKeyUp(e) {
     if (e.keyCode === 13) {
-      this.handleButtonClick()
+      this.handleClickSubmit()
     }
   }
 
