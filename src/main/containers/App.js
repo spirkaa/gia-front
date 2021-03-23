@@ -19,12 +19,12 @@ export const App = () => (
       transitionOut="fadeOut"
     />
     <Helmet
-      titleTemplate="%s | ГИА 2020 в Москве"
-      defaultTitle="ГИА 2020 в Москве"
+      titleTemplate="%s | ГИА 2021 в Москве"
+      defaultTitle="ГИА 2021 в Москве"
       meta={[
         {
           name: "description",
-          content: "Список организаторов ППЭ ЕГЭ и ОГЭ во время ГИА 2020 в Москве",
+          content: "Список организаторов ППЭ ЕГЭ и ОГЭ во время ГИА 2021 в Москве",
         },
       ]}
     />

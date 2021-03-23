@@ -5,7 +5,7 @@ export const Footer = () => (
   <footer className="bottom-buffer">
     <hr />
     <Col lg={12} className="text-center">
-      <p>2016-2020 &copy; piv@devmem.ru</p>
+      <p>2016-2021 &copy; piv@devmem.ru</p>
     </Col>
   </footer>
 )
