@@ -1,6 +1,4 @@
 import React, { Component } from "react" // eslint-disable-line
-import { withRouter } from "react-router"
-
 class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
@@ -13,4 +11,4 @@ class ScrollToTop extends Component {
   }
 }
 
-export default withRouter(ScrollToTop)
+export default ScrollToTop

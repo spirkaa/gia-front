@@ -1,5 +1,5 @@
 import { toastr } from "react-redux-toastr"
-import { routerActions } from "connected-react-router"
+import { replace } from "redux-first-history"
 import { connectedReduxRedirect } from "redux-auth-wrapper/history4/redirect"
 
 import { Login } from "./auth/containers"
@@ -9,7 +9,7 @@ export const Authenticated = connectedReduxRedirect({
     state.auth.isAuthenticated && !state.auth.isAuthenticating,
   authenticatingSelector: (state) => state.auth.isAuthenticating,
   redirectPath: "/login",
-  redirectAction: routerActions.replace,
+  redirectAction: replace,
   wrapperDisplayName: "Authenticated",
 })
 
@@ -24,7 +24,7 @@ export const NotAuthenticated = connectedReduxRedirect({
     return "/subscriptions"
   },
   redirectAction: (newLoc) => (dispatch) => {
-    dispatch(routerActions.replace(newLoc))
+    replace(newLoc)
     toastr.success("Вход выполнен", "Добро пожаловать!")
   },
   wrapperDisplayName: "NotAuthenticated",

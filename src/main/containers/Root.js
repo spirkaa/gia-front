@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Provider } from "react-redux"
-import { Route } from "react-router-dom"
-import { ConnectedRouter } from "connected-react-router"
+import { Route, Routes } from "react-router-dom"
+import { HistoryRouter as Router } from "redux-first-history/rr6"
 
 import { App } from "./App"
 
@@ -11,9 +11,11 @@ export default class Root extends Component {
     const { store, history } = this.props
     return (
       <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <Route path="/" component={App} />
-        </ConnectedRouter>
+        <Router history={history}>
+          <Routes>
+            <Route path="*" element={<App />} />
+          </Routes>
+        </Router>
       </Provider>
     )
   }

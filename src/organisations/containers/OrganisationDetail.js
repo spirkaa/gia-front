@@ -9,7 +9,7 @@ import { EmpTable } from "../components"
 
 class OrganisationDetail extends Component {
   componentDidMount() {
-    const { orgId } = this.props.match.params
+    const { orgId } = this.props.params
     this.props.loadOrgDetail(orgId)
   }
 

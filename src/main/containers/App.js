@@ -6,7 +6,7 @@ import { Grid } from "react-bootstrap"
 import { Disclaimer, Footer } from "../components"
 import NavContainer from "./NavContainer"
 import ScrollToTop from "./ScrollToTop"
-import Routes from "../../routes"
+import AppRoutes from "../../routes"
 
 export const App = () => (
   <div>
@@ -32,7 +32,7 @@ export const App = () => (
     <ScrollToTop>
       <Grid fluid={true}>
         <Disclaimer />
-        <Routes />
+        <AppRoutes />
       </Grid>
     </ScrollToTop>
     <Footer />

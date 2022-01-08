@@ -1,10 +1,10 @@
 import { normalize } from "normalizr"
 import { toastr } from "react-redux-toastr"
 
-const API_ROOT =
-  process.env.NODE_ENV !== "production"
-    ? "http://localhost:8000/api/v1/"
-    : "https://gia-api.devmem.ru/api/v1/"
+const API_ROOT = "https://gia-api.devmem.ru/api/v1/"
+  // process.env.NODE_ENV !== "production"
+  //   ? "http://localhost:8000/api/v1/"
+  //   : "https://gia-api.devmem.ru/api/v1/"
 
 let logger = () => null
 if (process.env.NODE_ENV !== "production") {

@@ -14,13 +14,14 @@ import { ExamTable } from "../components"
 
 class EmployeeDetail extends Component {
   componentDidMount() {
-    const { employeeId } = this.props.match.params
+    console.log(this)
+    const { employeeId } = this.props.params
     this.props.loadEmployeeDetail(employeeId)
   }
 
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.isSubAddRequested) {
-      this.props.history.push("/subscriptions")
+      this.props.navigate("/subscriptions")
     }
     if (!isEqual(nextProps.subsMsg, this.props.subsMsg)) {
       const message = nextProps.subsMsg
@@ -33,9 +34,9 @@ class EmployeeDetail extends Component {
   handleSubmit = (evt) => {
     evt.preventDefault()
     if (this.props.token) {
-      this.props.subsAdd(this.props.token, this.props.match.params.employeeId)
+      this.props.subsAdd(this.props.token, this.props.employeeId)
     } else {
-      this.props.history.push("/registration")
+      this.props.navigate("/registration")
     }
   }
 

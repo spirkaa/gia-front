@@ -11,7 +11,7 @@ class Logout extends Component {
       this.props.authLogout()
       toastr.success("Выход выполнен", "Сессия завершена")
     }
-    this.props.history.push("/")
+    this.props.navigate("/")
   }
 
   render() {

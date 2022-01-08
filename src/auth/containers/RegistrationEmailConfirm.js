@@ -20,7 +20,7 @@ class RegistrationEmailConfirm extends Component {
       }
       if (message.detail) {
         toastr.success("", "Почтовый адрес подтвержден")
-        this.props.history.push("/")
+        this.props.navigate("/")
       }
     }
   }

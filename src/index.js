@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { createBrowserHistory } from "history"
-import { routerMiddleware } from "connected-react-router"
+import { createReduxHistoryContext } from "redux-first-history"
 
 import configureStore from "./store"
 import Root from "./main/containers/Root"
@@ -12,9 +12,14 @@ import "../node_modules/react-redux-toastr/lib/css/react-redux-toastr.min.css"
 import "./assets/css/bootstrap.min.css"
 import "./assets/css/style.css"
 
-const history = createBrowserHistory()
-const middleware = routerMiddleware(history)
-const store = configureStore(history, middleware)
+const {
+  createReduxHistory,
+  routerMiddleware,
+  routerReducer
+} = createReduxHistoryContext({ history: createBrowserHistory() });
+
+const store = configureStore(routerReducer, routerMiddleware)
+const history = createReduxHistory(store)
 const container = document.getElementById("root")
 
 const token = sessionStorage.token || localStorage.token

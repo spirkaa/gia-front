@@ -63,7 +63,7 @@ class PasswordResetConfirm extends Component {
       }
       if (message.detail) {
         toastr.success("", message.detail)
-        this.props.history.push("/login")
+        this.props.navigate("/login")
       }
     }
   }

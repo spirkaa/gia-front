@@ -8,7 +8,7 @@ import createDeepEqualSelector, {
 
 const getCount = (state) => state.entities.orgPage[1] || { count: null }
 const getOrganisationDetail = (state, props) =>
-  state.entities.organisation[props.match.params.orgId] || { employees: [] }
+  state.entities.organisation[props.params.orgId] || { employees: [] }
 
 export const orgActivePageSelector = createDeepEqualSelector(
   getOrgActivePage,

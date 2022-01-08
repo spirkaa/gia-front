@@ -1,5 +1,5 @@
 import React from "react"
-import { Route, Switch } from "react-router-dom"
+import { Route, Routes, useLocation, useNavigate, useParams } from "react-router-dom"
 
 import { EmployeeDetail, Employees } from "./employees/containers"
 import { OrganisationDetail, Organisations } from "./organisations/containers"
@@ -19,42 +19,55 @@ import { Subscriptions } from "./subscriptions/containers"
 import { About, Home, NotFound } from "./main/components"
 import { Authenticated, NotAuthenticated } from "./auth"
 
-export const Routes = () => (
-  <Switch>
-    <Route exact path="/exams" component={Exams} />
-    <Route exact path="/employees" component={Employees} />
-    <Route exact path="/employees/detail/:employeeId" component={EmployeeDetail} />
-    <Route exact path="/organisations" component={Organisations} />
-    <Route exact path="/organisations/detail/:orgId" component={OrganisationDetail} />
-    <Route exact path="/places" component={Places} />
-    <Route exact path="/about" component={About} />
+export const AppRoutes = () => (
+  <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/exams" element={<Exams />} />
+    <Route path="/employees" element={<Employees />} />
+    <Route path="/employees/detail/:employeeId" element={<EmployeeDetailHook />} />
+    <Route path="/organisations" element={<Organisations />} />
+    <Route path="/organisations/detail/:orgId" element={<OrganisationDetailHook />} />
+    <Route path="/places" element={<Places />} />
+    <Route path="/about" element={<About />} />
 
-    <Route exact path="/password-reset" component={NotAuthenticated(PasswordReset)} />
+    {/* <Route exact path="/password-reset" element={<NotAuthenticated(PasswordReset) />} />
     <Route
       exact
       path="/password-reset/email-sent"
-      component={NotAuthenticated(PasswordEmailSent)}
+      element={<NotAuthenticated(PasswordEmailSent)}
     />
     <Route
       exact
       path="/password-reset/confirm/:uid/:token"
-      component={NotAuthenticated(PasswordResetConfirm)}
-    />
-    <Route exact path="/registration" component={NotAuthenticated(Registration)} />
+      element={<NotAuthenticated(PasswordResetConfirm)}
+    /> */}
+    {/* <Route exact path="/registration" element={<NotAuthenticated(Registration)} /> */}
     <Route
-      exact
       path="/registration/confirm-email/:key"
-      component={RegistrationEmailConfirm}
+      element={<RegistrationEmailConfirm />}
     />
-    <Route exact path="/settings" component={Authenticated(Settings)} />
-    <Route exact path="/logout" component={Logout} />
-    <Route exact path="/login" component={NotAuthenticated(Login)} />
+    {/* <Route exact path="/settings" element={<Authenticated(Settings)} /> */}
+    <Route path="/logout" element={<Logout />} />
+    {/* <Route exact path="/login" element={<NotAuthenticated(Login)} /> */}
 
-    <Route exact path="/subscriptions" component={Authenticated(Subscriptions)} />
+    {/* <Route exact path="/subscriptions" element={<Authenticated(Subscriptions)} /> */}
 
-    <Route exact path="/" component={Home} />
-    <Route component={NotFound} />
-  </Switch>
+    <Route path="*" element={<NotFound />} />
+  </Routes>
 )
 
-export default Routes
+function EmployeeDetailHook() {
+  let location = useLocation()
+  let navigate = useNavigate()
+  let params = useParams()
+  return <EmployeeDetail location={location} navigate={navigate} params={params} />
+}
+
+function OrganisationDetailHook() {
+  let location = useLocation()
+  let navigate = useNavigate()
+  let params = useParams()
+  return <OrganisationDetail location={location} navigate={navigate} params={params} />
+}
+
+export default AppRoutes

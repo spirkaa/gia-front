@@ -46,7 +46,7 @@ class PasswordReset extends Component {
       }
       if (message.detail) {
         toastr.success("", message.detail)
-        this.props.history.push("/password-reset/email-sent")
+        this.props.navigate("/password-reset/email-sent")
       }
     }
   }
