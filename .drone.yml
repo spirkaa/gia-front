@@ -21,7 +21,7 @@ steps:
     settings:
       registry: registry.home.devmem.ru
       repo: registry.home.devmem.ru/gia/front
-      dockerfile: ./compose/Dockerfile
+      dockerfile: .docker/Dockerfile
       tags:
         - ${DRONE_COMMIT_SHA:0:8}
         - latest
