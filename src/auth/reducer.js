@@ -27,8 +27,8 @@ export function auth(state = AUTH_INITIAL_STATE, action) {
   let token = null
   let user = {}
   if (action.payload) {
-    if (action.payload.token) {
-      token = action.payload.token
+    if (action.payload.access_token) {
+      token = action.payload.access_token
     }
     if (action.payload.user) {
       user = action.payload.user

@@ -36,7 +36,7 @@ export function tokenCheck(token) {
   const user = { email: decoded.email }
   const stillValid = decoded.exp > Date.now() / 1000
   return stillValid
-    ? { type: c.AUTH_TOKEN_CHECK_SUCCESS, payload: { token, user } }
+    ? { type: c.AUTH_TOKEN_CHECK_SUCCESS, payload: { access_token: token, user } }
     : { type: c.AUTH_TOKEN_CHECK_FAILURE }
 }
 
@@ -58,7 +58,7 @@ export function authInfo(jwt) {
   })
 }
 
-export function authInfoUpdate(jwt, username, first_name, last_name) {
+export function authInfoUpdate(jwt, first_name, last_name) {
   return authApi({
     types: [
       c.AUTH_INFO_UPDATE_REQUEST,
@@ -66,8 +66,8 @@ export function authInfoUpdate(jwt, username, first_name, last_name) {
       c.AUTH_INFO_UPDATE_FAILURE,
     ],
     endpoint: "auth/user/",
-    data: { jwt, username, first_name, last_name },
-    method: "PUT",
+    data: { jwt, first_name, last_name },
+    method: "PATCH",
   })
 }
 

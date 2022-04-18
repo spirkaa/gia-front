@@ -75,7 +75,6 @@ class Settings extends Component {
     evt.preventDefault()
     this.props.authInfoUpdate(
       this.props.token,
-      this.props.user.username,
       this.state.first_name,
       this.state.last_name,
     )

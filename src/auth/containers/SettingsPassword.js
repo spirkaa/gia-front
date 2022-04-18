@@ -121,11 +121,8 @@ class SettingsPassword extends Component {
 
   render() {
     const { showModal, modalHide, isPasswordChangeRequesting } = this.props
-    const {
-      old_password,
-      new_password1,
-      new_password2,
-    } = this.props.authPasswordChangeMsg
+    const { old_password, new_password1, new_password2 } =
+      this.props.authPasswordChangeMsg
     const {
       oldPassword,
       newPassword1,
