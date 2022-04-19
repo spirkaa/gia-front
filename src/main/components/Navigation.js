@@ -29,7 +29,7 @@ export const Navigation = ({ datasources, isAuthenticated, email }) => (
   <Navbar fluid inverse collapseOnSelect>
     <Navbar.Header>
       <Navbar.Brand>
-        <Link to="/">ГИА 2021 в Москве</Link>
+        <Link to="/">ГИА {new Date().getFullYear()} в Москве</Link>
       </Navbar.Brand>
       <Navbar.Toggle />
     </Navbar.Header>

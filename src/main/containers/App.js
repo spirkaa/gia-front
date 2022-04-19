@@ -8,6 +8,16 @@ import NavContainer from "./NavContainer"
 import ScrollToTop from "./ScrollToTop"
 import Routes from "../../routes"
 
+const titleWithYear = () => {
+  return "ГИА " + new Date().getFullYear() + " в Москве"
+}
+
+const metaDescription =
+  "Список организаторов ППЭ Москвы, " +
+  "задействованных при проведении ЕГЭ и ОГЭ. " +
+  "Удобный поиск информации о распределении сотрудников " +
+  "образовательных организаций в ППЭ (пункты проведения экзаменов). ГИА в Москве"
+
 export const App = () => (
   <div>
     <ReduxToastr
@@ -19,12 +29,12 @@ export const App = () => (
       transitionOut="fadeOut"
     />
     <Helmet
-      titleTemplate="%s | ГИА 2021 в Москве"
-      defaultTitle="ГИА 2021 в Москве"
+      titleTemplate={"%s | " + titleWithYear()}
+      defaultTitle={titleWithYear()}
       meta={[
         {
           name: "description",
-          content: "Список организаторов ППЭ ЕГЭ и ОГЭ во время ГИА 2021 в Москве",
+          content: metaDescription,
         },
       ]}
     />
