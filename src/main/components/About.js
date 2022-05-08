@@ -41,7 +41,7 @@ export const About = () => (
         <h4>CI/CD</h4>
         <ul>
           <li>Gitea</li>
-          <li>Drone</li>
+          <li>Jenkins</li>
           <li>Ansible</li>
           <li>Docker</li>
         </ul>
@@ -146,7 +146,7 @@ export const About = () => (
           авторизация.
         </p>
         <p>
-          <strong>[v2.0.2 от 2017.05.28]</strong> - Функция обновледния БД стала умнее и
+          <strong>[v2.0.2 от 2017.05.28]</strong> - Функция обновления БД стала умнее и
           теперь сравнивает заголовок Last-Modified каждого файла, чтобы не грузить то,
           что уже было загружено.
         </p>
