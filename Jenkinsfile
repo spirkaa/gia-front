@@ -27,6 +27,12 @@ pipeline {
 
   stages {
     stage('Build assets') {
+      when {
+        branch 'main'
+        not {
+          changeRequest()
+        }
+      }
       steps {
         script {
           image = docker.image("${NODE_IMAGE}")
@@ -45,6 +51,12 @@ pipeline {
     }
 
     stage('Build image') {
+      when {
+        branch 'main'
+        not {
+          changeRequest()
+        }
+      }
       steps {
         script {
           buildDockerImage(
