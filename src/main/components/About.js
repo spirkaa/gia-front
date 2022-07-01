@@ -11,8 +11,12 @@ export const About = () => (
         <h3>
           Сайт разрабатывается с 2016 года как учебный проект DevOps с применением самых
           модных и проверенных временем технологий. Исходный код размещен на GitHub:{" "}
-          <a href="https://github.com/spirkaa/gia-front">gia-front</a> и{" "}
-          <a href="https://github.com/spirkaa/gia-api">gia-api</a>.
+          <a href="https://github.com/spirkaa/gia-front">gia-front</a>,{" "}
+          <a href="https://github.com/spirkaa/gia-api">gia-api</a>,{" "}
+          <a href="https://github.com/spirkaa/helm-charts/tree/main/charts/gia">
+            helm-charts
+          </a>
+          .
         </h3>
       </Col>
       <Col sm={1}> </Col>
@@ -34,7 +38,8 @@ export const About = () => (
         <ul>
           <li>Django, Django REST Framework</li>
           <li>Requests, BeautifulSoup, Openpyxl</li>
-          <li>PostgreSQL, Redis</li>
+          <li>PostgreSQL</li>
+          <li>Redis</li>
         </ul>
       </Col>
       <Col sm={2}>
@@ -42,8 +47,9 @@ export const About = () => (
         <ul>
           <li>Gitea</li>
           <li>Jenkins</li>
-          <li>Ansible</li>
-          <li>Docker</li>
+          <li>Kubernetes</li>
+          <li>ArgoCD</li>
+          <li>Helm</li>
         </ul>
       </Col>
       <Col sm={3}>{""}</Col>
@@ -53,6 +59,11 @@ export const About = () => (
       <Col sm={1}>{""}</Col>
       <Col sm={10}>
         <h3>Последние изменения</h3>
+        <p>
+          <strong>[v2.7.3 от 2022.07.01]</strong> - Проект переехал из статичных
+          контейнеров Docker, запускаемых с помощью Ansible, в кластер Kubernetes с
+          описанием конфигурации в Helm-чарте.
+        </p>
         <p>
           <strong>[v2.7.2 от 2022.05.24]</strong> - В текстовой версии интерфейса на
           странице ППЭ фильтр по дате теперь содержит только те даты, в которые на ППЭ
