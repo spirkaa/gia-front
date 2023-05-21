@@ -36,7 +36,7 @@ export function tokenCheck(token) {
   const user = { email: decoded.email }
   const stillValid = decoded.exp > Date.now() / 1000
   return stillValid
-    ? { type: c.AUTH_TOKEN_CHECK_SUCCESS, payload: { access_token: token, user } }
+    ? { type: c.AUTH_TOKEN_CHECK_SUCCESS, payload: { access: token, user } }
     : { type: c.AUTH_TOKEN_CHECK_FAILURE }
 }
 
