@@ -1,4 +1,4 @@
-FROM peytonyip/nginx-brotli:lite
+FROM peytonyip/nginx-brotli:1.27.4
 
 ENV TZ=Europe/Moscow
 
@@ -7,5 +7,5 @@ RUN set -eux \
 
 WORKDIR /app
 
-ADD ./.docker/nginx.conf /etc/nginx/nginx.conf
-ADD ./build .
+COPY ./.docker/nginx.conf /etc/nginx/nginx.conf
+COPY ./build .
