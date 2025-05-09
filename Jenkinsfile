@@ -35,9 +35,7 @@ pipeline {
       }
       steps {
         script {
-          image = docker.image("${NODE_IMAGE}")
-          image.pull()
-          image.inside {
+          docker.image("${NODE_IMAGE}").inside {
             sh 'npm ci'
             sh 'npm run build'
           }
