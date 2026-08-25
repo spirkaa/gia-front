@@ -5,13 +5,10 @@ import {
   Row,
   Col,
   Form,
-  FormGroup,
-  FormControl,
-  ControlLabel,
   Button,
   InputGroup,
+  Dropdown,
   DropdownButton,
-  MenuItem,
 } from "react-bootstrap"
 import { loadDates, loadLevels } from "../actions"
 import { datesSelector, levelsSelector } from "../selectors"
@@ -101,38 +98,38 @@ class Filter extends Component {
         <Col md={3} sm={3}></Col>
         <Col md={6} sm={6} className="text-center">
           <Form onSubmit={(e) => e.preventDefault()}>
-            <FormGroup controlId="formInlineDate">
+            <Form.Group controlId="formInlineDate">
               <InputGroup>
                 <DropdownButton
-                  componentClass={InputGroup.Button}
                   id="date"
                   title={this.state.date ? "☑" : ""}
                   aria-label="Дата экзамена">
                   {dates.map((date) => (
-                    <MenuItem key={date} onSelect={() => this.handleSelectDate(date)}>
+                    <Dropdown.Item
+                      key={date}
+                      onClick={() => this.handleSelectDate(date)}>
                       {new Date(date).toLocaleDateString("ru")}
                       {this.state.date === new Date(date).toLocaleDateString("ru")
                         ? " ✔"
                         : ""}
-                    </MenuItem>
+                    </Dropdown.Item>
                   ))}
                 </DropdownButton>
                 <DropdownButton
-                  componentClass={InputGroup.Button}
                   id="level"
                   title={this.state.level ? "☑" : ""}
                   aria-label="Уровень экзамена">
                   {levels.map((level) => (
-                    <MenuItem
+                    <Dropdown.Item
                       key={level}
-                      onSelect={() => this.handleSelectLevel(level)}>
+                      onClick={() => this.handleSelectLevel(level)}>
                       {level}
                       {this.state.level === level ? " ✔" : ""}
-                    </MenuItem>
+                    </Dropdown.Item>
                   ))}
                 </DropdownButton>
-                <ControlLabel srOnly>Поиск</ControlLabel>
-                <FormControl
+                <Form.Label className="visually-hidden">Поиск</Form.Label>
+                <Form.Control
                   autoFocus
                   autoComplete="off"
                   type="text"
@@ -146,22 +143,18 @@ class Filter extends Component {
                 !this.state.level.length ? (
                   ""
                 ) : (
-                  <InputGroup.Button>
-                    <Button
-                      bsStyle="default"
-                      onClick={this.handleClickReset}
-                      aria-label="Очистить">
-                      {"✕"}
-                    </Button>
-                  </InputGroup.Button>
-                )}
-                <InputGroup.Button>
-                  <Button bsStyle="primary" onClick={this.handleClickSubmit}>
-                    Найти
+                  <Button
+                    variant="secondary"
+                    onClick={this.handleClickReset}
+                    aria-label="Очистить">
+                    {"✕"}
                   </Button>
-                </InputGroup.Button>
+                )}
+                <Button variant="primary" onClick={this.handleClickSubmit}>
+                  Найти
+                </Button>
               </InputGroup>
-            </FormGroup>
+            </Form.Group>
           </Form>
         </Col>
         <Col md={3} sm={3}></Col>

@@ -1,7 +1,9 @@
 import React from "react"
-import ReduxToastr from "react-redux-toastr"
-import Helmet from "react-helmet"
-import { Grid } from "react-bootstrap"
+import { ToastContainer } from "react-toastify"
+import { Helmet } from "react-helmet-async"
+import { Container } from "react-bootstrap"
+
+import "react-toastify/dist/ReactToastify.css"
 
 import { Disclaimer, Footer } from "../components"
 import NavContainer from "./NavContainer"
@@ -20,14 +22,7 @@ const metaDescription =
 
 export const App = () => (
   <div>
-    <ReduxToastr
-      preventDuplicates
-      timeOut={4000}
-      newestOnTop={false}
-      position="top-right"
-      transitionIn="fadeIn"
-      transitionOut="fadeOut"
-    />
+    <ToastContainer position="top-right" autoClose={4000} newestOnTop={false} />
     <Helmet
       titleTemplate={"%s | " + titleWithYear()}
       defaultTitle={titleWithYear()}
@@ -40,10 +35,10 @@ export const App = () => (
     />
     <NavContainer />
     <ScrollToTop>
-      <Grid fluid={true}>
+      <Container fluid>
         <Disclaimer />
         <Routes />
-      </Grid>
+      </Container>
     </ScrollToTop>
     <Footer />
   </div>

@@ -2,16 +2,8 @@ import isEqual from "lodash/isEqual"
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { toastr } from "react-redux-toastr"
-import {
-  Button,
-  Col,
-  ControlLabel,
-  Form,
-  FormControl,
-  FormGroup,
-  Row,
-} from "react-bootstrap"
+import { toast } from "react-toastify"
+import { Button, Col, Form, Row } from "react-bootstrap"
 
 import { Header } from "../../main/components"
 import {
@@ -28,8 +20,8 @@ class Settings extends Component {
     super(props)
     this.state = {
       email: props.user.email,
-      first_name: props.user.first_name,
-      last_name: props.user.last_name,
+      first_name: props.user.first_name || "",
+      last_name: props.user.last_name || "",
     }
   }
 
@@ -37,24 +29,24 @@ class Settings extends Component {
     this.props.authInfo(this.props.token)
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.user, this.props.user)) {
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps.user, this.props.user)) {
       this.setState({
-        first_name: nextProps.user.first_name,
-        last_name: nextProps.user.last_name,
+        first_name: this.props.user.first_name || "",
+        last_name: this.props.user.last_name || "",
       })
     }
-    if (!isEqual(nextProps.authInfoUpdateMsg, this.props.authInfoUpdateMsg)) {
-      const message = nextProps.authInfoUpdateMsg
+    if (!isEqual(prevProps.authInfoUpdateMsg, this.props.authInfoUpdateMsg)) {
+      const message = this.props.authInfoUpdateMsg
       if (message.non_field_errors) {
-        message.non_field_errors.map((msg) => toastr.error("Ошибка", msg))
+        message.non_field_errors.map((msg) => toast.error(msg, { title: "Ошибка" }))
       }
       if (message.detail) {
         if (message.detail === "Signature has expired.") {
-          toastr.error("Сессия истекла", "Требуется повторный вход")
+          toast.error("Требуется повторный вход", { title: "Сессия истекла" })
           this.props.authLogout()
         } else {
-          toastr.success("", message.detail)
+          toast.success(message.detail)
         }
       }
     }
@@ -90,39 +82,39 @@ class Settings extends Component {
         <Col sm={4}>{""}</Col>
         <Col sm={4}>
           <Form onSubmit={this.handleSubmit}>
-            <FormGroup>
-              <ControlLabel>Электронная почта</ControlLabel>
-              <FormControl.Static>{this.state.email}</FormControl.Static>
-            </FormGroup>
-            <FormGroup controlId="formFirstName">
-              <ControlLabel>Имя</ControlLabel>
-              <FormControl
+            <Form.Group>
+              <Form.Label>Электронная почта</Form.Label>
+              <div className="form-control-plaintext">{this.state.email}</div>
+            </Form.Group>
+            <Form.Group controlId="formFirstName">
+              <Form.Label>Имя</Form.Label>
+              <Form.Control
                 type="text"
                 name="first_name"
                 placeholder="Укажите имя"
                 value={this.state.first_name}
                 onChange={this.handleInputChange}
               />
-            </FormGroup>
-            <FormGroup controlId="formLastName">
-              <ControlLabel>Фамилия</ControlLabel>
-              <FormControl
+            </Form.Group>
+            <Form.Group controlId="formLastName">
+              <Form.Label>Фамилия</Form.Label>
+              <Form.Control
                 type="text"
                 name="last_name"
                 placeholder="Укажите фамилию"
                 value={this.state.last_name}
                 onChange={this.handleInputChange}
               />
-            </FormGroup>
+            </Form.Group>
             <p>
-              <Button block onClick={modalShow}>
+              <Button className="w-100 mt-3" onClick={modalShow}>
                 Изменить пароль
               </Button>
             </p>
             <Button
               type="submit"
-              block
-              bsStyle="primary"
+              className="w-100"
+              variant="primary"
               disabled={isInfoUpdateRequesting}>
               Сохранить
             </Button>

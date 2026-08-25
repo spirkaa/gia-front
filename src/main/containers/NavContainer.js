@@ -17,9 +17,9 @@ class NavContainer extends Component {
     return !isEqual(nextProps, this.props)
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.rememberMe && nextProps.token) {
-      this.props.tokenSave(nextProps.token)
+  componentDidUpdate() {
+    if (this.props.rememberMe && this.props.token) {
+      this.props.tokenSave(this.props.token)
     }
   }
 

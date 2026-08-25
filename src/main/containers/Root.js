@@ -1,25 +1,23 @@
-import React, { Component } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { Provider } from "react-redux"
-import { Route } from "react-router-dom"
-import { ConnectedRouter } from "connected-react-router"
+import { BrowserRouter } from "react-router-dom"
+import { HelmetProvider } from "react-helmet-async"
 
 import { App } from "./App"
 
-export default class Root extends Component {
-  render() {
-    const { store, history } = this.props
-    return (
+export default function Root({ store }) {
+  return (
+    <HelmetProvider>
       <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <Route path="/" component={App} />
-        </ConnectedRouter>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </Provider>
-    )
-  }
+    </HelmetProvider>
+  )
 }
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
 }

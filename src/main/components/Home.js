@@ -1,9 +1,9 @@
 import React from "react"
 import { LinkContainer } from "react-router-bootstrap"
-import { Button, Jumbotron } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 
 export const Home = () => (
-  <Jumbotron>
+  <div className="bg-body-tertiary p-4 mb-3 rounded-3">
     <h1>Список организаторов ППЭ</h1>
     <p>
       Данные с сайта <a href="http://rcoi.mcko.ru">РЦОИ города Москвы</a> о
@@ -15,10 +15,10 @@ export const Home = () => (
     </p>
     <p>
       <LinkContainer to="/exams">
-        <Button bsStyle="primary">Перейти к поиску</Button>
+        <Button variant="primary">Перейти к поиску</Button>
       </LinkContainer>
     </p>
-  </Jumbotron>
+  </div>
 )
 
 export default Home

@@ -1,18 +1,9 @@
 import isEqual from "lodash/isEqual"
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { toastr } from "react-redux-toastr"
-import {
-  Button,
-  Col,
-  ControlLabel,
-  Form,
-  FormControl,
-  FormGroup,
-  HelpBlock,
-  Row,
-} from "react-bootstrap"
+import React, { useEffect, useRef, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
+import { Button, Col, Form, Row } from "react-bootstrap"
 
 import { Header } from "../../main/components"
 import { authPasswordReset, authPasswordResetMsgRemove } from "../actions"
@@ -22,124 +13,108 @@ function validate(email) {
   return !EMAIL_REGEX.test(email)
 }
 
-class PasswordReset extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      emailValid: null,
-      email: "",
-      touched: false,
-    }
-  }
+const PasswordReset = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      emailValid: null,
-    })
-    if (!isEqual(nextProps.authPasswordResetMsg, this.props.authPasswordResetMsg)) {
-      const message = nextProps.authPasswordResetMsg
+  const isPasswordMailSending = useSelector((state) => state.auth.isPasswordMailSending)
+  const authPasswordResetMsg = useSelector((state) => state.auth.authPasswordResetMsg)
+
+  const [emailValid, setEmailValid] = useState(null)
+  const [email, setEmail] = useState("")
+  const [touched, setTouched] = useState(false)
+
+  const prevMsg = useRef(authPasswordResetMsg)
+  useEffect(() => {
+    setEmailValid(null)
+    if (!isEqual(authPasswordResetMsg, prevMsg.current)) {
+      const message = authPasswordResetMsg
       if (message.non_field_errors) {
-        message.non_field_errors.map((msg) => toastr.error("Ошибка", msg))
+        message.non_field_errors.map((msg) => toast.error(msg, { title: "Ошибка" }))
       }
       if (message.email) {
-        this.setState({ emailValid: "error" })
+        setEmailValid("error")
       }
       if (message.detail) {
-        toastr.success("", message.detail)
-        this.props.history.push("/password-reset/email-sent")
+        toast.success(message.detail)
+        navigate("/password-reset/email-sent")
       }
+      prevMsg.current = authPasswordResetMsg
     }
+  }, [authPasswordResetMsg, navigate])
+
+  useEffect(
+    () => () => {
+      dispatch(authPasswordResetMsgRemove())
+    },
+    [dispatch],
+  )
+
+  const canBeSubmitted = () => validate(email)
+
+  const handleBlur = (evt) => {
+    setTouched(true)
   }
 
-  componentWillUnmount() {
-    this.props.authPasswordResetMsgRemove()
+  const handleInputChange = (evt) => {
+    setEmail(evt.target.value)
   }
 
-  canBeSubmitted() {
-    return validate(this.state.email)
-  }
-
-  handleBlur = (field) => (evt) => {
-    this.setState({
-      touched: true,
-    })
-  }
-
-  handleInputChange = (evt) => {
-    const target = evt.target
-    const value = target.value
-    const name = target.name
-    this.setState({ [name]: value })
-  }
-
-  handleSubmit = (evt) => {
+  const handleSubmit = (evt) => {
     evt.preventDefault()
-    if (this.canBeSubmitted()) {
+    if (canBeSubmitted()) {
       return
     }
-    this.props.authPasswordReset(this.state.email)
+    dispatch(authPasswordReset(email))
   }
 
-  render() {
-    const header = "Восстановление пароля"
-    const subheader = "Введите email, указанный при регистрации"
+  const header = "Восстановление пароля"
+  const subheader = "Введите email, указанный при регистрации"
 
-    const { email } = this.props.authPasswordResetMsg
-    const { emailValid } = this.state
+  const { email: emailErrors } = authPasswordResetMsg
 
-    const errors = validate(this.state.email)
-    const shouldMarkError = errors ? this.state.touched : false
+  const errors = validate(email)
+  const shouldMarkError = errors ? touched : false
 
-    return (
-      <Row className="bottom-buffer">
-        <Header header={header} subHeader={subheader} />
-        <Col sm={4}>{""}</Col>
-        <Col sm={4}>
-          <Form onSubmit={this.handleSubmit}>
-            <FormGroup
-              controlId="formEmail"
-              validationState={shouldMarkError || emailValid ? "error" : null}>
-              <ControlLabel>Электронная почта</ControlLabel>
-              <FormControl
-                type="email"
-                name="email"
-                value={this.state.email}
-                onChange={this.handleInputChange}
-                onBlur={this.handleBlur("email")}
-              />
-              {emailValid ? email.map((msg) => <HelpBlock>{msg}</HelpBlock>) : null}
-              {shouldMarkError ? (
-                <HelpBlock>Введите корректный адрес электронной почты.</HelpBlock>
-              ) : null}
-            </FormGroup>
-            <Button
-              type="submit"
-              block
-              bsStyle="primary"
-              disabled={this.props.isPasswordMailSending || errors}>
-              {this.props.isPasswordMailSending
-                ? "Пожалуйста, подождите..."
-                : "Восстановить пароль"}
-            </Button>
-          </Form>
-        </Col>
-        <Col sm={4}>{""}</Col>
-      </Row>
-    )
-  }
+  return (
+    <Row className="bottom-buffer">
+      <Header header={header} subHeader={subheader} />
+      <Col sm={4}>{""}</Col>
+      <Col sm={4}>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formEmail">
+            <Form.Label>Электронная почта</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              value={email}
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              isInvalid={!!(shouldMarkError || emailValid)}
+            />
+            {emailValid
+              ? emailErrors.map((msg) => (
+                  <Form.Control.Feedback type="invalid">{msg}</Form.Control.Feedback>
+                ))
+              : null}
+            {shouldMarkError ? (
+              <Form.Control.Feedback type="invalid">
+                Введите корректный адрес электронной почты.
+              </Form.Control.Feedback>
+            ) : null}
+          </Form.Group>
+          <Button
+            type="submit"
+            className="w-100 mt-3"
+            variant="primary"
+            disabled={isPasswordMailSending || errors}>
+            {isPasswordMailSending ? "Пожалуйста, подождите..." : "Восстановить пароль"}
+          </Button>
+        </Form>
+      </Col>
+      <Col sm={4}>{""}</Col>
+    </Row>
+  )
 }
 
-PasswordReset.propTypes = {
-  isPasswordMailSending: PropTypes.bool.isRequired,
-  authPasswordResetMsg: PropTypes.object.isRequired,
-}
-
-const mapStateToProps = (state) => ({
-  isPasswordMailSending: state.auth.isPasswordMailSending,
-  authPasswordResetMsg: state.auth.authPasswordResetMsg,
-})
-
-export default connect(mapStateToProps, {
-  authPasswordReset,
-  authPasswordResetMsgRemove,
-})(PasswordReset)
+export default PasswordReset

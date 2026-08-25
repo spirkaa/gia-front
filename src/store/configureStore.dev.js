@@ -1,15 +1,15 @@
 import { createStore, compose, applyMiddleware } from "redux"
-import thunk from "redux-thunk"
+import { thunk } from "redux-thunk"
 import { createLogger } from "redux-logger"
 
 import api from "../middleware/api"
-import createRootReducer from "../reducer"
+import rootReducer from "../reducer"
 
-export default function configureStore(history, middleware) {
+export default function configureStore() {
   const store = createStore(
-    createRootReducer(history),
+    rootReducer,
     compose(
-      applyMiddleware(thunk, api, middleware, createLogger()),
+      applyMiddleware(thunk, api, createLogger()),
       window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
         ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()
         : (f) => f,
@@ -18,7 +18,7 @@ export default function configureStore(history, middleware) {
 
   if (module.hot) {
     module.hot.accept("../reducer", () => {
-      store.replaceReducer(createRootReducer(history))
+      store.replaceReducer(require("../reducer").default) // eslint-disable-line
     })
   }
 

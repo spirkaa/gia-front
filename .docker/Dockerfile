@@ -1,4 +1,4 @@
-FROM peytonyip/nginx-brotli:1.27.4
+FROM peytonyip/nginx-brotli:1.31.3
 
 ENV TZ=Europe/Moscow
 

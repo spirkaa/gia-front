@@ -1,16 +1,7 @@
 import isEqual from "lodash/isEqual"
 import React, { Component } from "react"
 import PropTypes from "prop-types"
-import {
-  Button,
-  Col,
-  ControlLabel,
-  Form,
-  FormControl,
-  FormGroup,
-  InputGroup,
-  Row,
-} from "react-bootstrap"
+import { Button, Col, Form, InputGroup, Row } from "react-bootstrap"
 
 export default class FilterContainer extends Component {
   constructor(props) {
@@ -71,15 +62,14 @@ export default class FilterContainer extends Component {
         <Col md={3} sm={3}></Col>
         <Col md={6} sm={6} className="text-center">
           <Form onSubmit={(e) => e.preventDefault()}>
-            <FormGroup controlId="formInlineSearch">
+            <Form.Group controlId="formInlineSearch">
               <InputGroup>
-                <ControlLabel srOnly>Поиск</ControlLabel>
-                <FormControl
+                <Form.Label className="visually-hidden">Поиск</Form.Label>
+                <Form.Control
                   autoFocus
                   autoComplete="off"
                   type="text"
                   placeholder="Поиск..."
-                  ref="search"
                   defaultValue={this.state.search}
                   onKeyUp={this.handleKeyUp}
                   onChange={this.handleChange}
@@ -87,23 +77,19 @@ export default class FilterContainer extends Component {
                 {!this.state.search.length ? (
                   ""
                 ) : (
-                  <InputGroup.Button>
-                    <Button
-                      bsStyle="default"
-                      disabled={!this.state.search.length}
-                      onClick={this.handleClickReset}
-                      aria-label="Очистить">
-                      {"✕"}
-                    </Button>
-                  </InputGroup.Button>
-                )}
-                <InputGroup.Button>
-                  <Button bsStyle="primary" onClick={this.handleClickSubmit}>
-                    Найти
+                  <Button
+                    variant="secondary"
+                    disabled={!this.state.search.length}
+                    onClick={this.handleClickReset}
+                    aria-label="Очистить">
+                    {"✕"}
                   </Button>
-                </InputGroup.Button>
+                )}
+                <Button variant="primary" onClick={this.handleClickSubmit}>
+                  Найти
+                </Button>
               </InputGroup>
-            </FormGroup>
+            </Form.Group>
           </Form>
         </Col>
         <Col md={3} sm={3}></Col>

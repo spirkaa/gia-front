@@ -13,17 +13,11 @@ import createDeepEqualSelector, {
 
 const getCount = (state) => state.entities.empPage[1] || { count: null }
 const getEmployeeDetail = (state, props) =>
-  state.entities.employee[props.match.params.employeeId] || { exams: [], org: null }
+  state.entities.employee[props.employeeId] || { exams: [], org: null }
 
-export const empActivePageSelector = createDeepEqualSelector(
-  getEmpActivePage,
-  (page) => page,
-)
+export const empActivePageSelector = getEmpActivePage
 
-export const empFilterSelector = createDeepEqualSelector(
-  getEmpFilter,
-  (filter) => filter,
-)
+export const empFilterSelector = getEmpFilter
 
 const currentPageSelector = createDeepEqualSelector(
   getEmpPage,

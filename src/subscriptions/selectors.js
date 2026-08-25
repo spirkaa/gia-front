@@ -14,10 +14,7 @@ export const getSubsActivePage = (state) => state.pagination.subsActivePage
 
 const getCount = (state) => state.entities.subsPage[1] || { count: 0 }
 
-export const subsActivePageSelector = createDeepEqualSelector(
-  getSubsActivePage,
-  (page) => page,
-)
+export const subsActivePageSelector = getSubsActivePage
 
 const currentPageSelector = createDeepEqualSelector(
   getSubsPage,

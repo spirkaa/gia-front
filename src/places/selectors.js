@@ -8,15 +8,9 @@ import createDeepEqualSelector, {
 
 const getCount = (state) => state.entities.placesPage[1] || { count: null }
 
-export const placesActivePageSelector = createDeepEqualSelector(
-  getPlacesActivePage,
-  (page) => page,
-)
+export const placesActivePageSelector = getPlacesActivePage
 
-export const placesFilterSelector = createDeepEqualSelector(
-  getPlacesFilter,
-  (filter) => filter,
-)
+export const placesFilterSelector = getPlacesFilter
 
 export const countSelector = createDeepEqualSelector(getCount, (page) => page.count)
 

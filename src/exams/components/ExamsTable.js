@@ -1,8 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
-import { Glyphicon } from "react-bootstrap"
-import BootstrapTable from "react-bootstrap-table-next"
+import { GeoAlt } from "react-bootstrap-icons"
+import BootstrapTable from "react-bootstrap-table-ng"
 
 const placeFormat = (cell, row) => (
   <div>
@@ -14,7 +14,7 @@ const placeFormat = (cell, row) => (
       rel="noopener noreferrer"
       title="Открыть карту">
       <small>
-        <Glyphicon glyph="map-marker" /> {cell.addr}
+        <GeoAlt /> {cell.addr}
       </small>
     </a>
   </div>
@@ -104,6 +104,7 @@ const columns = [
 export const ExamsTable = ({ exams }) => (
   <BootstrapTable
     keyField="id"
+    bootstrap5={true}
     columns={columns}
     data={exams}
     hover={true}

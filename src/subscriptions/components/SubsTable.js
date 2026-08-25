@@ -1,8 +1,9 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
-import { Button, Form, Glyphicon } from "react-bootstrap"
-import BootstrapTable from "react-bootstrap-table-next"
+import { Button, Form } from "react-bootstrap"
+import { Trash } from "react-bootstrap-icons"
+import BootstrapTable from "react-bootstrap-table-ng"
 
 import { ExamTable } from "../../employees/components"
 
@@ -85,12 +86,13 @@ export class SubsTable extends Component {
     return (
       <div>
         <Form className="bottom-buffer-5px" onSubmit={this.handleSubmit}>
-          <Button bsStyle="warning" type="submit" disabled={!this.state.rowKeys.length}>
-            <Glyphicon glyph="trash" /> Отменить подписку
+          <Button variant="warning" type="submit" disabled={!this.state.rowKeys.length}>
+            <Trash /> Отменить подписку
           </Button>
         </Form>
         <BootstrapTable
           keyField="id"
+          bootstrap5={true}
           columns={columns}
           data={this.props.subscriptions}
           hover={true}

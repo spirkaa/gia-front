@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
-import BootstrapTable from "react-bootstrap-table-next"
+import BootstrapTable from "react-bootstrap-table-ng"
 
 const columns = [
   {
@@ -31,6 +31,7 @@ const columns = [
 export const EmpTable = ({ employees }) => (
   <BootstrapTable
     keyField="id"
+    bootstrap5={true}
     columns={columns}
     data={employees}
     hover={true}

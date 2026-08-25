@@ -2,16 +2,8 @@ import isEqual from "lodash/isEqual"
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { connect } from "react-redux"
-import { toastr } from "react-redux-toastr"
-import {
-  Button,
-  ControlLabel,
-  Form,
-  FormControl,
-  FormGroup,
-  HelpBlock,
-  Modal,
-} from "react-bootstrap"
+import { toast } from "react-toastify"
+import { Button, Form, Modal } from "react-bootstrap"
 
 import {
   modalHide,
@@ -46,33 +38,35 @@ class SettingsPassword extends Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      oldPasswordValid: null,
-      newPassword1Valid: null,
-      newPassword2Valid: null,
-    })
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps, this.props)) {
+      this.setState({
+        oldPasswordValid: null,
+        newPassword1Valid: null,
+        newPassword2Valid: null,
+      })
 
-    if (!isEqual(nextProps.authPasswordChangeMsg, this.props.authPasswordChangeMsg)) {
-      const message = nextProps.authPasswordChangeMsg
-      if (message.non_field_errors) {
-        message.non_field_errors.map((msg) => toastr.error("Ошибка", msg))
-      }
-      if (message.old_password) {
-        this.setState({ oldPasswordValid: "error" })
-      }
-      if (message.new_password1) {
-        this.setState({ newPassword1Valid: "error" })
-      }
-      if (message.new_password2) {
-        this.setState({ newPassword2Valid: "error" })
-      }
-      if (message.detail) {
-        if (message.detail === "Signature has expired.") {
-          toastr.error("Сессия истекла", "Требуется вход")
-          this.props.authLogout()
-        } else {
-          toastr.success("", message.detail)
+      if (!isEqual(prevProps.authPasswordChangeMsg, this.props.authPasswordChangeMsg)) {
+        const message = this.props.authPasswordChangeMsg
+        if (message.non_field_errors) {
+          message.non_field_errors.map((msg) => toast.error(msg, { title: "Ошибка" }))
+        }
+        if (message.old_password) {
+          this.setState({ oldPasswordValid: "error" })
+        }
+        if (message.new_password1) {
+          this.setState({ newPassword1Valid: "error" })
+        }
+        if (message.new_password2) {
+          this.setState({ newPassword2Valid: "error" })
+        }
+        if (message.detail) {
+          if (message.detail === "Signature has expired.") {
+            toast.error("Требуется вход", { title: "Сессия истекла" })
+            this.props.authLogout()
+          } else {
+            toast.success(message.detail)
+          }
         }
       }
     }
@@ -146,67 +140,64 @@ class SettingsPassword extends Component {
     }
 
     return (
-      <Modal bsSize="small" show={showModal} onHide={modalHide}>
+      <Modal size="sm" show={showModal} onHide={modalHide}>
         <Modal.Header closeButton>
           <Modal.Title>Изменить пароль</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={this.handleSubmit}>
-            <FormGroup
-              controlId="formOldPassword"
-              validationState={
-                shouldMarkError("oldPassword") || oldPasswordValid ? "error" : null
-              }>
-              <ControlLabel>Старый пароль</ControlLabel>
-              <FormControl
+            <Form.Group controlId="formOldPassword">
+              <Form.Label>Старый пароль</Form.Label>
+              <Form.Control
                 type="password"
                 name="oldPassword"
                 value={oldPassword}
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur("oldPassword")}
+                isInvalid={!!(shouldMarkError("oldPassword") || oldPasswordValid)}
               />
               {oldPasswordValid
-                ? old_password.map((msg) => <HelpBlock>{msg}</HelpBlock>)
+                ? old_password.map((msg) => (
+                    <Form.Control.Feedback type="invalid">{msg}</Form.Control.Feedback>
+                  ))
                 : null}
-            </FormGroup>
-            <FormGroup
-              controlId="formNewPassword1"
-              validationState={
-                shouldMarkError("newPassword1") || newPassword1Valid ? "error" : null
-              }>
-              <ControlLabel>Новый пароль</ControlLabel>
-              <FormControl
+            </Form.Group>
+            <Form.Group controlId="formNewPassword1">
+              <Form.Label>Новый пароль</Form.Label>
+              <Form.Control
                 type="password"
                 name="newPassword1"
                 value={newPassword1}
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur("newPassword1")}
+                isInvalid={!!(shouldMarkError("newPassword1") || newPassword1Valid)}
               />
               {newPassword1Valid
-                ? new_password1.map((msg) => <HelpBlock>{msg}</HelpBlock>)
+                ? new_password1.map((msg) => (
+                    <Form.Control.Feedback type="invalid">{msg}</Form.Control.Feedback>
+                  ))
                 : null}
-            </FormGroup>
-            <FormGroup
-              controlId="formNewPassword2"
-              validationState={
-                shouldMarkError("newPassword2") || newPassword2Valid ? "error" : null
-              }>
-              <ControlLabel>Повторите пароль</ControlLabel>
-              <FormControl
+            </Form.Group>
+            <Form.Group controlId="formNewPassword2">
+              <Form.Label>Повторите пароль</Form.Label>
+              <Form.Control
                 type="password"
                 name="newPassword2"
                 value={newPassword2}
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur("newPassword2")}
+                isInvalid={!!(shouldMarkError("newPassword2") || newPassword2Valid)}
               />
               {newPassword2Valid
-                ? new_password2.map((msg) => <HelpBlock>{msg}</HelpBlock>)
+                ? new_password2.map((msg) => (
+                    <Form.Control.Feedback type="invalid">{msg}</Form.Control.Feedback>
+                  ))
                 : null}
-            </FormGroup>
+            </Form.Group>
             <Button
               type="submit"
-              block
-              bsStyle="primary"
+              className="w-100 mt-3"
+              variant="primary"
               disabled={isPasswordChangeRequesting || isDisabled}>
               Сохранить
             </Button>

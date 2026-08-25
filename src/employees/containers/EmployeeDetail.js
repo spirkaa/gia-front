@@ -1,9 +1,8 @@
 import isEqual from "lodash/isEqual"
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { Link } from "react-router-dom"
-import { toastr } from "react-redux-toastr"
+import React, { useEffect, useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useNavigate, useParams } from "react-router-dom"
+import { toast } from "react-toastify"
 import { Button, Col, Form, Row } from "react-bootstrap"
 
 import { Header } from "../../main/components"
@@ -12,93 +11,85 @@ import { loadEmployeeDetail } from "../actions"
 import { employeeDetailSelector } from "../selectors"
 import { ExamTable } from "../components"
 
-class EmployeeDetail extends Component {
-  componentDidMount() {
-    const { employeeId } = this.props.match.params
-    this.props.loadEmployeeDetail(employeeId)
-  }
+const EmployeeDetail = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { employeeId } = useParams()
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.isSubAddRequested) {
-      this.props.history.push("/subscriptions")
+  const employee = useSelector((state) => employeeDetailSelector(state, { employeeId }))
+  const token = useSelector((state) => state.auth.token)
+  const subsMsg = useSelector((state) => state.subs.subsMsg)
+  const isSubAddRequesting = useSelector((state) => state.subs.isSubAddRequesting)
+  const isSubAddRequested = useSelector((state) => state.subs.isSubAddRequested)
+
+  useEffect(() => {
+    dispatch(loadEmployeeDetail(employeeId))
+  }, [dispatch, employeeId])
+
+  const prevSubsMsg = useRef(subsMsg)
+  useEffect(() => {
+    if (isSubAddRequested) {
+      navigate("/subscriptions")
     }
-    if (!isEqual(nextProps.subsMsg, this.props.subsMsg)) {
-      const message = nextProps.subsMsg
+    if (!isEqual(subsMsg, prevSubsMsg.current)) {
+      const message = subsMsg
       if (message.non_field_errors) {
-        message.non_field_errors.map((msg) => toastr.error("Ошибка", msg))
+        message.non_field_errors.map((msg) => toast.error(msg, { title: "Ошибка" }))
       }
+      prevSubsMsg.current = subsMsg
     }
-  }
+  }, [subsMsg, isSubAddRequested, navigate])
 
-  handleSubmit = (evt) => {
+  const handleSubmit = (evt) => {
     evt.preventDefault()
-    if (this.props.token) {
-      this.props.subsAdd(this.props.token, this.props.match.params.employeeId)
+    if (token) {
+      dispatch(subsAdd(token, employeeId))
     } else {
-      this.props.history.push("/registration")
+      navigate("/registration")
     }
   }
 
-  render() {
-    const { employee, isSubAddRequesting } = this.props
-    if (employee.name && employee.exams) {
-      const org = (
-        <Link to={`/organisations/detail/${employee.org.id}`}>{employee.org.name}</Link>
-      )
-      return (
-        <div>
-          <Header header={employee.name} subHeader={org} />
-          <Row>
-            <Col sm={4}></Col>
-            <Col sm={4} className="bottom-buffer">
-              <Form onSubmit={this.handleSubmit}>
-                <Button
-                  block
-                  type="submit"
-                  bsStyle="primary"
-                  disabled={isSubAddRequesting}>
-                  {isSubAddRequesting
-                    ? "Пожалуйста, подождите..."
-                    : "Подписаться на обновления"}
-                </Button>
-              </Form>
-            </Col>
-            <Col sm={4}></Col>
-          </Row>
-          <Row>
-            <Col lg={1}></Col>
-            <Col lg={10}>
-              <ExamTable exams={employee.exams} />
-            </Col>
-            <Col lg={1}></Col>
-          </Row>
-        </div>
-      )
-    }
+  if (employee.name && employee.exams) {
+    const org = (
+      <Link to={`/organisations/detail/${employee.org.id}`}>{employee.org.name}</Link>
+    )
     return (
-      <Row>
-        <Col lg={12} className="text-center">
-          Loading...
-        </Col>
-      </Row>
+      <div>
+        <Header header={employee.name} subHeader={org} />
+        <Row>
+          <Col sm={4}></Col>
+          <Col sm={4} className="bottom-buffer">
+            <Form onSubmit={handleSubmit}>
+              <Button
+                className="w-100"
+                type="submit"
+                variant="primary"
+                disabled={isSubAddRequesting}>
+                {isSubAddRequesting
+                  ? "Пожалуйста, подождите..."
+                  : "Подписаться на обновления"}
+              </Button>
+            </Form>
+          </Col>
+          <Col sm={4}></Col>
+        </Row>
+        <Row>
+          <Col lg={1}></Col>
+          <Col lg={10}>
+            <ExamTable exams={employee.exams} />
+          </Col>
+          <Col lg={1}></Col>
+        </Row>
+      </div>
     )
   }
+  return (
+    <Row>
+      <Col lg={12} className="text-center">
+        Loading...
+      </Col>
+    </Row>
+  )
 }
 
-EmployeeDetail.propTypes = {
-  employee: PropTypes.object.isRequired,
-  loadEmployeeDetail: PropTypes.func.isRequired,
-}
-
-const mapStateToProps = (state, ownProps) => ({
-  employee: employeeDetailSelector(state, ownProps),
-  token: state.auth.token,
-  subsMsg: state.subs.subsMsg,
-  isSubAddRequesting: state.subs.isSubAddRequesting,
-  isSubAddRequested: state.subs.isSubAddRequested,
-})
-
-export default connect(mapStateToProps, {
-  loadEmployeeDetail,
-  subsAdd,
-})(EmployeeDetail)
+export default EmployeeDetail

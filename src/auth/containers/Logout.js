@@ -1,32 +1,29 @@
-import React, { Component } from "react" // eslint-disable-line
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { toastr } from "react-redux-toastr"
+import { useEffect, useRef } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 import { authLogout } from "../actions"
 
-class Logout extends Component {
-  UNSAFE_componentWillMount() {
-    if (this.props.isAuthenticated) {
-      this.props.authLogout()
-      toastr.success("Выход выполнен", "Сессия завершена")
+const Logout = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
+
+  const didRun = useRef(false)
+  useEffect(() => {
+    if (didRun.current) {
+      return
     }
-    this.props.history.push("/")
-  }
+    didRun.current = true
+    if (isAuthenticated) {
+      dispatch(authLogout())
+      toast.success("Сессия завершена", { title: "Выход выполнен" })
+    }
+    navigate("/")
+  }, [dispatch, navigate, isAuthenticated])
 
-  render() {
-    return null
-  }
+  return null
 }
 
-Logout.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-}
-
-const mapStateToProps = (state) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-})
-
-export default connect(mapStateToProps, {
-  authLogout,
-})(Logout)
+export default Logout

@@ -1,70 +1,66 @@
 import React from "react"
-import { Link } from "react-router-dom"
 import { LinkContainer } from "react-router-bootstrap"
-import { MenuItem, Nav, Navbar, NavDropdown, NavItem } from "react-bootstrap"
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap"
 
 const AuthMenu = ({ isAuthenticated, email }) => (
-  <Nav pullRight>
+  <Nav className="ms-auto">
     {isAuthenticated ? (
-      <NavDropdown eventKey="7" title={email} id="basic-nav-dropdown">
+      <NavDropdown title={email} id="basic-nav-dropdown">
         <LinkContainer to="/subscriptions">
-          <MenuItem eventKey="7.1">Подписки</MenuItem>
+          <NavDropdown.Item>Подписки</NavDropdown.Item>
         </LinkContainer>
         <LinkContainer to="/settings">
-          <MenuItem eventKey="7.2">Настройки</MenuItem>
+          <NavDropdown.Item>Настройки</NavDropdown.Item>
         </LinkContainer>
         <LinkContainer to="/logout">
-          <MenuItem eventKey="7.3">Выход</MenuItem>
+          <NavDropdown.Item>Выход</NavDropdown.Item>
         </LinkContainer>
       </NavDropdown>
     ) : (
       <LinkContainer to="/login">
-        <NavItem eventKey="7">Вход</NavItem>
+        <Nav.Link>Вход</Nav.Link>
       </LinkContainer>
     )}
   </Nav>
 )
 
 export const Navigation = ({ datasources, isAuthenticated, email }) => (
-  <Navbar fluid inverse collapseOnSelect>
-    <Navbar.Header>
-      <Navbar.Brand>
-        <Link to="/">ГИА {new Date().getFullYear()} в Москве</Link>
-      </Navbar.Brand>
+  <Navbar bg="primary" data-bs-theme="dark" expand="md">
+    <Container fluid>
+      <Navbar.Brand href="/">ГИА {new Date().getFullYear()} в Москве</Navbar.Brand>
       <Navbar.Toggle />
-    </Navbar.Header>
-    <Navbar.Collapse>
-      <Nav>
-        <LinkContainer to="/exams">
-          <NavItem eventKey="1">Экзамены</NavItem>
-        </LinkContainer>
-        <LinkContainer to="/employees">
-          <NavItem eventKey="2">Сотрудники</NavItem>
-        </LinkContainer>
-        <LinkContainer to="/organisations">
-          <NavItem eventKey="3">Организации</NavItem>
-        </LinkContainer>
-        <LinkContainer to="/places">
-          <NavItem eventKey="4">ППЭ</NavItem>
-        </LinkContainer>
-        <LinkContainer to="/about">
-          <NavItem eventKey="5">О сайте</NavItem>
-        </LinkContainer>
-        <NavDropdown eventKey="6" title="Источники" id="basic-nav-dropdown">
-          {datasources.map((ds) => (
-            <MenuItem
-              key={ds.id}
-              eventKey={`6.${ds.id}`}
-              href={ds.url}
-              target="_blank"
-              rel="noopener noreferrer">
-              {ds.name}
-            </MenuItem>
-          ))}
-        </NavDropdown>
-      </Nav>
-      <AuthMenu isAuthenticated={isAuthenticated} email={email} />
-    </Navbar.Collapse>
+      <Navbar.Collapse>
+        <Nav className="me-auto">
+          <LinkContainer to="/exams">
+            <Nav.Link>Экзамены</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/employees">
+            <Nav.Link>Сотрудники</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/organisations">
+            <Nav.Link>Организации</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/places">
+            <Nav.Link>ППЭ</Nav.Link>
+          </LinkContainer>
+          <LinkContainer to="/about">
+            <Nav.Link>О сайте</Nav.Link>
+          </LinkContainer>
+          <NavDropdown title="Источники" id="basic-nav-dropdown">
+            {datasources.map((ds) => (
+              <NavDropdown.Item
+                key={ds.id}
+                href={ds.url}
+                target="_blank"
+                rel="noopener noreferrer">
+                {ds.name}
+              </NavDropdown.Item>
+            ))}
+          </NavDropdown>
+        </Nav>
+        <AuthMenu isAuthenticated={isAuthenticated} email={email} />
+      </Navbar.Collapse>
+    </Container>
   </Navbar>
 )
 

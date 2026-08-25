@@ -1,18 +1,9 @@
 import isEqual from "lodash/isEqual"
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { toastr } from "react-redux-toastr"
-import {
-  Button,
-  Col,
-  ControlLabel,
-  Form,
-  FormControl,
-  FormGroup,
-  HelpBlock,
-  Row,
-} from "react-bootstrap"
+import React, { useEffect, useRef, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useParams } from "react-router-dom"
+import { toast } from "react-toastify"
+import { Button, Col, Form, Row } from "react-bootstrap"
 
 import { Header } from "../../main/components"
 import { authPasswordResetConfirm, authPasswordResetConfirmMsgRemove } from "../actions"
@@ -24,169 +15,151 @@ function validate(new_password1, new_password2) {
   }
 }
 
-class PasswordResetConfirm extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      newPassword1Valid: null,
-      newPassword2Valid: null,
-      new_password1: "",
-      new_password2: "",
-      touched: {
-        new_password1: false,
-        new_password2: false,
-      },
-    }
-  }
+const PasswordResetConfirm = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { uid, token } = useParams()
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      newPassword1Valid: null,
-      newPassword2Valid: null,
-    })
+  const isPasswordResetConfirming = useSelector(
+    (state) => state.auth.isPasswordResetConfirming,
+  )
+  const authPasswordResetConfirmMsg = useSelector(
+    (state) => state.auth.authPasswordResetConfirmMsg,
+  )
 
-    if (
-      !isEqual(
-        nextProps.authPasswordResetConfirmMsg,
-        this.props.authPasswordResetConfirmMsg,
-      )
-    ) {
-      const message = nextProps.authPasswordResetConfirmMsg
+  const [newPassword1Valid, setNewPassword1Valid] = useState(null)
+  const [newPassword2Valid, setNewPassword2Valid] = useState(null)
+  const [new_password1, setNewPassword1] = useState("")
+  const [new_password2, setNewPassword2] = useState("")
+  const [touched, setTouched] = useState({
+    new_password1: false,
+    new_password2: false,
+  })
+
+  const prevMsg = useRef(authPasswordResetConfirmMsg)
+  useEffect(() => {
+    setNewPassword1Valid(null)
+    setNewPassword2Valid(null)
+    if (!isEqual(authPasswordResetConfirmMsg, prevMsg.current)) {
+      const message = authPasswordResetConfirmMsg
       if (message.non_field_errors) {
-        message.non_field_errors.map((msg) => toastr.error("Ошибка", msg))
+        message.non_field_errors.map((msg) => toast.error(msg, { title: "Ошибка" }))
       }
       if (message.new_password1) {
-        this.setState({ newPassword1Valid: "error" })
+        setNewPassword1Valid("error")
       }
       if (message.new_password2) {
-        this.setState({ newPassword2Valid: "error" })
+        setNewPassword2Valid("error")
       }
       if (message.detail) {
-        toastr.success("", message.detail)
-        this.props.history.push("/login")
+        toast.success(message.detail)
+        navigate("/login")
       }
+      prevMsg.current = authPasswordResetConfirmMsg
     }
-  }
+  }, [authPasswordResetConfirmMsg, navigate])
 
-  componentWillUnmount() {
-    this.props.authPasswordResetConfirmMsgRemove()
-  }
+  useEffect(
+    () => () => {
+      dispatch(authPasswordResetConfirmMsgRemove())
+    },
+    [dispatch],
+  )
 
-  canBeSubmitted() {
-    const errors = validate(this.state.new_password1, this.state.new_password2)
+  const canBeSubmitted = () => {
+    const errors = validate(new_password1, new_password2)
     const isDisabled = Object.keys(errors).some((x) => errors[x])
     return !isDisabled
   }
 
-  handleBlur = (field) => (evt) => {
-    this.setState({
-      touched: { ...this.state.touched, [field]: true },
-    })
+  const handleBlur = (field) => (evt) => {
+    setTouched({ ...touched, [field]: true })
   }
 
-  handleInputChange = (evt) => {
+  const handleInputChange = (evt) => {
     const target = evt.target
     const value = target.value
     const name = target.name
-    this.setState({ [name]: value })
+    if (name === "new_password1") {
+      setNewPassword1(value)
+    } else {
+      setNewPassword2(value)
+    }
   }
 
-  handleSubmit = (evt) => {
+  const handleSubmit = (evt) => {
     evt.preventDefault()
-    if (!this.canBeSubmitted()) {
+    if (!canBeSubmitted()) {
       return
     }
-    const { uid, token } = this.props.match.params
-    this.props.authPasswordResetConfirm(
-      uid,
-      token,
-      this.state.new_password1,
-      this.state.new_password2,
-    )
+    dispatch(authPasswordResetConfirm(uid, token, new_password1, new_password2))
   }
 
-  render() {
-    const header = "Восстановление пароля"
-    const subheader = "Укажите новый пароль"
+  const header = "Восстановление пароля"
+  const subheader = "Укажите новый пароль"
 
-    const { new_password1, new_password2 } = this.props.authPasswordResetConfirmMsg
-    const { newPassword1Valid, newPassword2Valid } = this.state
+  const { new_password1: password1Errors, new_password2: password2Errors } =
+    authPasswordResetConfirmMsg
 
-    const errors = validate(this.state.new_password1, this.state.new_password2)
-    const isDisabled = Object.keys(errors).some((x) => errors[x])
+  const errors = validate(new_password1, new_password2)
+  const isDisabled = Object.keys(errors).some((x) => errors[x])
 
-    const shouldMarkError = (field) => {
-      const hasError = errors[field]
-      const shouldShow = this.state.touched[field]
-      return hasError ? shouldShow : false
-    }
-
-    return (
-      <Row className="bottom-buffer">
-        <Header header={header} subHeader={subheader} />
-        <Col sm={4}>{""}</Col>
-        <Col sm={4}>
-          <Form onSubmit={this.handleSubmit}>
-            <FormGroup
-              controlId="formNewPassword1"
-              validationState={
-                shouldMarkError("new_password1") || newPassword1Valid ? "error" : null
-              }>
-              <ControlLabel>Новый пароль</ControlLabel>
-              <FormControl
-                type="password"
-                name="new_password1"
-                value={this.state.new_password1}
-                onChange={this.handleInputChange}
-                onBlur={this.handleBlur("new_password1")}
-              />
-              {newPassword1Valid
-                ? new_password1.map((msg) => <HelpBlock>{msg}</HelpBlock>)
-                : null}
-            </FormGroup>
-            <FormGroup
-              controlId="formNewPassword2"
-              validationState={
-                shouldMarkError("new_password2") || newPassword2Valid ? "error" : null
-              }>
-              <ControlLabel>Повторите пароль</ControlLabel>
-              <FormControl
-                type="password"
-                name="new_password2"
-                value={this.state.new_password2}
-                onChange={this.handleInputChange}
-                onBlur={this.handleBlur("new_password2")}
-              />
-              {newPassword2Valid
-                ? new_password2.map((msg) => <HelpBlock>{msg}</HelpBlock>)
-                : null}
-            </FormGroup>
-            <Button
-              type="submit"
-              block
-              bsStyle="primary"
-              disabled={this.props.isPasswordResetConfirming || isDisabled}>
-              Отправить
-            </Button>
-          </Form>
-        </Col>
-        <Col sm={4}>{""}</Col>
-      </Row>
-    )
+  const shouldMarkError = (field) => {
+    const hasError = errors[field]
+    const shouldShow = touched[field]
+    return hasError ? shouldShow : false
   }
+
+  return (
+    <Row className="bottom-buffer">
+      <Header header={header} subHeader={subheader} />
+      <Col sm={4}>{""}</Col>
+      <Col sm={4}>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group controlId="formNewPassword1">
+            <Form.Label>Новый пароль</Form.Label>
+            <Form.Control
+              type="password"
+              name="new_password1"
+              value={new_password1}
+              onChange={handleInputChange}
+              onBlur={handleBlur("new_password1")}
+              isInvalid={!!(shouldMarkError("new_password1") || newPassword1Valid)}
+            />
+            {newPassword1Valid
+              ? password1Errors.map((msg) => (
+                  <Form.Control.Feedback type="invalid">{msg}</Form.Control.Feedback>
+                ))
+              : null}
+          </Form.Group>
+          <Form.Group controlId="formNewPassword2">
+            <Form.Label>Повторите пароль</Form.Label>
+            <Form.Control
+              type="password"
+              name="new_password2"
+              value={new_password2}
+              onChange={handleInputChange}
+              onBlur={handleBlur("new_password2")}
+              isInvalid={!!(shouldMarkError("new_password2") || newPassword2Valid)}
+            />
+            {newPassword2Valid
+              ? password2Errors.map((msg) => (
+                  <Form.Control.Feedback type="invalid">{msg}</Form.Control.Feedback>
+                ))
+              : null}
+          </Form.Group>
+          <Button
+            type="submit"
+            className="w-100 mt-3"
+            variant="primary"
+            disabled={isPasswordResetConfirming || isDisabled}>
+            Отправить
+          </Button>
+        </Form>
+      </Col>
+      <Col sm={4}>{""}</Col>
+    </Row>
+  )
 }
 
-PasswordResetConfirm.propTypes = {
-  isPasswordResetConfirming: PropTypes.bool.isRequired,
-  authPasswordResetConfirmMsg: PropTypes.object.isRequired,
-}
-
-const mapStateToProps = (state) => ({
-  isPasswordResetConfirming: state.auth.isPasswordResetConfirming,
-  authPasswordResetConfirmMsg: state.auth.authPasswordResetConfirmMsg,
-})
-
-export default connect(mapStateToProps, {
-  authPasswordResetConfirm,
-  authPasswordResetConfirmMsgRemove,
-})(PasswordResetConfirm)
+export default PasswordResetConfirm

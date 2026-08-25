@@ -1,6 +1,4 @@
 import { combineReducers } from "redux"
-import { connectRouter } from "connected-react-router"
-import { reducer as toastr } from "react-redux-toastr"
 
 import { auth } from "./auth/reducer"
 import { entities } from "./main/reducer"
@@ -26,15 +24,12 @@ const pagination = combineReducers({
   subsActivePage,
 })
 
-const createRootReducer = (history) =>
-  combineReducers({
-    auth,
-    entities,
-    filters,
-    pagination,
-    router: connectRouter(history),
-    subs,
-    toastr,
-  })
+const rootReducer = combineReducers({
+  auth,
+  entities,
+  filters,
+  pagination,
+  subs,
+})
 
-export default createRootReducer
+export default rootReducer

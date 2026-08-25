@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import { Pagination } from "react-bootstrap"
 import { createUltimatePagination, ITEM_TYPES } from "react-ultimate-pagination"
 
-export const UltimatePagination = createUltimatePagination({
+const UltimatePaginationBase = createUltimatePagination({
   WrapperComponent: Pagination,
   itemTypeToComponent: {
     [ITEM_TYPES.PAGE]: ({ value, isActive, onClick }) => (
@@ -27,6 +27,22 @@ export const UltimatePagination = createUltimatePagination({
   },
 })
 
+const UltimatePaginationDefaults = {
+  currentPage: 1,
+  totalPages: 1,
+  onChange: () => undefined,
+  boundaryPagesRange: 1,
+  siblingPagesRange: 3,
+  hideEllipsis: false,
+  hidePreviousAndNextPageLinks: false,
+  hideFirstAndLastPageLinks: false,
+  disabled: false,
+}
+
+export const UltimatePagination = (props) => (
+  <UltimatePaginationBase {...UltimatePaginationDefaults} {...props} />
+)
+
 UltimatePagination.propTypes = {
   currentPage: PropTypes.number,
   totalPages: PropTypes.number,
@@ -37,18 +53,6 @@ UltimatePagination.propTypes = {
   hidePreviousAndNextPageLinks: PropTypes.bool,
   hideFirstAndLastPageLinks: PropTypes.bool,
   disabled: PropTypes.bool,
-}
-
-UltimatePagination.defaultProps = {
-  currentPage: 1,
-  totalPages: 1,
-  onChange: () => undefined,
-  boundaryPagesRange: 1,
-  siblingPagesRange: 3,
-  hideEllipsis: false,
-  hidePreviousAndNextPageLinks: false,
-  hideFirstAndLastPageLinks: false,
-  disabled: false,
 }
 
 export default UltimatePagination

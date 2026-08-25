@@ -1,4 +1,4 @@
-import jwtDecode from "jwt-decode"
+import { jwtDecode } from "jwt-decode"
 
 import { actionTrigger, actionWithPayload, authApi } from "../main/actions"
 import * as c from "./constants"

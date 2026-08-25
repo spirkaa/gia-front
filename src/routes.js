@@ -1,5 +1,5 @@
 import React from "react"
-import { Route, Switch } from "react-router-dom"
+import { Route, Routes as RouterRoutes } from "react-router-dom"
 
 import { EmployeeDetail, Employees } from "./employees/containers"
 import { OrganisationDetail, Organisations } from "./organisations/containers"
@@ -20,41 +20,81 @@ import { About, Home, NotFound } from "./main/components"
 import { Authenticated, NotAuthenticated } from "./auth"
 
 export const Routes = () => (
-  <Switch>
-    <Route exact path="/exams" component={Exams} />
-    <Route exact path="/employees" component={Employees} />
-    <Route exact path="/employees/detail/:employeeId" component={EmployeeDetail} />
-    <Route exact path="/organisations" component={Organisations} />
-    <Route exact path="/organisations/detail/:orgId" component={OrganisationDetail} />
-    <Route exact path="/places" component={Places} />
-    <Route exact path="/about" component={About} />
+  <RouterRoutes>
+    <Route path="/exams" element={<Exams />} />
+    <Route path="/employees" element={<Employees />} />
+    <Route path="/employees/detail/:employeeId" element={<EmployeeDetail />} />
+    <Route path="/organisations" element={<Organisations />} />
+    <Route path="/organisations/detail/:orgId" element={<OrganisationDetail />} />
+    <Route path="/places" element={<Places />} />
+    <Route path="/about" element={<About />} />
 
-    <Route exact path="/password-reset" component={NotAuthenticated(PasswordReset)} />
     <Route
-      exact
+      path="/password-reset"
+      element={
+        <NotAuthenticated>
+          <PasswordReset />
+        </NotAuthenticated>
+      }
+    />
+    <Route
       path="/password-reset/email-sent"
-      component={NotAuthenticated(PasswordEmailSent)}
+      element={
+        <NotAuthenticated>
+          <PasswordEmailSent />
+        </NotAuthenticated>
+      }
     />
     <Route
-      exact
       path="/password-reset/confirm/:uid/:token"
-      component={NotAuthenticated(PasswordResetConfirm)}
+      element={
+        <NotAuthenticated>
+          <PasswordResetConfirm />
+        </NotAuthenticated>
+      }
     />
-    <Route exact path="/registration" component={NotAuthenticated(Registration)} />
     <Route
-      exact
-      path="/registration/confirm-email/:key"
-      component={RegistrationEmailConfirm}
+      path="/registration"
+      element={
+        <NotAuthenticated>
+          <Registration />
+        </NotAuthenticated>
+      }
     />
-    <Route exact path="/settings" component={Authenticated(Settings)} />
-    <Route exact path="/logout" component={Logout} />
-    <Route exact path="/login" component={NotAuthenticated(Login)} />
+    <Route
+      path="/registration/confirm-email/:key"
+      element={<RegistrationEmailConfirm />}
+    />
+    <Route
+      path="/settings"
+      element={
+        <Authenticated>
+          <Settings />
+        </Authenticated>
+      }
+    />
+    <Route path="/logout" element={<Logout />} />
+    <Route
+      path="/login"
+      element={
+        <NotAuthenticated>
+          <Login />
+        </NotAuthenticated>
+      }
+    />
 
-    <Route exact path="/subscriptions" component={Authenticated(Subscriptions)} />
+    <Route
+      path="/subscriptions"
+      element={
+        <Authenticated>
+          <Subscriptions />
+        </Authenticated>
+      }
+    />
 
-    <Route exact path="/" component={Home} />
-    <Route component={NotFound} />
-  </Switch>
+    <Route path="/" element={<Home />} />
+    <Route path="*" element={<NotFound />} />
+  </RouterRoutes>
 )
 
 export default Routes

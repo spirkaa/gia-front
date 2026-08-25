@@ -1,9 +1,9 @@
 import { normalize } from "normalizr"
-import { toastr } from "react-redux-toastr"
+import { toast } from "react-toastify"
 
 const API_ROOT =
   process.env.NODE_ENV !== "production"
-    ? "http://localhost:8000/api/v1/"
+    ? `http://${window.location.hostname}:8000/api/v1/`
     : "https://gia-api.devmem.ru/api/v1/"
 
 let logger = () => null
@@ -56,7 +56,7 @@ export const CALL_API = Symbol("Call API")
 
 // A Redux middleware that interprets actions with CALL_API info specified.
 // Performs the call and promises when such actions are dispatched.
-export default (store) => (next) => (action) => {
+const api = (store) => (next) => (action) => {
   const callAPI = action[CALL_API]
   if (typeof callAPI === "undefined") {
     return next(action)
@@ -100,8 +100,10 @@ export default (store) => (next) => (action) => {
         }),
       )
       if (error.message) {
-        toastr.error("API Error", error.message)
+        toast.error(error.message, { title: "API Error" })
       }
     },
   )
 }
+
+export default api

@@ -3,17 +3,8 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { Link } from "react-router-dom"
 import { connect } from "react-redux"
-import { toastr } from "react-redux-toastr"
-import {
-  Button,
-  Col,
-  ControlLabel,
-  Form,
-  FormControl,
-  FormGroup,
-  HelpBlock,
-  Row,
-} from "react-bootstrap"
+import { toast } from "react-toastify"
+import { Button, Col, Form, Row } from "react-bootstrap"
 
 import { Header } from "../../main/components"
 import { authRegistration, authRegistrationMsgRemove } from "../actions"
@@ -45,25 +36,27 @@ class Registration extends Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      emailValid: null,
-      password1Valid: null,
-      password2Valid: null,
-    })
-    if (!isEqual(nextProps.authRegMsg, this.props.authRegMsg)) {
-      const message = nextProps.authRegMsg
-      if (message.non_field_errors) {
-        message.non_field_errors.map((msg) => toastr.error("Ошибка", msg))
-      }
-      if (message.email) {
-        this.setState({ emailValid: "error" })
-      }
-      if (message.password1) {
-        this.setState({ password1Valid: "error" })
-      }
-      if (message.password2) {
-        this.setState({ password2Valid: "error" })
+  componentDidUpdate(prevProps) {
+    if (!isEqual(prevProps, this.props)) {
+      this.setState({
+        emailValid: null,
+        password1Valid: null,
+        password2Valid: null,
+      })
+      if (!isEqual(prevProps.authRegMsg, this.props.authRegMsg)) {
+        const message = this.props.authRegMsg
+        if (message.non_field_errors) {
+          message.non_field_errors.map((msg) => toast.error(msg, { title: "Ошибка" }))
+        }
+        if (message.email) {
+          this.setState({ emailValid: "error" })
+        }
+        if (message.password1) {
+          this.setState({ password1Valid: "error" })
+        }
+        if (message.password2) {
+          this.setState({ password2Valid: "error" })
+        }
       }
     }
   }
@@ -130,60 +123,63 @@ class Registration extends Component {
         <Col sm={4}>{""}</Col>
         <Col sm={4}>
           <Form onSubmit={this.handleSubmit}>
-            <FormGroup
-              controlId="formEmail"
-              validationState={shouldMarkError("email") || emailValid ? "error" : null}>
-              <ControlLabel>Электронная почта</ControlLabel>
-              <FormControl
+            <Form.Group controlId="formEmail">
+              <Form.Label>Электронная почта</Form.Label>
+              <Form.Control
                 type="email"
                 name="email"
                 value={this.state.email}
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur("email")}
+                isInvalid={!!(shouldMarkError("email") || emailValid)}
               />
-              {emailValid ? email.map((msg) => <HelpBlock>{msg}</HelpBlock>) : null}
+              {emailValid
+                ? email.map((msg) => (
+                    <Form.Control.Feedback type="invalid">{msg}</Form.Control.Feedback>
+                  ))
+                : null}
               {shouldMarkError("email") ? (
-                <HelpBlock>Введите корректный адрес электронной почты.</HelpBlock>
+                <Form.Control.Feedback type="invalid">
+                  Введите корректный адрес электронной почты.
+                </Form.Control.Feedback>
               ) : null}
-            </FormGroup>
-            <FormGroup
-              controlId="formPassword1"
-              validationState={
-                shouldMarkError("password1") || password1Valid ? "error" : null
-              }>
-              <ControlLabel>Пароль</ControlLabel>
-              <FormControl
+            </Form.Group>
+            <Form.Group controlId="formPassword1">
+              <Form.Label>Пароль</Form.Label>
+              <Form.Control
                 type="password"
                 name="password1"
                 value={this.state.password1}
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur("password1")}
+                isInvalid={!!(shouldMarkError("password1") || password1Valid)}
               />
               {password1Valid
-                ? password1.map((msg) => <HelpBlock>{msg}</HelpBlock>)
+                ? password1.map((msg) => (
+                    <Form.Control.Feedback type="invalid">{msg}</Form.Control.Feedback>
+                  ))
                 : null}
-            </FormGroup>
-            <FormGroup
-              controlId="formPassword2"
-              validationState={
-                shouldMarkError("password2") || password2Valid ? "error" : null
-              }>
-              <ControlLabel>Повторите пароль</ControlLabel>
-              <FormControl
+            </Form.Group>
+            <Form.Group controlId="formPassword2">
+              <Form.Label>Повторите пароль</Form.Label>
+              <Form.Control
                 type="password"
                 name="password2"
                 value={this.state.password2}
                 onChange={this.handleInputChange}
                 onBlur={this.handleBlur("password2")}
+                isInvalid={!!(shouldMarkError("password2") || password2Valid)}
               />
               {password2Valid
-                ? password2.map((msg) => <HelpBlock>{msg}</HelpBlock>)
+                ? password2.map((msg) => (
+                    <Form.Control.Feedback type="invalid">{msg}</Form.Control.Feedback>
+                  ))
                 : null}
-            </FormGroup>
+            </Form.Group>
             <Button
               type="submit"
-              block
-              bsStyle="primary"
+              className="w-100 mt-3"
+              variant="primary"
               disabled={this.props.isRegistering || isDisabled}>
               {this.props.isRegistering
                 ? "Пожалуйста, подождите..."

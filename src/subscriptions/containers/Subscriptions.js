@@ -15,15 +15,16 @@ class Subscriptions extends Component {
     this.props.subsLoad(this.props.token)
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    const { subsClearPages, subsLoad, subsPageSet, token, count } = this.props
-    if (nextProps.isSubDelRequested) {
+  componentDidUpdate(prevProps) {
+    const { subsClearPages, subsLoad, subsPageSet, token, isSubDelRequested, count } =
+      this.props
+    if (isSubDelRequested) {
       subsClearPages()
       subsLoad(token)
       subsPageSet(1)
     }
-    if (nextProps.count !== count) {
-      if (nextProps.count === 0) {
+    if (count !== prevProps.count) {
+      if (count === 0) {
         subsClearPages()
       }
     }

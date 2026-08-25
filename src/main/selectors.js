@@ -1,7 +1,7 @@
-import { createSelectorCreator, defaultMemoize } from "reselect"
+import { createSelectorCreator, lruMemoize } from "reselect"
 import isEqual from "lodash/isEqual"
 
-export const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual)
+export const createDeepEqualSelector = createSelectorCreator(lruMemoize, isEqual)
 
 export const getDatePage = (state) => state.entities.datePage
 export const getLevelPage = (state) => state.entities.levelPage

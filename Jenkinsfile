@@ -22,14 +22,47 @@ pipeline {
     LABEL_CREATED = sh(script: "date '+%Y-%m-%dT%H:%M:%S%:z'", returnStdout: true).toString().trim()
     REVISION = GIT_COMMIT.take(7)
 
-    NODE_IMAGE = 'node:16-alpine'
+    NODE_IMAGE = 'node:22-alpine'
+    ANSIBLE_IMAGE = "${REGISTRY}/${IMAGE_OWNER}/ansible:base"
   }
 
   stages {
+    stage('Run pre-commit') {
+      agent {
+        docker {
+          image env.ANSIBLE_IMAGE
+          registryUrl env.REGISTRY_URL
+          registryCredentialsId env.REGISTRY_CREDS_ID
+          alwaysPull true
+          reuseNode true
+          args '-v /tmp/.cache:/tmp/.cache'
+        }
+      }
+      when {
+        beforeAgent true
+        not {
+          anyOf {
+            tag ''
+          }
+        }
+      }
+      steps {
+        cache(path: "/tmp/.cache/pre-commit", key: "pre-commit-${hashFiles('**/.pre-commit-config.yaml')}") {
+          sh '''#!/bin/bash
+            export PRE_COMMIT_HOME=/tmp/.cache/pre-commit
+            pre-commit run --all-files --show-diff-on-failure --verbose --color always || {
+              cat ${PRE_COMMIT_HOME}/pre-commit.log 2>/dev/null || true
+              exit 1
+            }
+          '''
+        }
+      }
+    }
+
     stage('Build assets') {
       when {
-        branch 'main'
-        not {
+        anyOf {
+          branch 'main'
           changeRequest()
         }
       }
@@ -50,8 +83,8 @@ pipeline {
 
     stage('Build image') {
       when {
-        branch 'main'
-        not {
+        anyOf {
+          branch 'main'
           changeRequest()
         }
       }
@@ -60,7 +93,8 @@ pipeline {
           buildDockerImage(
             dockerFile: "${DOCKERFILE}",
             tag: "${REVISION}",
-            altTag: 'latest'
+            altTag: env.CHANGE_ID ? null : 'latest',
+            pushToRegistry: env.CHANGE_ID ? 'no' : 'yes'
           )
         }
       }

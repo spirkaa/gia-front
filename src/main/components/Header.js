@@ -1,16 +1,18 @@
 import React from "react"
 import PropTypes from "prop-types"
-import Helmet from "react-helmet"
-import { PageHeader, Row } from "react-bootstrap"
+import { Helmet } from "react-helmet-async"
+import { Row } from "react-bootstrap"
 
 export const Header = ({ header, subHeader }) => (
   <Row>
-    <PageHeader className="text-center">
+    <div className="page-header text-center border-bottom pb-2">
       <Helmet title={header} />
-      {header}
-      <br />
-      <small>{!subHeader ? "..." : subHeader}</small>
-    </PageHeader>
+      <h1>
+        {header}
+        <br />
+        <small className="text-muted">{!subHeader ? "..." : subHeader}</small>
+      </h1>
+    </div>
   </Row>
 )
 

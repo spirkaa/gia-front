@@ -1,3 +1,16 @@
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.nav-link:hover,
+.navbar-brand:hover {
+  text-decoration: none;
+}
+
 .dpad {
   margin: 15px;
 }
@@ -12,6 +25,10 @@
 
 .page-header {
   margin: 0 0 26px;
+}
+
+.page-header h1 small {
+  font-size: 65%;
 }
 
 .react-bs-table table tr td,
@@ -51,6 +68,9 @@
     padding-left: 35% !important;
     white-space: normal !important;
     text-align: left !important;
+    /* Override react-bootstrap-table-ng .expandable-cell (width: 200px, overflow: hidden) */
+    width: auto !important;
+    overflow: visible !important;
   }
 
   .no-more-tables td:before {

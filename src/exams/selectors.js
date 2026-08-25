@@ -15,15 +15,9 @@ import createDeepEqualSelector, {
 
 const getCount = (state) => state.entities.examPage[1] || { count: null }
 
-export const examActivePageSelector = createDeepEqualSelector(
-  getExamActivePage,
-  (page) => page,
-)
+export const examActivePageSelector = getExamActivePage
 
-export const examFilterSelector = createDeepEqualSelector(
-  getExamFilter,
-  (filter) => filter,
-)
+export const examFilterSelector = getExamFilter
 
 const currentPageSelector = createDeepEqualSelector(
   getExamPage,
