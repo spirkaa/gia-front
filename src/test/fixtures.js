@@ -1,0 +1,53 @@
+export const makeEntities = (partial = {}) => ({
+  dataSourcePage: {},
+  datePage: {},
+  levelPage: {},
+  empPage: {},
+  orgPage: {},
+  placesPage: {},
+  examPage: {},
+  subsPage: {},
+  datasource: {},
+  date: {},
+  level: {},
+  employee: {},
+  organisation: {},
+  position: {},
+  territory: {},
+  place: {},
+  exam: {},
+  subscription: {},
+  ...partial,
+})
+
+export const makeState = ({ entities, ...overrides } = {}) => ({
+  auth: {
+    token: null,
+    user: {},
+    isAuthenticated: false,
+    rememberMe: false,
+  },
+  entities: makeEntities(entities),
+  filters: {
+    empFilter: { search: "" },
+    examFilter: { date: "", level: "", search: "" },
+    orgFilter: { search: "" },
+    placesFilter: { search: "" },
+  },
+  pagination: {
+    empActivePage: 1,
+    examActivePage: 1,
+    orgActivePage: 1,
+    placesActivePage: 1,
+    subsActivePage: 1,
+  },
+  subs: {
+    subsMsg: {},
+    isSubRequesting: false,
+    isSubAddRequesting: false,
+    isSubAddRequested: false,
+    isSubDelRequesting: false,
+    isSubDelRequested: false,
+  },
+  ...overrides,
+})

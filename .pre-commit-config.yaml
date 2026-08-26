@@ -23,13 +23,11 @@ repos:
       - id: prettier
         files: \.[jt]sx?$
         types: [file]
+        additional_dependencies:
+          - prettier@3.9.6
   - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.56.0
+    rev: v9.39.1
     hooks:
       - id: eslint
         files: \.[jt]sx?$
         types: [file]
-        additional_dependencies:
-          - eslint@8.x
-          - eslint-config-react-app@7.x
-          - eslint-config-prettier@9.x

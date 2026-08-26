@@ -5,6 +5,7 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '10', daysToKeepStr: '60'))
     parallelsAlwaysFailFast()
     disableConcurrentBuilds()
+    timeout(time: 10, unit: 'MINUTES')
   }
 
   environment {
@@ -23,6 +24,7 @@ pipeline {
     REVISION = GIT_COMMIT.take(7)
 
     NODE_IMAGE = 'node:22-alpine'
+    NODE_VERSION = '22.23.2'
     ANSIBLE_IMAGE = "${REGISTRY}/${IMAGE_OWNER}/ansible:base"
   }
 
@@ -49,12 +51,51 @@ pipeline {
       steps {
         cache(path: "/tmp/.cache/pre-commit", key: "pre-commit-${hashFiles('**/.pre-commit-config.yaml')}") {
           sh '''#!/bin/bash
+            set -e
+            if ! command -v node >/dev/null 2>&1; then
+              python3 -c "import urllib.request; urllib.request.urlretrieve('https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.gz','/tmp/node.tgz')"
+              tar -xzf /tmp/node.tgz -C /usr/local --strip-components=1
+              rm -f /tmp/node.tgz
+            fi
+            node -v
+            for i in 1 2 3; do
+              npm ci && break
+            done
             export PRE_COMMIT_HOME=/tmp/.cache/pre-commit
             pre-commit run --all-files --show-diff-on-failure --verbose --color always || {
               cat ${PRE_COMMIT_HOME}/pre-commit.log 2>/dev/null || true
               exit 1
             }
           '''
+        }
+      }
+    }
+
+    stage('Run tests') {
+      when {
+        not {
+          anyOf {
+            tag ''
+          }
+        }
+      }
+      steps {
+        script {
+          docker.image("${NODE_IMAGE}").inside {
+            retry(3) {
+              sh 'npm ci'
+            }
+            sh 'npm run test:coverage'
+          }
+        }
+      }
+      post {
+        success {
+          junit 'reports/junit.xml'
+          recordCoverage tools: [[parser: 'COBERTURA', pattern: 'reports/cobertura-coverage.xml']]
+        }
+        always {
+          sh "docker rmi ${NODE_IMAGE}"
         }
       }
     }
@@ -69,7 +110,9 @@ pipeline {
       steps {
         script {
           docker.image("${NODE_IMAGE}").inside {
-            sh 'npm ci'
+            retry(3) {
+              sh 'npm ci'
+            }
             sh 'npm run build'
           }
         }
