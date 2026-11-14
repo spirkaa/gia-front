@@ -24,7 +24,7 @@ repos:
         files: \.[jt]sx?$
         types: [file]
         additional_dependencies:
-          - prettier@3.9.6
+          - prettier@3.10.1
   - repo: https://github.com/pre-commit/mirrors-eslint
     rev: v9.39.1
     hooks:
